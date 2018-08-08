@@ -1,0 +1,5 @@
+[weather]
+WeatherToken = "OpenWeatherMap API Token"
+CityZIP = "454000"
+Country = "ru"
+Language = "ru"
