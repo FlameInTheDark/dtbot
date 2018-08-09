@@ -5,6 +5,7 @@ import (
     "github.com/bwmarrin/discordgo"
 )
 
+// Bot messages reactions
 func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
     if m.Author.ID == s.State.User.ID {
 	    return

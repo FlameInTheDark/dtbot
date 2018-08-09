@@ -49,6 +49,7 @@ type CityData struct {
     Name string `json:"name"`
 }
 
+// Getting weather from API
 func getWeather(s *discordgo.Session, m *discordgo.MessageCreate, args ...string) {
     var (
         forecast Forecast
@@ -63,30 +64,38 @@ func getWeather(s *discordgo.Session, m *discordgo.MessageCreate, args ...string
         country = args[1]
     }
     
-    resp, err := http.Get(fmt.Sprintf("https://api.openweathermap.org/data/2.5/forecast?zip=%v,%v&lang=%v&units=metric&appid=%v", zip, country, config.Weather.Language, config.Weather.WeatherToken))
+    resp, err := http.Get(fmt.Sprintf("https://api.openweathermap.org/data/2.5/forecast?zip=%v,%v&lang=%v&units=metric&appid=%v", 
+                                      zip, country, config.Language, config.Weather.WeatherToken))
     if err != nil {
         fmt.Println(err)
-        s.ChannelMessageSend(m.ChannelID, "Weather API error")
+        s.ChannelMessageSend(m.ChannelID, config.Locales.Get("weather_api_error"))
         return
     }
 
     err = json.NewDecoder(resp.Body).Decode(&forecast)
     if err != nil {
         fmt.Println(err)
-        s.ChannelMessageSend(m.ChannelID, "API parse error")
+        s.ChannelMessageSend(m.ChannelID, config.Locales.Get("weather_parse_error"))
         return
     }
     
     switch forecast.Cod {
     case "404":
-        s.ChannelMessageSend(m.ChannelID, "Город не найден")
+        s.ChannelMessageSend(m.ChannelID, config.Locales.Get("weather_404"))
         return
     case "200":
-        response := fmt.Sprintf("Погода в %v: %v°C, давление %v hPa, облачность %v%%, скорость ветра %v м/с, влажность %v%%, %v.", forecast.City.Name, int(forecast.Weather[0].Main.Temp), forecast.Weather[0].Main.Pressure, forecast.Weather[0].Clouds.All, int(forecast.Weather[0].Wind.Speed), forecast.Weather[0].Main.Humidity, forecast.Weather[0].WDesc[0].Desc)
+        response := fmt.Sprintf(config.Locales.Get("weather_format"), 
+                                forecast.City.Name, 
+                                int(forecast.Weather[0].Main.Temp), 
+                                forecast.Weather[0].Main.Pressure, 
+                                forecast.Weather[0].Clouds.All, 
+                                int(forecast.Weather[0].Wind.Speed), 
+                                forecast.Weather[0].Main.Humidity, 
+                                forecast.Weather[0].WDesc[0].Desc)
         s.ChannelMessageSend(m.ChannelID, response)
         return
     default:
-        s.ChannelMessageSend(m.ChannelID, "Weather error")
+        s.ChannelMessageSend(m.ChannelID, config.Locales.Get("weather_error"))
         return
     }
 }

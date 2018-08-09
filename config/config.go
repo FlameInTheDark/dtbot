@@ -10,18 +10,25 @@ type WeatherConfig struct {
     WeatherToken    string
     CityZIP         string
     Country         string
-    Language        string
+}
+
+type GeneralConfig struct {
+    Language string
 }
 
 type Config struct {
     Weather WeatherConfig
+    General GeneralConfig
 }
 
 var (
     Weather         WeatherConfig
     BotToken        string
+    Language        string
+    Locales         LocalesMap
 )
 
+// Loading configs from file
 func LoadConfig() {
     var cfg Config
     if _, err := toml.DecodeFile("config.toml", &cfg); err != nil {
@@ -31,4 +38,6 @@ func LoadConfig() {
     
     BotToken = "Bot " + os.Getenv("BOT_TOKEN")
     Weather = cfg.Weather
+    Language = cfg.General.Language
+    LoadLocales()
 }
