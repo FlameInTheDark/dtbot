@@ -8,13 +8,13 @@ import (
 
 type WeatherConfig struct {
 	WeatherToken string
-	CityZIP      string
-	Country      string
+	City         string
 }
 
 type GeneralConfig struct {
-	Language string
-    Timezone int
+	Language        string
+    Timezone        int
+    GeocodingKey    string
 }
 
 type Config struct {
@@ -24,9 +24,9 @@ type Config struct {
 
 var (
 	Weather  WeatherConfig
-	BotToken string
-	Locales  LocalesMap
-    General GeneralConfig
+	BotToken    string
+	Locales     LocalesMap
+    General     GeneralConfig
 )
 
 // Loading configs from file

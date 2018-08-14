@@ -1,9 +1,10 @@
 [weather]
 WeatherToken = "OpenWeatherMap API Token"
-CityZIP = "454000"
-Country = "ru"
+# Default forecast city
+City = "Moscow"
 
 [general]
+GeocodingKey = "Google Geocoding API Key"
 Language = "en"
 # UTC 0 + Timezone
 Timezone = 5

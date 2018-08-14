@@ -11,17 +11,7 @@ func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 	args := strings.Split(m.Content, " ")
-	if args[0] == "!w" {
-		if len(args) == 1 {
-			go getWeather(s, m)
-		} else if len(args) == 2 {
-			go getWeather(s, m, args[1])
-		} else {
-			go getWeather(s, m, args[1], args[2])
-		}
-	}
-    
-    if args[0] == "!wf" {
+    if args[0] == "!w" {
 		if len(args) == 1 {
 			go getForecast(s, m)
 		} else if len(args) == 2 {

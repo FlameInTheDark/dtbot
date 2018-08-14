@@ -5,15 +5,14 @@ import (
 	"fmt"
     "bytes"
     "net/http"
-    //"strings"
     "time"
     
     "../config"
+    "../location"
 	"github.com/bwmarrin/discordgo"
     "github.com/olekukonko/tablewriter"
 )
 
-// https://github.com/rafamds/discord-bot
 type Forecast struct {
 	Cod     string        `json:"cod"`
 	Weather []WeatherData `json:"list"`
@@ -62,21 +61,25 @@ type CityData struct {
 func getForecast(s *discordgo.Session, m *discordgo.MessageCreate, args ...string) {
     var (
 		forecast Forecast
-		zip      string = config.Weather.CityZIP
-		country  string = config.Weather.Country
-        forecastData [][]string
-        forecastTable bytes.Buffer
+        city            string = config.Weather.City
+        forecastData    [][]string
+        forecastTable   bytes.Buffer
 	)
-
-	if len(args) == 1 {
-		zip = args[0]
-	} else if len(args) == 2 {
-		zip = args[0]
-		country = args[1]
-	}
-
-	resp, err := http.Get(fmt.Sprintf("https://api.openweathermap.org/data/2.5/forecast?zip=%v,%v&lang=%v&units=metric&appid=%v",
-		zip, country, config.General.Language, config.Weather.WeatherToken))
+    
+    if len(args) == 1 {
+        city = args[0]
+    }
+    
+    loc, err := location.New(city)
+    if err != nil {
+        fmt.Println(err)
+        s.ChannelMessageSend(m.ChannelID, config.Locales.Get("location_404"))
+        return
+    }
+    
+    newlat, newlng := loc.GetCoordinates()
+	resp, err := http.Get(fmt.Sprintf("https://api.openweathermap.org/data/2.5/forecast?lat=%v&lon=%v&lang=%v&units=metric&appid=%v",
+                                      newlat, newlng, config.General.Language, config.Weather.WeatherToken))
 	if err != nil {
 		fmt.Println(err)
 		s.ChannelMessageSend(m.ChannelID, config.Locales.Get("weather_api_error"))
@@ -126,57 +129,6 @@ func getForecast(s *discordgo.Session, m *discordgo.MessageCreate, args ...strin
         }
         table.Render()
         s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("```%v```", forecastTable.String()))
-		return
-	default:
-		s.ChannelMessageSend(m.ChannelID, config.Locales.Get("weather_error"))
-		return
-	}
-}
-
-// Getting weather from API
-func getWeather(s *discordgo.Session, m *discordgo.MessageCreate, args ...string) {
-	var (
-		forecast Forecast
-		zip      string = config.Weather.CityZIP
-		country  string = config.Weather.Country
-	)
-
-	if len(args) == 1 {
-		zip = args[0]
-	} else if len(args) == 2 {
-		zip = args[0]
-		country = args[1]
-	}
-
-	resp, err := http.Get(fmt.Sprintf("https://api.openweathermap.org/data/2.5/forecast?zip=%v,%v&lang=%v&units=metric&appid=%v",
-		zip, country, config.General.Language, config.Weather.WeatherToken))
-	if err != nil {
-		fmt.Println(err)
-		s.ChannelMessageSend(m.ChannelID, config.Locales.Get("weather_api_error"))
-		return
-	}
-
-	err = json.NewDecoder(resp.Body).Decode(&forecast)
-	if err != nil {
-		fmt.Println(err)
-		s.ChannelMessageSend(m.ChannelID, config.Locales.Get("weather_parse_error"))
-		return
-	}
-
-	switch forecast.Cod {
-	case "404":
-		s.ChannelMessageSend(m.ChannelID, config.Locales.Get("weather_404"))
-		return
-	case "200":
-		response := fmt.Sprintf(config.Locales.Get("weather_format"),
-			forecast.City.Name,
-			int(forecast.Weather[0].Main.Temp),
-			forecast.Weather[0].Main.Pressure,
-			forecast.Weather[0].Clouds.All,
-			int(forecast.Weather[0].Wind.Speed),
-			forecast.Weather[0].Main.Humidity,
-			forecast.Weather[0].WDesc[0].Desc)
-		s.ChannelMessageSend(m.ChannelID, response)
 		return
 	default:
 		s.ChannelMessageSend(m.ChannelID, config.Locales.Get("weather_error"))
