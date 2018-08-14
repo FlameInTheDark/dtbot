@@ -1,43 +1,44 @@
 package config
 
 import (
-    "os"
-    "fmt"
+	"fmt"
 	"github.com/BurntSushi/toml"
+	"os"
 )
 
 type WeatherConfig struct {
-    WeatherToken    string
-    CityZIP         string
-    Country         string
+	WeatherToken string
+	CityZIP      string
+	Country      string
 }
 
 type GeneralConfig struct {
-    Language string
+	Language string
+    Timezone int
 }
 
 type Config struct {
-    Weather WeatherConfig
-    General GeneralConfig
+	Weather WeatherConfig
+	General GeneralConfig
 }
 
 var (
-    Weather         WeatherConfig
-    BotToken        string
-    Language        string
-    Locales         LocalesMap
+	Weather  WeatherConfig
+	BotToken string
+	Locales  LocalesMap
+    General GeneralConfig
 )
 
 // Loading configs from file
 func LoadConfig() {
-    var cfg Config
-    if _, err := toml.DecodeFile("config.toml", &cfg); err != nil {
-        fmt.Printf("Config loading error. Please create a \"config.toml\"")
-        os.Exit(1)
+	var cfg Config
+	if _, err := toml.DecodeFile("config.toml", &cfg); err != nil {
+		fmt.Printf("Config loading error: %v\n", err)
+		os.Exit(1)
 	}
-    
-    BotToken = "Bot " + os.Getenv("BOT_TOKEN")
-    Weather = cfg.Weather
-    Language = cfg.General.Language
-    LoadLocales()
+
+	BotToken = "Bot " + os.Getenv("BOT_TOKEN")
+	Weather = cfg.Weather
+    General = cfg.General
+	LoadLocales()
 }

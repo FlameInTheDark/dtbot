@@ -1,9 +1,4 @@
-FROM golang:latest
-
+FROM alpine
 COPY . .
-RUN go get github.com/bwmarrin/discordgo
-RUN go get github.com/BurntSushi/toml
-
-CMD go build
-
-CMD ./dtbot
+RUN apk add ca-certificates
+ENTRYPOINT ["./dtalp"]

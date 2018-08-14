@@ -5,3 +5,5 @@ Country = "ru"
 
 [general]
 Language = "en"
+# UTC 0 + Timezone
+Timezone = 5
