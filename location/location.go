@@ -2,57 +2,49 @@ package location
 
 import (
 	"encoding/json"
-    "net/http"
-    "errors"
-    "fmt"
-    "../config"
+	"errors"
+	"fmt"
+	"net/http"
+
+	"../config"
 )
 
 type LocationResultData struct {
-    Status      string          `json:"status"`
-    Locations   []LocationData  `json:"results"`
+	ResultCount		int			`json:"totalResultsCount"`
+	Geonames		[]Geoname	`json:"geonames"`
 }
 
-type LocationData struct {
-    AddrComponents  []AddrComponentData `json:"address_components"`
-    FormatedAddress string              `json:"formatted_address"`
-    Geometry        GeometryData        `json:"geometry"`
+type Geoname struct {
+	GeonameID		int			`json:"geonameId"`
+	CountryID		string		`json:"countryId"`
+	ToponymName		string		`json:"toponymName"`
+	Population		int			`json:"population"`
+	CountryCode		string		`json:"countryCode"`
+	Name			string		`json:"name"`
+	CountryName		string		`json:"countryName"`
+	Lat				string		`json:"lat"`
+	Lng				string		`json:"lng"`
 }
 
-type CoordinateData struct {
-    Lat float64 `json:"lat"`
-    Lng float64 `json:"lng"`
-}
-
-type GeometryData struct {
-    Location CoordinateData `json:"location"`
-}
-
-type AddrComponentData struct {
-    LongName    string      `json:"long_name"`
-    ShortName   string      `json:"short_name"`
-    Types       []string    `json:"types"`
-}
-
-func (l LocationResultData) GetCoordinates() (float64, float64) {
-    return l.Locations[0].Geometry.Location.Lat, l.Locations[0].Geometry.Location.Lng
+func (l LocationResultData) GetCoordinates() (string, string) {
+	return l.Geonames[0].Lat, l.Geonames[0].Lng
 }
 
 func New(locationName string) (LocationResultData, error) {
-    var result LocationResultData
-    resp, err := http.Get(fmt.Sprintf("https://maps.googleapis.com/maps/api/geocode/json?address=%v&sensor=true&key=%v", locationName, config.General.GeocodingKey))
+	var result LocationResultData
+	resp, err := http.Get(fmt.Sprintf("http://api.geonames.org/searchJSON?q=%v&maxRows=1&username=%v", locationName, config.General.GeonamesUsername))
 	if err != nil {
 		return result, err
 	}
-    
+
 	err = json.NewDecoder(resp.Body).Decode(&result)
 	if err != nil {
 		return result, err
-    }
-    
-    if result.Status == "OK" {
-        return result, nil
-    } else {
-        return result, errors.New("City not found!")
-    }
+	}
+
+	if len(result.Geonames) > 0 {
+		return result, nil
+	} else {
+		return result, errors.New("City not found!")
+	}
 }

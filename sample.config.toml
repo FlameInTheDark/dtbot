@@ -4,7 +4,7 @@ WeatherToken = "OpenWeatherMap API Token"
 City = "Moscow"
 
 [general]
-GeocodingKey = "Google Geocoding API Key"
+GeonamesUsername = "Username from Geonames.org"
 Language = "en"
 # UTC 0 + Timezone
 Timezone = 5

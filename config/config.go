@@ -2,8 +2,9 @@ package config
 
 import (
 	"fmt"
-	"github.com/BurntSushi/toml"
 	"os"
+	"github.com/BurntSushi/toml"
+
 )
 
 type WeatherConfig struct {
@@ -12,9 +13,9 @@ type WeatherConfig struct {
 }
 
 type GeneralConfig struct {
-	Language        string
-    Timezone        int
-    GeocodingKey    string
+	Language			string
+	Timezone			int
+	GeonamesUsername	string
 }
 
 type Config struct {
@@ -24,9 +25,9 @@ type Config struct {
 
 var (
 	Weather  WeatherConfig
-	BotToken    string
-	Locales     LocalesMap
-    General     GeneralConfig
+	BotToken string
+	Locales  LocalesMap
+	General  GeneralConfig
 )
 
 // Loading configs from file
@@ -39,6 +40,6 @@ func LoadConfig() {
 
 	BotToken = "Bot " + os.Getenv("BOT_TOKEN")
 	Weather = cfg.Weather
-    General = cfg.General
+	General = cfg.General
 	LoadLocales()
 }

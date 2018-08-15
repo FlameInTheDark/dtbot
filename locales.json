@@ -1,18 +1,18 @@
 {
     "en": {
         "weather_format":"Weather in %v: %v°C, pressure %v hPa, cloudiness %v%%, wind speed %v m/s, humidity %v%%, %v.",
-        "weather_404":"City not found",
+        "weather_404":"Weather station not found",
         "weather_api_error":"Weather API error",
         "weather_parse_error":"Weather parse error",
         "weather_error":"Weather error",
-        "location_404":"Место не найдено"
+        "location_404":"Location not found"
     },
     "ru": {
         "weather_format":"Погода в %v: %v°C, давление %v hPa, облачность %v%%, скорость ветра %v м/с, влажность %v%%, %v.",
-        "weather_404":"Город не найден",
+        "weather_404":"Метеостанция не найдена",
         "weather_api_error":"Ошибка API погоды",
         "weather_parse_error":"Ошибка парсинга",
         "weather_error":"Ошибка погоды",
-        "location_404":"Location not found"
+        "location_404":"Место не найдено"
     }
 }

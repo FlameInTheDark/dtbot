@@ -22,7 +22,7 @@ func main() {
 
 	err = dg.Open()
 	if err != nil {
-        fmt.Printf("Connection open error: %v", err)
+		fmt.Printf("Connection open error: %v", err)
 		return
 	}
 	fmt.Println("Bot is now running.")
