@@ -1,4 +1,4 @@
-package messages
+package weather
 
 import (
 	"bytes"
@@ -8,7 +8,7 @@ import (
 	"time"
 	"strings"
 
-	"../config"
+	"../../config"
 	"../location"
 	"github.com/bwmarrin/discordgo"
 	"github.com/olekukonko/tablewriter"
@@ -59,7 +59,7 @@ type CityData struct {
 	Name string `json:"name"`
 }
 
-func getForecast(s *discordgo.Session, m *discordgo.MessageCreate, args []string) {
+func GetForecast(s *discordgo.Session, m *discordgo.MessageCreate, args []string) {
 	var (
 		forecast      Forecast
 		city          string = config.Weather.City

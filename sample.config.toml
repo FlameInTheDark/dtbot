@@ -3,6 +3,14 @@ WeatherToken = "OpenWeatherMap API Token"
 # Default forecast city
 City = "Moscow"
 
+[news]
+ApiKey = "Api key from Newsapi.org"
+Country = "us"
+Articles = 5
+
+[translate]
+ApiKey = "Yandex Translate API key"
+
 [general]
 GeonamesUsername = "Username from Geonames.org"
 Language = "en"

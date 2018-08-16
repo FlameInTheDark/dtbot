@@ -18,16 +18,30 @@ type GeneralConfig struct {
 	GeonamesUsername	string
 }
 
+type NewsConfig struct {
+	ApiKey		string
+	Country		string
+	Articles	int
+}
+
+type TranslateConfig struct {
+	ApiKey	string
+}
+
 type Config struct {
-	Weather WeatherConfig
-	General GeneralConfig
+	Weather 	WeatherConfig
+	General 	GeneralConfig
+	News		NewsConfig
+	Translate	TranslateConfig
 }
 
 var (
-	Weather  WeatherConfig
-	BotToken string
-	Locales  LocalesMap
-	General  GeneralConfig
+	BotToken	string
+	Weather		WeatherConfig
+	Locales		LocalesMap
+	General		GeneralConfig
+	News		NewsConfig
+	Translate	TranslateConfig
 )
 
 // Loading configs from file
@@ -41,5 +55,7 @@ func LoadConfig() {
 	BotToken = "Bot " + os.Getenv("BOT_TOKEN")
 	Weather = cfg.Weather
 	General = cfg.General
+	News = cfg.News
+	Translate = cfg.Translate
 	LoadLocales()
 }

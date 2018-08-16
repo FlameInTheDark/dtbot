@@ -5,7 +5,11 @@
         "weather_api_error":"Weather API error",
         "weather_parse_error":"Weather parse error",
         "weather_error":"Weather error",
-        "location_404":"Location not found"
+        "location_404":"Location not found",
+        "news_api_error":"News API error",
+        "news_404":"No news in this category",
+        "translate_request_error":"Wrong request",
+        "translate_api_error":"Translate API error"
     },
     "ru": {
         "weather_format":"Погода в %v: %v°C, давление %v hPa, облачность %v%%, скорость ветра %v м/с, влажность %v%%, %v.",
@@ -13,6 +17,10 @@
         "weather_api_error":"Ошибка API погоды",
         "weather_parse_error":"Ошибка парсинга",
         "weather_error":"Ошибка погоды",
-        "location_404":"Место не найдено"
+        "location_404":"Место не найдено",
+        "news_api_error":"Ошибка API новостей",
+        "news_404":"Нет новостей в данной категории",
+        "translate_request_error":"Неверный запрос",
+        "translate_api_error":"Ошибка API переводчика"
     }
 }
