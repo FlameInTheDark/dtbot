@@ -10,8 +10,9 @@
 ## How to use
 
 Bot commands
+
 Command | Description
---------|------------
+------- | -----------
 `!w [place]` | Shows the weather in a specified location `!w New York`
 `!n [category]` | Displays news in the specified category `!n technology`
 `!t [target_lang] [text]` | Translator `!t ru Hello world`
