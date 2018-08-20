@@ -21,10 +21,9 @@ func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		go news.GetNews(s, m, args[1:])
 		return
 	case "!w":
-		go weather.GetForecast(s, m, args[1:])
+		go weather.GetWeatherImage(s, m, args[1:])
 		return
 	case "!t":
 		go translate.GetTranslation(s, m, args[1:])
 	}
-	
 }

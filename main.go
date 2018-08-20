@@ -1,13 +1,14 @@
 package main
 
 import (
-	"./config"
-	"./messages"
 	"fmt"
-	"github.com/bwmarrin/discordgo"
 	"os"
 	"os/signal"
 	"syscall"
+	
+	"./config"
+	"./messages"
+	"github.com/bwmarrin/discordgo"
 )
 
 func main() {
@@ -21,6 +22,7 @@ func main() {
 	dg.AddHandler(messages.MessageCreate)
 
 	err = dg.Open()
+	defer dg.Close()
 	if err != nil {
 		fmt.Printf("Connection open error: %v", err)
 		return
@@ -31,5 +33,4 @@ func main() {
 
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
 	<-sc
-	defer dg.Close()
 }

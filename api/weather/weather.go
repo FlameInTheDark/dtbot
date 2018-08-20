@@ -7,11 +7,13 @@ import (
 	"net/http"
 	"time"
 	"strings"
+	"image"
+	"image/png"
 
 	"../../config"
 	"../location"
 	"github.com/bwmarrin/discordgo"
-	"github.com/olekukonko/tablewriter"
+	"github.com/fogleman/gg"
 )
 
 type Forecast struct {
@@ -36,6 +38,7 @@ type WDescData struct {
 	Id   int64  `json:"id"`
 	Main string `json:"main"`
 	Desc string `json:"description"`
+	Icon string	`json:"icon"`
 }
 
 type MainData struct {
@@ -58,13 +61,46 @@ type CloudsData struct {
 type CityData struct {
 	Name string `json:"name"`
 }
+// Super bad code below. Be careful!
+func DrawOne(temp, hum, clo int, time, icon string) image.Image {
+	dpc := gg.NewContext(300,400)
+	dpc.SetRGBA(0,0,0,0)
+	dpc.Clear()
+	dpc.SetRGB(1, 1, 1)
 
-func GetForecast(s *discordgo.Session, m *discordgo.MessageCreate, args []string) {
-	var (
+	res, err := http.Get(fmt.Sprintf("http://openweathermap.org/img/w/%v.png",icon))
+	if err != nil || res.StatusCode != 200 {
+		fmt.Println(err)
+	}
+	defer res.Body.Close()
+	m, _, err := image.Decode(res.Body)
+	if err != nil {
+		fmt.Println(err)
+	}
+	dpc.Push()
+	dpc.Scale(3,3)
+	dpc.DrawImage(m, 25, 12)
+	dpc.Pop()
+
+	if err := dpc.LoadFontFace("arial.ttf", 50); err != nil {
+		fmt.Printf("Image font: %v",err)
+	}
+	dpc.DrawStringAnchored(time, 150, 30, 0.5, 0.5)
+	dpc.DrawStringAnchored(fmt.Sprintf("H: %v%%",hum), 150, 280, 0.5, 0.5)
+	dpc.DrawStringAnchored(fmt.Sprintf("C: %v%%",clo), 150, 330, 0.5, 0.5)
+
+	if err := dpc.LoadFontFace("arial.ttf", 80); err != nil {
+		fmt.Printf("Image font: %v",err)
+	}
+	dpc.DrawStringAnchored(fmt.Sprintf("%v°", temp), 150, 200, 0.5, 0.5)
+
+	return dpc.Image()
+}
+
+func GetWeatherImage(s *discordgo.Session, m *discordgo.MessageCreate, args []string) {
+		var (
 		forecast      Forecast
 		city          string = config.Weather.City
-		forecastData  [][]string
-		forecastTable bytes.Buffer
 	)
 
 	if len(args) > 0 {
@@ -93,45 +129,22 @@ func GetForecast(s *discordgo.Session, m *discordgo.MessageCreate, args []string
 		s.ChannelMessageSend(m.ChannelID, config.Locales.Get("weather_parse_error"))
 		return
 	}
-
-	switch forecast.Cod {
-	case "404":
-		s.ChannelMessageSend(m.ChannelID, config.Locales.Get("weather_404"))
-		return
-	case "200":
-		// Generate forecast table
-		var tempStr = []string{"°C"}
-		var pressureStr = []string{"hPa"}
-		var humidityStr = []string{"Hum %"}
-		var windStr = []string{"Wind"}
-		var cloudsStr = []string{"Clouds"}
-		var timeStr = []string{fmt.Sprintf("UTC %v", config.General.Timezone)}
-		for i := 0; i < 5; i++ {
-			tempStr = append(tempStr, fmt.Sprintf("%v|%v", int(forecast.Weather[i].Main.TempMin), int(forecast.Weather[i].Main.TempMax)))
-			pressureStr = append(pressureStr, fmt.Sprintf("%v", int(forecast.Weather[i].Main.Pressure)))
-			humidityStr = append(humidityStr, fmt.Sprintf("%.1v", forecast.Weather[i].Main.Humidity))
-			windStr = append(windStr, fmt.Sprintf("%.1v", int(forecast.Weather[i].Wind.Speed)))
-			cloudsStr = append(cloudsStr, fmt.Sprintf("%.1v", int(forecast.Weather[i].Clouds.All)))
-			timeStr = append(timeStr, fmt.Sprintf("%.2v:00", forecast.Weather[i].TZTime().Hour()))
-		}
-		forecastData = append(forecastData, tempStr)
-		forecastData = append(forecastData, pressureStr)
-		forecastData = append(forecastData, humidityStr)
-		forecastData = append(forecastData, windStr)
-		forecastData = append(forecastData, cloudsStr)
-
-		table := tablewriter.NewWriter(&forecastTable)
-		table.SetHeader(timeStr)
-		table.SetCaption(true, forecast.City.Name)
-
-		for _, v := range forecastData {
-			table.Append(v)
-		}
-		table.Render()
-		s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("```%v```", forecastTable.String()))
-		return
-	default:
-		s.ChannelMessageSend(m.ChannelID, config.Locales.Get("weather_error"))
-		return
+	
+	dc := gg.NewContext(1500, 400)
+	dc.SetRGBA(0, 0, 0, 0.7)
+	dc.Clear()
+	for i := 0; i<6; i++ {
+		dc.DrawImage(DrawOne(int(forecast.Weather[i].Main.TempMin), 
+							 forecast.Weather[i].Main.Humidity, 
+							 int(forecast.Weather[i].Clouds.All), 
+							 fmt.Sprintf("%.2v:00", forecast.Weather[i].TZTime().Hour()), 
+							 forecast.Weather[i].WDesc[0].Icon),300 * i, 0)
 	}
+
+	buf := new(bytes.Buffer)
+	pngerr := png.Encode(buf, dc.Image())
+	if pngerr != nil {
+		fmt.Printf("Image: %v",pngerr)
+	}
+	s.ChannelFileSend(m.ChannelID, "weather.png", buf)
 }
