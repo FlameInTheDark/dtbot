@@ -9,14 +9,14 @@ import (
 	"../../bot"
 )
 
-// News main struct
+// NewsResponseData: News main struct
 type NewsResponseData struct {
 	Status       string            `json:"status"`
 	TotalResults int               `json:"totalResults"`
 	Articles     []NewsArticleData `json:"articles"`
 }
 
-// News article struct
+// NewsArticleData: News article struct
 type NewsArticleData struct {
 	Source      NewsArticeleSourceData `json:"source"`
 	Author      string                 `json:"author"`

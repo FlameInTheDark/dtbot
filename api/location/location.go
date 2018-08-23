@@ -7,11 +7,13 @@ import (
 	"net/http"
 )
 
+// LocationResultData: location struct
 type LocationResultData struct {
 	ResultCount int       `json:"totalResultsCount"`
 	Geonames    []Geoname `json:"geonames"`
 }
 
+// Geoname: location geonames struct
 type Geoname struct {
 	GeonameID   int    `json:"geonameId"`
 	CountryID   string `json:"countryId"`
@@ -24,10 +26,12 @@ type Geoname struct {
 	Lng         string `json:"lng"`
 }
 
+// Returns latitude and longitude 
 func (l LocationResultData) GetCoordinates() (string, string) {
 	return l.Geonames[0].Lat, l.Geonames[0].Lng
 }
 
+// Create and return location struct
 func New(user string, locationName string) (LocationResultData, error) {
 	var result LocationResultData
 	resp, err := http.Get(fmt.Sprintf("http://api.geonames.org/searchJSON?q=%v&maxRows=1&username=%v", locationName, user))

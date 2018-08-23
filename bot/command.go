@@ -1,14 +1,14 @@
 package bot
 
 type (
-
-	// Executable command function
+    
+    // Command: Executable command function
 	Command func(Context)
-
-	// Map with executable functions
+    
+    // CmdMap: Map with executable functions
 	CmdMap map[string]Command
 
-	// Command handler struct
+    // CommandHandler: Command handler struct
 	CommandHandler struct {
 		cmds CmdMap
 	}

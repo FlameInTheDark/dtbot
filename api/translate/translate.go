@@ -9,7 +9,7 @@ import (
 	"../../bot"
 )
 
-// Translate API struct
+// TranslateResponse: Translate API struct
 type TranslateResponse struct {
 	Code     int      `json:"code"`
 	Language string   `json:"lang"`

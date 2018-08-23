@@ -15,12 +15,14 @@ import (
 	"github.com/fogleman/gg"
 )
 
+// Forecast: Weather forecast struct
 type Forecast struct {
 	Cod     string        `json:"cod"`
 	Weather []WeatherData `json:"list"`
 	City    CityData      `json:"city"`
 }
 
+// WeatherData: Weather data struct
 type WeatherData struct {
 	Time   int64       `json:"dt"`
 	Main   MainData    `json:"main"`
@@ -29,10 +31,12 @@ type WeatherData struct {
 	WDesc  []WDescData `json:"weather"`
 }
 
+// Returns time in specified timezone
 func (w WeatherData) TZTime(tz int) time.Time {
 	return time.Unix(w.Time, 0).UTC().Add(time.Hour * time.Duration(tz))
 }
 
+// WDescData: Weather description struct
 type WDescData struct {
 	Id   int64  `json:"id"`
 	Main string `json:"main"`
@@ -40,6 +44,7 @@ type WDescData struct {
 	Icon string `json:"icon"`
 }
 
+// MainData: Weather main data struct
 type MainData struct {
 	Temp     float64 `json:"temp"`
 	Pressure float64 `json:"pressure"`
@@ -48,20 +53,23 @@ type MainData struct {
 	Humidity int     `json:"humidity"`
 }
 
+// WindData: Weather wind data struct
 type WindData struct {
 	Speed float64 `json:"speed"`
 	Deg   float64 `json:"deg"`
 }
 
+// CloudsData: Weather cloud data struct
 type CloudsData struct {
 	All int `json:"all"`
 }
 
+// CityData: Weather city data struct
 type CityData struct {
 	Name string `json:"name"`
 }
 
-// Super bad code below. Be careful!
+// Draw one day
 func DrawOne(temp, hum, clo int, time, icon string) image.Image {
 	dpc := gg.NewContext(300, 400)
 	dpc.SetRGBA(0, 0, 0, 0)
@@ -97,6 +105,7 @@ func DrawOne(temp, hum, clo int, time, icon string) image.Image {
 	return dpc.Image()
 }
 
+// Returns buffer with weather image
 func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	var (
 		forecast Forecast

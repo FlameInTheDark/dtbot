@@ -6,7 +6,7 @@ import (
 	"io"
 )
 
-// Bot context
+// Context: Bot context
 type Context struct {
 	Discord      *discordgo.Session
 	Guild        *discordgo.Guild
@@ -16,7 +16,6 @@ type Context struct {
 	Message      *discordgo.MessageCreate
 	Args         []string
 
-	// dependency injection?
 	Conf       *Config
 	CmdHandler *CommandHandler
 	Sessions   *SessionManager
