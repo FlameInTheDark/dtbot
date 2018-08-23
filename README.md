@@ -1,5 +1,7 @@
 # Discord Tools Bot
 
+[![Go report](http://goreportcard.com/badge/FlameInTheDark/dtbot)](http://goreportcard.com/report/FlameInTheDark/dtbot)
+
 ## Used APIs
 
 * OpenWeatherMap
