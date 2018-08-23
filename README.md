@@ -23,10 +23,10 @@ Command | Description
 
 ## Build for docker
 
-Easy way to build docker image for Alpine:
+Easy way to build docker image for Ubuntu:
 Compile app with command:
 
-`GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o dtalp`
+`go build`
 
 Make (or use my) Dockerfile:
 
