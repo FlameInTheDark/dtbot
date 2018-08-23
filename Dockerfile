@@ -1,4 +1,5 @@
-FROM alpine
+FROM ubuntu:18.04
 COPY . .
-RUN apk add ca-certificates
-ENTRYPOINT ["./dtalp"]
+RUN apt-get update
+RUN apt-get install -y ca-certificates ffmpeg 
+ENTRYPOINT ["./dtbot"]

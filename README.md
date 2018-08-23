@@ -13,6 +13,10 @@ Bot commands
 
 Command | Description
 ------- | -----------
+`!r join` | Add bot into you voice channel
+`!r leave` | Remove bot from voice channel
+`!r play [radio_station]` | Plays specified network radio station `!r play http://air2.radiorecord.ru:9003/rr_320`
+`!r stop` | Stops radio
 `!w [place]` | Shows the weather in a specified location `!w New York`
 `!n [category]` | Displays news in the specified category `!n technology`
 `!t [target_lang] [text]` | Translator `!t ru Hello world`
@@ -27,10 +31,11 @@ Compile app with command:
 Make (or use my) Dockerfile:
 
 ```
-FROM alpine
+FROM ubuntu:18.04
 COPY . .
-RUN apk add ca-certificates
-ENTRYPOINT ["./dtalp"]
+RUN apt-get update
+RUN apt-get install -y ca-certificates ffmpeg 
+ENTRYPOINT ["./dtbot"]
 ```
 
 Go inside app directory and build docker image

@@ -6,49 +6,44 @@ import (
 	"net/http"
 	"strings"
 
-	"../../config"
-	"github.com/bwmarrin/discordgo"
+	"../../bot"
 )
 
 type TranslateResponse struct {
-	Code		int			`json:"code"`
-	Language	string		`json:"lang"`
-	Text		[]string	`json:"text"`
-	Message		string		`json:"message"`
+	Code     int      `json:"code"`
+	Language string   `json:"lang"`
+	Text     []string `json:"text"`
+	Message  string   `json:"message"`
 }
 
-func GetTranslation(s *discordgo.Session, m *discordgo.MessageCreate, args []string) {
+func GetTranslation(ctx *bot.Context) string {
 	var (
-		result TranslateResponse
+		result    TranslateResponse
 		translate string = ""
 	)
-	
-	if len(args) > 1 {
-		translate = strings.Join(args[1:], "+")
+
+	if len(ctx.Args) > 1 {
+		translate = strings.Join(ctx.Args[1:], "+")
 	} else {
-		s.ChannelMessageSend(m.ChannelID, config.Locales.Get("translate_request_error"))
-		return
+		return ctx.Conf.GetLocale("translate_request_error")
 	}
-	
-	resp, err := http.Get(fmt.Sprintf("https://translate.yandex.net/api/v1.5/tr.json/translate?key=%v&text=%v&lang=%v&format=plain", config.Translate.ApiKey, translate, args[0]))
+
+	resp, err := http.Get(fmt.Sprintf("https://translate.yandex.net/api/v1.5/tr.json/translate?key=%v&text=%v&lang=%v&format=plain", ctx.Conf.Translate.ApiKey, translate, ctx.Args[0]))
 	if err != nil {
-		fmt.Printf("Get translation error: %v", err)
-		return
+		return fmt.Sprintf("Get translation error: %v", err)
 	}
 
 	err = json.NewDecoder(resp.Body).Decode(&result)
 	if err != nil {
-		fmt.Printf("Parse translation error: %v", err)
-		return
+		return fmt.Sprintf("Parse translation error: %v", err)
 	}
-	
+
 	switch result.Code {
 	case 502:
-		s.ChannelMessageSend(m.ChannelID, config.Locales.Get("translate_request_error"))
-		return
+		return ctx.Conf.GetLocale("translate_request_error")
 	case 200:
-		s.ChannelMessageSend(m.ChannelID, strings.Join(result.Text, "\n"))
+		return strings.Join(result.Text, "\n")
 	default:
-		s.ChannelMessageSend(m.ChannelID, config.Locales.Get("translate_api_error"))
+		return ctx.Conf.GetLocale("translate_api_error")
 	}
 }

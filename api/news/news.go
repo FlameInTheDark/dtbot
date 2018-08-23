@@ -6,63 +6,59 @@ import (
 	"net/http"
 	"strings"
 
-	"../../config"
-	"github.com/bwmarrin/discordgo"
+	"../../bot"
 )
 
 type NewsResponseData struct {
-	Status			string				`json:"status"`
-	TotalResults	int					`json:"totalResults"`
-	Articles		[]NewsArticleData	`json:"articles"`
+	Status       string            `json:"status"`
+	TotalResults int               `json:"totalResults"`
+	Articles     []NewsArticleData `json:"articles"`
 }
 
 type NewsArticleData struct {
-	Source		NewsArticeleSourceData	`json:"source"`
-	Author		string					`json:"author"`
-	Title		string					`json:"title"`
-	Description	string					`json:"description"`
-	Url			string					`json:"url"`
-	PublishedAt	string					`json:"publishedAt"`
+	Source      NewsArticeleSourceData `json:"source"`
+	Author      string                 `json:"author"`
+	Title       string                 `json:"title"`
+	Description string                 `json:"description"`
+	Url         string                 `json:"url"`
+	PublishedAt string                 `json:"publishedAt"`
 }
 
-type NewsArticeleSourceData	struct {
-	Id		string	`json:"id"`
-	Name	string	`json:"name"`
+type NewsArticeleSourceData struct {
+	Id   string `json:"id"`
+	Name string `json:"name"`
 }
 
-func GetNews(s *discordgo.Session, m *discordgo.MessageCreate, args []string) {
+func GetNews(ctx *bot.Context) string {
 	var (
-		result NewsResponseData
+		result   NewsResponseData
 		category string = ""
 	)
-	if len(args) > 0 {
-		category = args[0]
+	if len(ctx.Args) > 0 {
+		category = ctx.Args[0]
 	}
-	resp, err := http.Get(fmt.Sprintf("https://newsapi.org/v2/top-headlines?country=%v&category=%v&apiKey=%v", config.News.Country, category, config.News.ApiKey))
+	resp, err := http.Get(fmt.Sprintf("https://newsapi.org/v2/top-headlines?country=%v&category=%v&apiKey=%v", ctx.Conf.News.Country, category, ctx.Conf.News.ApiKey))
 	if err != nil {
-		fmt.Printf("Get news error: %v", err)
-		return
+		return fmt.Sprintf("Get news error: %v", err)
 	}
 
 	err = json.NewDecoder(resp.Body).Decode(&result)
 	if err != nil {
-		fmt.Printf("Parse news error: %v", err)
-		return
+		return fmt.Sprintf("Parse news error: %v", err)
 	}
 
 	if result.Status == "ok" {
 		if len(result.Articles) > 0 {
 			var news []string
-			for i := 0; i < config.News.Articles; i++ {
+			for i := 0; i < ctx.Conf.News.Articles; i++ {
 				news = append(news, fmt.Sprintf("```%v\n\n%v\nLink: %v```", result.Articles[i].Title, result.Articles[i].Description, result.Articles[i].Url))
 			}
-			
-			s.ChannelMessageSend(m.ChannelID, strings.Join(news, "\n"))
-			return
+
+			return strings.Join(news, "\n")
 		} else {
-			s.ChannelMessageSend(m.ChannelID, config.Locales.Get("news_404"))
+			return ctx.Conf.GetLocale("news_404")
 		}
 	} else {
-		s.ChannelMessageSend(m.ChannelID, config.Locales.Get("news_api_error"))
+		return ctx.Conf.GetLocale("news_api_error")
 	}
 }
