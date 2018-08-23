@@ -26,7 +26,7 @@ type NewsArticleData struct {
 	PublishedAt string                 `json:"publishedAt"`
 }
 
-// Article source struct
+// NewsArticeleSourceData : Article source struct
 type NewsArticeleSourceData struct {
 	Id   string `json:"id"`
 	Name string `json:"name"`
@@ -36,7 +36,7 @@ type NewsArticeleSourceData struct {
 func GetNews(ctx *bot.Context) string {
 	var (
 		result   NewsResponseData
-		category string = ""
+		category string
 	)
 	if len(ctx.Args) > 0 {
 		category = ctx.Args[0]

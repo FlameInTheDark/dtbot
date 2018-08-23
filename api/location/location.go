@@ -26,7 +26,7 @@ type Geoname struct {
 	Lng         string `json:"lng"`
 }
 
-// Returns latitude and longitude
+// GetCoordinates returns latitude and longitude
 func (l LocationResultData) GetCoordinates() (string, string) {
 	return l.Geonames[0].Lat, l.Geonames[0].Lng
 }

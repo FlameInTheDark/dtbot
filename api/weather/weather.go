@@ -31,7 +31,7 @@ type WeatherData struct {
 	WDesc  []WDescData `json:"weather"`
 }
 
-// Returns time in specified timezone
+// TZTime returns time in specified timezone
 func (w WeatherData) TZTime(tz int) time.Time {
 	return time.Unix(w.Time, 0).UTC().Add(time.Hour * time.Duration(tz))
 }

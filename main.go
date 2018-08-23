@@ -13,10 +13,12 @@ import (
 )
 
 var (
-	conf       *bot.Config
+	conf *bot.Config
+	// CmdHandler bot command handler
 	CmdHandler *bot.CommandHandler
-	Sessions   *bot.SessionManager
-	botId      string
+	// Sessions bot session manager
+	Sessions *bot.SessionManager
+	botId    string
 )
 
 func main() {

@@ -21,7 +21,7 @@ type TranslateResponse struct {
 func GetTranslation(ctx *bot.Context) string {
 	var (
 		result    TranslateResponse
-		translate string = ""
+		translate string
 	)
 
 	if len(ctx.Args) > 1 {
