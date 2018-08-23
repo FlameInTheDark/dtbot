@@ -7,13 +7,13 @@ import (
 	"net/http"
 )
 
-// LocationResultData: location struct
+// LocationResultData : location struct
 type LocationResultData struct {
 	ResultCount int       `json:"totalResultsCount"`
 	Geonames    []Geoname `json:"geonames"`
 }
 
-// Geoname: location geonames struct
+// Geoname : location geonames struct
 type Geoname struct {
 	GeonameID   int    `json:"geonameId"`
 	CountryID   string `json:"countryId"`

@@ -6,7 +6,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-// Connection: Voice connection struct
+// Connection : Voice connection struct
 type Connection struct {
 	voiceConnection *discordgo.VoiceConnection
 	send            chan []int16
