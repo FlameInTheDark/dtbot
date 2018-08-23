@@ -38,7 +38,7 @@ func PlayerCommand(ctx bot.Context) {
 			Deafened: true,
 		})
 		if err != nil {
-			ctx.Reply("An error occured!")
+			ctx.Reply("An error occurred!")
 			return
 		}
 		ctx.Reply("Joined <#" + sess.ChannelId + ">!")

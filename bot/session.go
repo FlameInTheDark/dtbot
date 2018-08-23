@@ -49,7 +49,7 @@ func (sess *Session) Stop() {
 	sess.connection.Stop()
 }
 
-// NewSessionManager creater and returns new session manager
+// NewSessionManager creates and returns new session manager
 func NewSessionManager() *SessionManager {
 	return &SessionManager{make(map[string]*Session)}
 }

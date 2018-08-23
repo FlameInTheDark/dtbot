@@ -26,7 +26,7 @@ Command | Description
 ## Build for docker
 
 Easy way to build docker image for Ubuntu:
-Compile app with command:
+Go inside app directory and compile app with command:
 
 `go build`
 
@@ -40,7 +40,7 @@ RUN apt-get install -y ca-certificates ffmpeg
 ENTRYPOINT ["./dtbot"]
 ```
 
-Go inside app directory and build docker image
+Build docker image
 
 `docker build -t dtbot .`
 
