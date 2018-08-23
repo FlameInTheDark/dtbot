@@ -46,7 +46,7 @@ type Config struct {
 	Locales   LocalesMap
 }
 
-// Returns locale string 
+// Returns locale string
 func (c Config) GetLocale(key string) string {
 	return c.Locales[c.General.Language][key]
 }

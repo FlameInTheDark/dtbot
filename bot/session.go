@@ -5,19 +5,19 @@ import (
 )
 
 type (
-    // Session: Session with radio player and voice connection struct
+	// Session: Session with radio player and voice connection struct
 	Session struct {
 		Player             RadioPlayer
 		guildId, ChannelId string
 		connection         *Connection
 	}
-    
-    // SessionManager: Contains all sessions
+
+	// SessionManager: Contains all sessions
 	SessionManager struct {
 		sessions map[string]*Session
 	}
-    
-    // JoinProperties: Voice connection propperties struct
+
+	// JoinProperties: Voice connection propperties struct
 	JoinProperties struct {
 		Muted    bool
 		Deafened bool
@@ -54,7 +54,7 @@ func NewSessionManager() *SessionManager {
 	return &SessionManager{make(map[string]*Session)}
 }
 
-// Returns session by guild ID 
+// Returns session by guild ID
 func (manager SessionManager) GetByGuild(guildId string) *Session {
 	for _, sess := range manager.sessions {
 		if sess.guildId == guildId {

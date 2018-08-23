@@ -16,7 +16,7 @@ type Connection struct {
 	playing         bool
 }
 
-// Creates and returns new voice connection 
+// Creates and returns new voice connection
 func NewConnection(voiceConnection *discordgo.VoiceConnection) *Connection {
 	connection := new(Connection)
 	connection.voiceConnection = voiceConnection
