@@ -46,12 +46,12 @@ type Config struct {
 	Locales   LocalesMap
 }
 
-// Returns locale string
+// GetLocale returns locale string
 func (c Config) GetLocale(key string) string {
 	return c.Locales[c.General.Language][key]
 }
 
-// Loading configs from file
+// LoadConfig loading configs from file
 func LoadConfig() *Config {
 	var cfg Config
 	if _, err := toml.DecodeFile("config.toml", &cfg); err != nil {
@@ -62,7 +62,7 @@ func LoadConfig() *Config {
 	return &cfg
 }
 
-// Loading locales from file
+// LoadLocales loading locales from file
 func (c Config) LoadLocales() {
 	file, e := ioutil.ReadFile("./locales.json")
 	if e != nil {

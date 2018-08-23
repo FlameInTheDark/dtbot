@@ -5,7 +5,7 @@ import (
 	"../bot"
 )
 
-// News command handler
+// NewsCommand News handler
 func NewsCommand(ctx bot.Context) {
 	ctx.Reply(news.GetNews(&ctx))
 }

@@ -5,7 +5,7 @@ import (
 	"../bot"
 )
 
-// Translate command handler
+// TranslateCommand Translate handler
 func TranslateCommand(ctx bot.Context) {
 	ctx.Reply(translate.GetTranslation(&ctx))
 }

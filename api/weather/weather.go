@@ -69,7 +69,7 @@ type CityData struct {
 	Name string `json:"name"`
 }
 
-// Draw one day
+// DrawOne draw one day
 func DrawOne(temp, hum, clo int, time, icon string) image.Image {
 	dpc := gg.NewContext(300, 400)
 	dpc.SetRGBA(0, 0, 0, 0)
@@ -105,7 +105,7 @@ func DrawOne(temp, hum, clo int, time, icon string) image.Image {
 	return dpc.Image()
 }
 
-// Returns buffer with weather image
+// GetWeatherImage returns buffer with weather image
 func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	var (
 		forecast Forecast

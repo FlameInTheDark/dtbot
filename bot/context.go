@@ -21,7 +21,7 @@ type Context struct {
 	Sessions   *SessionManager
 }
 
-// Create new context
+// NewContext create new context
 func NewContext(discord *discordgo.Session, guild *discordgo.Guild, textChannel *discordgo.Channel,
 	user *discordgo.User, message *discordgo.MessageCreate, conf *Config, cmdHandler *CommandHandler,
 	sessions *SessionManager) *Context {
@@ -37,7 +37,7 @@ func NewContext(discord *discordgo.Session, guild *discordgo.Guild, textChannel 
 	return ctx
 }
 
-// Reply on massege
+// Reply reply on massege
 func (ctx Context) Reply(content string) *discordgo.Message {
 	msg, err := ctx.Discord.ChannelMessageSend(ctx.TextChannel.ID, content)
 	if err != nil {
@@ -47,7 +47,7 @@ func (ctx Context) Reply(content string) *discordgo.Message {
 	return msg
 }
 
-// Reply on massege with file
+// ReplyFile reply on massege with file
 func (ctx Context) ReplyFile(name string, r io.Reader) *discordgo.Message {
 	msg, err := ctx.Discord.ChannelFileSend(ctx.TextChannel.ID, name, r)
 	if err != nil {
@@ -57,7 +57,7 @@ func (ctx Context) ReplyFile(name string, r io.Reader) *discordgo.Message {
 	return msg
 }
 
-// Returns user voice channel
+// GetVoiceChannel returns user voice channel
 func (ctx *Context) GetVoiceChannel() *discordgo.Channel {
 	if ctx.VoiceChannel != nil {
 		return ctx.VoiceChannel

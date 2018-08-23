@@ -34,27 +34,27 @@ func newSession(guildID, channelID string, conn *Connection) *Session {
 	return session
 }
 
-// Returns vice connection struct
+// GetConnection returns vice connection struct
 func (sess *Session) GetConnection() *Connection {
 	return sess.connection
 }
 
-// Starts to play radio
+// Play starts to play radio
 func (sess Session) Play(source string) error {
 	return sess.connection.Play(source)
 }
 
-// Stops radio
+// Stop stops radio
 func (sess *Session) Stop() {
 	sess.connection.Stop()
 }
 
-// Creater and returns new session manager
+// SessionManager creater and returns new session manager
 func NewSessionManager() *SessionManager {
 	return &SessionManager{make(map[string]*Session)}
 }
 
-// Returns session by guild ID
+// GetByGuild returns session by guild ID
 func (manager SessionManager) GetByGuild(guildId string) *Session {
 	for _, sess := range manager.sessions {
 		if sess.guildId == guildId {
@@ -64,13 +64,13 @@ func (manager SessionManager) GetByGuild(guildId string) *Session {
 	return nil
 }
 
-// Returns session by channel ID
+// GetByChannel returns session by channel ID
 func (manager SessionManager) GetByChannel(channelId string) (*Session, bool) {
 	sess, found := manager.sessions[channelId]
 	return sess, found
 }
 
-// Add bot to voice channel
+// Join add bot to voice channel
 func (manager *SessionManager) Join(discord *discordgo.Session, guildId, channelId string,
 	properties JoinProperties) (*Session, error) {
 	vc, err := discord.ChannelVoiceJoin(guildId, channelId, properties.Muted, properties.Deafened)
@@ -82,7 +82,7 @@ func (manager *SessionManager) Join(discord *discordgo.Session, guildId, channel
 	return sess, nil
 }
 
-// Remove bot from voice channel
+// Leave remove bot from voice channel
 func (manager *SessionManager) Leave(discord *discordgo.Session, session Session) {
 	session.connection.Stop()
 	session.connection.Disconnect()

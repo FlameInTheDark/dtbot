@@ -1,9 +1,11 @@
 package bot
 
+// RadioPlayer radio player struct
 type RadioPlayer struct {
 	Running bool
 }
 
+// Start starts radio playback
 func (player *RadioPlayer) Start(sess *Session, source string, callback func(string)) {
 	player.Running = true
 	for player.Running {

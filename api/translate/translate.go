@@ -17,7 +17,7 @@ type TranslateResponse struct {
 	Message  string   `json:"message"`
 }
 
-// Returns translated text
+// GetTranslation returns translated text
 func GetTranslation(ctx *bot.Context) string {
 	var (
 		result    TranslateResponse

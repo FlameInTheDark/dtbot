@@ -5,6 +5,7 @@ import (
 	"../bot"
 )
 
+// WeatherCommand weather handler
 func WeatherCommand(ctx bot.Context) {
 	buf, err := weather.GetWeatherImage(&ctx)
 	if err != nil {

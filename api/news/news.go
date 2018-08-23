@@ -32,7 +32,7 @@ type NewsArticeleSourceData struct {
 	Name string `json:"name"`
 }
 
-// Returns news string
+// GetNews returns news string
 func GetNews(ctx *bot.Context) string {
 	var (
 		result   NewsResponseData
