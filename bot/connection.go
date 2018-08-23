@@ -6,6 +6,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
+// Voice connection struct
 type Connection struct {
 	voiceConnection *discordgo.VoiceConnection
 	send            chan []int16
@@ -15,6 +16,7 @@ type Connection struct {
 	playing         bool
 }
 
+// Creates and returns new voice connection
 func NewConnection(voiceConnection *discordgo.VoiceConnection) *Connection {
 	connection := new(Connection)
 	connection.voiceConnection = voiceConnection
@@ -22,6 +24,7 @@ func NewConnection(voiceConnection *discordgo.VoiceConnection) *Connection {
 	return connection
 }
 
+// Disconnect from voice channel
 func (c Connection) Disconnect() {
 	c.voiceConnection.Disconnect()
 }

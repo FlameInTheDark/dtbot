@@ -9,12 +9,14 @@ import (
 	"../../bot"
 )
 
+// News main struct
 type NewsResponseData struct {
 	Status       string            `json:"status"`
 	TotalResults int               `json:"totalResults"`
 	Articles     []NewsArticleData `json:"articles"`
 }
 
+// News article struct
 type NewsArticleData struct {
 	Source      NewsArticeleSourceData `json:"source"`
 	Author      string                 `json:"author"`
@@ -24,11 +26,13 @@ type NewsArticleData struct {
 	PublishedAt string                 `json:"publishedAt"`
 }
 
+// Article source struct
 type NewsArticeleSourceData struct {
 	Id   string `json:"id"`
 	Name string `json:"name"`
 }
 
+// Returns news string
 func GetNews(ctx *bot.Context) string {
 	var (
 		result   NewsResponseData

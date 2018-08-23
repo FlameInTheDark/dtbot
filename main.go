@@ -12,10 +12,6 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-const (
-	PREFIX = "!dt"
-)
-
 var (
 	conf       *bot.Config
 	CmdHandler *bot.CommandHandler

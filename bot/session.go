@@ -5,16 +5,19 @@ import (
 )
 
 type (
+	// Session with radio player and voice connection struct
 	Session struct {
 		Player             RadioPlayer
 		guildId, ChannelId string
 		connection         *Connection
 	}
 
+	// Contains all sessions
 	SessionManager struct {
 		sessions map[string]*Session
 	}
 
+	// Voice connection propperties struct
 	JoinProperties struct {
 		Muted    bool
 		Deafened bool
@@ -30,14 +33,17 @@ func newSession(guildID, channelID string, conn *Connection) *Session {
 	return session
 }
 
+// Returns vice connection struct
 func (sess *Session) GetConnection() *Connection {
 	return sess.connection
 }
 
+// Starts to play radio
 func (sess Session) Play(source string) error {
 	return sess.connection.Play(source)
 }
 
+// Stops radio
 func (sess *Session) Stop() {
 	sess.connection.Stop()
 }
@@ -46,6 +52,7 @@ func NewSessionManager() *SessionManager {
 	return &SessionManager{make(map[string]*Session)}
 }
 
+// Returns session by guild ID
 func (manager SessionManager) GetByGuild(guildId string) *Session {
 	for _, sess := range manager.sessions {
 		if sess.guildId == guildId {
@@ -55,11 +62,13 @@ func (manager SessionManager) GetByGuild(guildId string) *Session {
 	return nil
 }
 
+// Returns session by channel ID
 func (manager SessionManager) GetByChannel(channelId string) (*Session, bool) {
 	sess, found := manager.sessions[channelId]
 	return sess, found
 }
 
+// Add bot to voice channel
 func (manager *SessionManager) Join(discord *discordgo.Session, guildId, channelId string,
 	properties JoinProperties) (*Session, error) {
 	vc, err := discord.ChannelVoiceJoin(guildId, channelId, properties.Muted, properties.Deafened)
@@ -71,6 +80,7 @@ func (manager *SessionManager) Join(discord *discordgo.Session, guildId, channel
 	return sess, nil
 }
 
+// Remove bot from voice channel
 func (manager *SessionManager) Leave(discord *discordgo.Session, session Session) {
 	session.connection.Stop()
 	session.connection.Disconnect()

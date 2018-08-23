@@ -19,6 +19,7 @@ const (
 	MAX_BYTES  int = (FRAME_SIZE * 2) * 2
 )
 
+// Start playback
 func (connection *Connection) Play(source string) error {
 	if connection.playing {
 		return errors.New("song already playing")
@@ -97,6 +98,7 @@ func (connection *Connection) sendPCM(voice *discordgo.VoiceConnection, pcm <-ch
 	}
 }
 
+// Stop playback
 func (connection *Connection) Stop() {
 	connection.stopRunning = true
 	connection.playing = false

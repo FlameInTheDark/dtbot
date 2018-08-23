@@ -9,29 +9,35 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
+// Weather config struct
 type WeatherConfig struct {
 	WeatherToken string
 	City         string
 }
 
+// General config struct
 type GeneralConfig struct {
 	Language         string
 	Timezone         int
 	GeonamesUsername string
 }
 
+// News config struct
 type NewsConfig struct {
 	ApiKey   string
 	Country  string
 	Articles int
 }
 
+// Yandex translate config struct
 type TranslateConfig struct {
 	ApiKey string
 }
 
+// Map with locales
 type LocalesMap map[string]map[string]string
 
+// Main config struct
 type Config struct {
 	Weather   WeatherConfig
 	General   GeneralConfig

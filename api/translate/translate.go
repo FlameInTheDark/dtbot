@@ -9,6 +9,7 @@ import (
 	"../../bot"
 )
 
+// Translate API struct
 type TranslateResponse struct {
 	Code     int      `json:"code"`
 	Language string   `json:"lang"`
@@ -16,6 +17,7 @@ type TranslateResponse struct {
 	Message  string   `json:"message"`
 }
 
+// Returns translated text
 func GetTranslation(ctx *bot.Context) string {
 	var (
 		result    TranslateResponse

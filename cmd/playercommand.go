@@ -4,6 +4,7 @@ import (
 	"../bot"
 )
 
+// Player command handler
 func PlayerCommand(ctx bot.Context) {
 	sess := ctx.Sessions.GetByGuild(ctx.Guild.ID)
 	if len(ctx.Args) == 0 {
