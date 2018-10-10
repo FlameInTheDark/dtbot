@@ -34,6 +34,11 @@ type TranslateConfig struct {
 	ApiKey string
 }
 
+// CurrencyConfig Currency config struct
+type CurrencyConfig struct {
+	Default []string
+}
+
 // LocalesMap : Map with locales
 type LocalesMap map[string]map[string]string
 
@@ -44,6 +49,7 @@ type Config struct {
 	News      NewsConfig
 	Translate TranslateConfig
 	Locales   LocalesMap
+	Currency  CurrencyConfig
 }
 
 // GetLocale returns locale string

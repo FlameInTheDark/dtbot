@@ -33,7 +33,7 @@ type Valute struct {
 func GetCurrency(ctx *bot.Context) (response string) {
 	var (
 		newData Data
-		args    []string = []string{"USD", "EUR"}
+		args    = ctx.Conf.Currency.Default
 	)
 
 	if len(ctx.Args) > 0 {
@@ -66,7 +66,7 @@ func GetCurrency(ctx *bot.Context) (response string) {
 			} else {
 				arrow = "▼"
 			}
-			response = fmt.Sprintf("%v%v\n%v %v  %0.2v\n", response, newData.Valutes[arg].Name, newData.Valutes[arg].Value, arrow, newData.Valutes[arg].Value-newData.Valutes[arg].Previous)
+			response = fmt.Sprintf("%v%v\n`%v %v  %0.2v`\n", response, newData.Valutes[arg].Name, newData.Valutes[arg].Value, arrow, newData.Valutes[arg].Value-newData.Valutes[arg].Previous)
 		}
 	}
 	return
