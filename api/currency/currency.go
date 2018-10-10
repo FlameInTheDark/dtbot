@@ -66,7 +66,7 @@ func GetCurrency(ctx *bot.Context) (response string) {
 			} else {
 				arrow = "▼"
 			}
-			response = fmt.Sprintf("%v%v\n%v %v  %0.2v\n", response, newData.Valutes[arg].Name, newData.Valutes[arg].Value, arrow, newData.Valutes[arg].Previous-newData.Valutes[arg].Value)
+			response = fmt.Sprintf("%v%v\n%v %v  %0.2v\n", response, newData.Valutes[arg].Name, newData.Valutes[arg].Value, arrow, newData.Valutes[arg].Value-newData.Valutes[arg].Previous)
 		}
 	}
 	return
