@@ -39,6 +39,7 @@ func GetCurrency(ctx *bot.Context) (response string) {
 	if len(ctx.Args) > 0 {
 		args = ctx.Args
 	}
+
 	fmt.Println("Current val:")
 	resp, err := http.Get("https://www.cbr-xml-daily.ru/daily_json.js")
 	if err != nil {
@@ -57,8 +58,20 @@ func GetCurrency(ctx *bot.Context) (response string) {
 		response = fmt.Sprintf("Response parse error: %v", jerr)
 		return
 	}
-	var arrow string
+
 	response = ""
+
+	// List of currencies
+	if args[0] == "list" {
+		response = "Available currencies: "
+		for key := range newData.Valutes {
+			response = fmt.Sprintf("%v %v", response, key)
+		}
+		return
+	}
+
+	var arrow string
+	// Current currency
 	for _, arg := range args {
 		if newData.Valutes[arg].Value > 0 {
 			if newData.Valutes[arg].Value > newData.Valutes[arg].Previous {
