@@ -5,11 +5,15 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"github.com/bwmarrin/discordgo"
 	"io"
-	"layeh.com/gopus"
+
+	"github.com/bwmarrin/discordgo"
+
 	"os/exec"
 	"strconv"
+
+	// https://github.com/layeh/gopus
+	"layeh.com/gopus"
 )
 
 const (

@@ -134,7 +134,7 @@ func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	}
 
 	err = json.NewDecoder(resp.Body).Decode(&forecast)
-	if err != nil { 
+	if err != nil {
 		fmt.Printf("Weather Decode: %v", err)
 		return
 	}

@@ -91,4 +91,5 @@ func registerCommands() {
 	CmdHandler.Register("!w", cmd.WeatherCommand)
 	CmdHandler.Register("!t", cmd.TranslateCommand)
 	CmdHandler.Register("!n", cmd.NewsCommand)
+	CmdHandler.Register("!c", cmd.CurrencyCommand)
 }
