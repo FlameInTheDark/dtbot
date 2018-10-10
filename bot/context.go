@@ -6,7 +6,7 @@ import (
 	"io"
 )
 
-// Context : Bot context
+// Context : Bot context structure
 type Context struct {
 	Discord      *discordgo.Session
 	Guild        *discordgo.Guild

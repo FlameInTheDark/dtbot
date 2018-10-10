@@ -69,13 +69,14 @@ type CityData struct {
 	Name string `json:"name"`
 }
 
-// DrawOne draw one day
+// DrawOne returns image with one day forecast
 func DrawOne(temp, hum, clo int, time, icon string) image.Image {
 	dpc := gg.NewContext(300, 400)
 	dpc.SetRGBA(0, 0, 0, 0)
 	dpc.Clear()
 	dpc.SetRGB(1, 1, 1)
 
+	// Getting and drawing weather icon
 	res, err := http.Get(fmt.Sprintf("http://openweathermap.org/img/w/%v.png", icon))
 	if err != nil || res.StatusCode != 200 {
 		fmt.Println(err)
@@ -90,6 +91,7 @@ func DrawOne(temp, hum, clo int, time, icon string) image.Image {
 	dpc.DrawImage(m, 25, 12)
 	dpc.Pop()
 
+	// Drawing temperature, hummidity and cloudnes
 	if err := dpc.LoadFontFace("arial.ttf", 50); err != nil {
 		fmt.Printf("Image font: %v", err)
 	}
@@ -122,6 +124,7 @@ func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 		return
 	}
 
+	// Get coordinates and get weather data
 	newlat, newlng := loc.GetCoordinates()
 	resp, err := http.Get(fmt.Sprintf("https://api.openweathermap.org/data/2.5/forecast?lat=%v&lon=%v&lang=%v&units=metric&appid=%v",
 		newlat, newlng, ctx.Conf.General.Language, ctx.Conf.Weather.WeatherToken))
@@ -131,11 +134,12 @@ func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	}
 
 	err = json.NewDecoder(resp.Body).Decode(&forecast)
-	if err != nil {
+	if err != nil { 
 		fmt.Printf("Weather Decode: %v", err)
 		return
 	}
 
+	// Drawing forecast
 	dc := gg.NewContext(1500, 400)
 	dc.SetRGBA(0, 0, 0, 0.7)
 	dc.Clear()

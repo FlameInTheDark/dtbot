@@ -40,6 +40,7 @@ func GetTranslation(ctx *bot.Context) string {
 		return fmt.Sprintf("Parse translation error: %v", err)
 	}
 
+	// Checking request status
 	switch result.Code {
 	case 502:
 		return ctx.Conf.GetLocale("translate_request_error")

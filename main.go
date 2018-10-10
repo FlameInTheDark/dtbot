@@ -57,6 +57,7 @@ func main() {
 	<-sc
 }
 
+// Handle discord messages
 func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate) {
 	user := message.Author
 	if user.ID == botId || user.Bot {
@@ -84,6 +85,7 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 	c(*ctx)
 }
 
+// Adds bot commands
 func registerCommands() {
 	CmdHandler.Register("!r", cmd.PlayerCommand)
 	CmdHandler.Register("!w", cmd.WeatherCommand)
