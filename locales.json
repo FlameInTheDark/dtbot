@@ -1,5 +1,6 @@
 {
     "en": {
+        "weather":"weather",
         "weather_404":"Weather station not found",
         "weather_api_error":"Weather API error",
         "weather_parse_error":"Weather parse error",
@@ -26,6 +27,7 @@
         "player_no_args":"Join in voice channel and use commands `!r join`, `!r play [radio_url]`"
     },
     "ru": {
+        "weather":"Погода",
         "weather_404":"Метеостанция не найдена",
         "weather_api_error":"Ошибка API погоды",
         "weather_parse_error":"Ошибка парсинга",

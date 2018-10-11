@@ -7,7 +7,7 @@ import (
 	"../bot"
 )
 
-// CurrencyCommand Translate handler
+// CurrencyCommand Translate handlergt
 func CurrencyCommand(ctx bot.Context) {
 	ctx.ReplyEmbed("", fmt.Sprintf("%v:", ctx.Loc("currency")), currency.GetCurrency(&ctx), "", false)
 }

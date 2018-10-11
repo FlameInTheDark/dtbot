@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 
 	"../api/weather"
 	"../bot"
@@ -14,5 +15,12 @@ func WeatherCommand(ctx bot.Context) {
 		ctx.Reply(fmt.Sprintf("%v: %v", ctx.Loc("weather_error"), err.Error()))
 		return
 	}
-	ctx.ReplyFile("weather.png", buf)
+	var city string
+	if len(ctx.Args) > 0 {
+		city = strings.Join(ctx.Args, "+")
+	} else {
+		city = ctx.Conf.Weather.City
+	}
+	ctx.ReplyEmbedAttachment("", fmt.Sprintf("%v:", ctx.Loc("weather")), city, "", "weather.png", buf, false)
+	//ctx.ReplyFile("weather.png", buf)
 }

@@ -71,6 +71,40 @@ func (ctx Context) ReplyEmbed(title, field, content, description string, inline 
 	return msg
 }
 
+func (ctx Context) ReplyEmbedAttachment(title, field, content, description, fileName string, file io.Reader, inline bool) *discordgo.Message {
+	mess := &discordgo.MessageSend{
+		Embed: &discordgo.MessageEmbed{
+			Author:      &discordgo.MessageEmbedAuthor{},
+			Color:       0x00ff00,
+			Description: description,
+			Fields: []*discordgo.MessageEmbedField{
+				&discordgo.MessageEmbedField{
+					Name:   field,
+					Value:  content,
+					Inline: inline,
+				},
+			},
+			Image: &discordgo.MessageEmbedImage{
+				URL: "attachment://" + fileName,
+			},
+			Title: title,
+		},
+		Files: []*discordgo.File{
+			&discordgo.File{
+				Name:   fileName,
+				Reader: file,
+			},
+		},
+	}
+
+	msg, err := ctx.Discord.ChannelMessageSendComplex(ctx.TextChannel.ID, mess)
+	if err != nil {
+		fmt.Println("Error whilst sending embed message, ", err)
+		return nil
+	}
+	return msg
+}
+
 // Loc Returns translated key string
 func (ctx *Context) Loc(key string) string {
 	// Check if translation exist
