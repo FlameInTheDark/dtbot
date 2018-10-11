@@ -9,5 +9,5 @@ import (
 
 // TranslateCommand Translate handler
 func TranslateCommand(ctx bot.Context) {
-	ctx.ReplyEmbed("", fmt.Sprintf("%v: ", ctx.Loc("translate")), translate.GetTranslation(&ctx), "", true)
+	ctx.ReplyEmbed(fmt.Sprintf("%v: ", ctx.Loc("translate")), translate.GetTranslation(&ctx))
 }

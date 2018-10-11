@@ -9,5 +9,8 @@ import (
 
 // CurrencyCommand Translate handlergt
 func CurrencyCommand(ctx bot.Context) {
-	ctx.ReplyEmbed("", fmt.Sprintf("%v:", ctx.Loc("currency")), currency.GetCurrency(&ctx), "", false)
+	//ctx.ReplyEmbed("", fmt.Sprintf("%v:", ctx.Loc("currency")), currency.GetCurrency(&ctx), "", false)
+	bot.NewEmbed("").
+		Field(fmt.Sprintf("%v:", ctx.Loc("currency")), currency.GetCurrency(&ctx), false).
+		Send(ctx)
 }
