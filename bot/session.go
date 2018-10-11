@@ -8,7 +8,7 @@ type (
 	// Session : Session with radio player and voice connection struct
 	Session struct {
 		Player             RadioPlayer
-		guildId, ChannelId string
+		guildID, ChannelID string
 		connection         *Connection
 	}
 
@@ -25,10 +25,10 @@ type (
 )
 
 // Creates and returns new session
-func newSession(guildID, channelID string, conn *Connection) *Session {
+func newSession(newGuildID, newChannelID string, conn *Connection) *Session {
 	session := &Session{
-		guildId:    guildID,
-		ChannelId:  channelID,
+		guildID:    newGuildID,
+		ChannelID:  newChannelID,
 		connection: conn,
 	}
 	return session
@@ -55,9 +55,9 @@ func NewSessionManager() *SessionManager {
 }
 
 // GetByGuild returns session by guild ID
-func (manager SessionManager) GetByGuild(guildId string) *Session {
+func (manager SessionManager) GetByGuild(guildID string) *Session {
 	for _, sess := range manager.sessions {
-		if sess.guildId == guildId {
+		if sess.guildID == guildID {
 			return sess
 		}
 	}
@@ -65,20 +65,20 @@ func (manager SessionManager) GetByGuild(guildId string) *Session {
 }
 
 // GetByChannel returns session by channel ID
-func (manager SessionManager) GetByChannel(channelId string) (*Session, bool) {
-	sess, found := manager.sessions[channelId]
+func (manager SessionManager) GetByChannel(channelID string) (*Session, bool) {
+	sess, found := manager.sessions[channelID]
 	return sess, found
 }
 
 // Join add bot to voice channel
-func (manager *SessionManager) Join(discord *discordgo.Session, guildId, channelId string,
+func (manager *SessionManager) Join(discord *discordgo.Session, guildID, channelID string,
 	properties JoinProperties) (*Session, error) {
-	vc, err := discord.ChannelVoiceJoin(guildId, channelId, properties.Muted, properties.Deafened)
+	vc, err := discord.ChannelVoiceJoin(guildID, channelID, properties.Muted, properties.Deafened)
 	if err != nil {
 		return nil, err
 	}
-	sess := newSession(guildId, channelId, NewConnection(vc))
-	manager.sessions[channelId] = sess
+	sess := newSession(guildID, channelID, NewConnection(vc))
+	manager.sessions[channelID] = sess
 	return sess, nil
 }
 
@@ -86,5 +86,5 @@ func (manager *SessionManager) Join(discord *discordgo.Session, guildId, channel
 func (manager *SessionManager) Leave(discord *discordgo.Session, session Session) {
 	session.connection.Stop()
 	session.connection.Disconnect()
-	delete(manager.sessions, session.ChannelId)
+	delete(manager.sessions, session.ChannelID)
 }

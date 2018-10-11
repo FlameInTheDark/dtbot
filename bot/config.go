@@ -24,14 +24,14 @@ type GeneralConfig struct {
 
 // NewsConfig : News config struct
 type NewsConfig struct {
-	ApiKey   string
+	APIKey   string
 	Country  string
 	Articles int
 }
 
 // TranslateConfig : Yandex translate config struct
 type TranslateConfig struct {
-	ApiKey string
+	APIKey string
 }
 
 // CurrencyConfig Currency config struct
@@ -81,11 +81,11 @@ func (c *Config) LoadLocales() {
 		panic(err)
 	}
 
-	if _, ok := c.Locales[c.General.Language]; ok {
-		fmt.Printf("Loaded %v translations for '%v' language\n", len(c.Locales[c.General.Language]), c.General.Language)
-		return
-	} else {
+	if _, ok := c.Locales[c.General.Language]; !ok {
 		fmt.Printf("Locale file not contain language \"%v\"\n", c.General.Language)
 		os.Exit(1)
 	}
+
+	fmt.Printf("Loaded %v translations for '%v' language\n", len(c.Locales[c.General.Language]), c.General.Language)
+	return
 }

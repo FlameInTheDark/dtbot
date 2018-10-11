@@ -30,7 +30,7 @@ func GetTranslation(ctx *bot.Context) string {
 		return ctx.Loc("translate_request_error")
 	}
 
-	resp, err := http.Get(fmt.Sprintf("https://translate.yandex.net/api/v1.5/tr.json/translate?key=%v&text=%v&lang=%v&format=plain", ctx.Conf.Translate.ApiKey, translate, ctx.Args[0]))
+	resp, err := http.Get(fmt.Sprintf("https://translate.yandex.net/api/v1.5/tr.json/translate?key=%v&text=%v&lang=%v&format=plain", ctx.Conf.Translate.APIKey, translate, ctx.Args[0]))
 	if err != nil {
 		return fmt.Sprintf("%v: %v", ctx.Loc("translate_get_error"), err)
 	}

@@ -41,13 +41,13 @@ func PlayerCommand(ctx bot.Context) {
 			ctx.Reply("An error occurred!")
 			return
 		}
-		ctx.Reply("Joined <#" + sess.ChannelId + ">!")
+		ctx.Reply("Joined <#" + sess.ChannelID + ">!")
 	case "leave":
 		if sess == nil {
 			ctx.Reply("Not in a voice channel! To make the bot join one, use `music join`.")
 			return
 		}
 		ctx.Sessions.Leave(ctx.Discord, *sess)
-		ctx.Reply("Left <#" + sess.ChannelId + ">!")
+		ctx.Reply("Left <#" + sess.ChannelID + ">!")
 	}
 }

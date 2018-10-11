@@ -50,6 +50,10 @@ func (ctx Context) Reply(content string) *discordgo.Message {
 
 // Loc Returns translated key string
 func (ctx *Context) Loc(key string) string {
+	// Check if translation exist
+	if len(ctx.Conf.Locales[ctx.Conf.General.Language][key]) == 0 {
+		return ctx.Conf.Locales["en"][key]
+	}
 	return ctx.Conf.Locales[ctx.Conf.General.Language][key]
 }
 
