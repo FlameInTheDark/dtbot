@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"fmt"
+
 	"../bot"
 )
 
@@ -8,29 +10,30 @@ import (
 func PlayerCommand(ctx bot.Context) {
 	sess := ctx.Sessions.GetByGuild(ctx.Guild.ID)
 	if len(ctx.Args) == 0 {
-		ctx.Reply("Already connected! Use `music leave` for the bot to disconnect.")
+		ctx.ReplyEmbed("", fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_no_args"), "", false)
 		return
 	}
 	switch ctx.Args[0] {
 	case "play":
 		if sess == nil {
-			ctx.Reply("Not in a voice channel! To make the bot join one, use `!radio join`.")
+			ctx.ReplyEmbed("", fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_not_in_voice"), "", false)
 			return
 		}
 		player := sess.Player
 		go player.Start(sess, ctx.Args[1], func(msg string) {
 			ctx.Reply(msg)
+			ctx.ReplyEmbed("", fmt.Sprintf("%v:", ctx.Loc("player")), msg, "", false)
 		})
 	case "stop":
 		sess.Stop()
 	case "join":
 		if ctx.Sessions.GetByGuild(ctx.Guild.ID) != nil {
-			ctx.Reply("Already connected! Use `music leave` for the bot to disconnect.")
+			ctx.ReplyEmbed("", fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_connected"), "", false)
 			return
 		}
 		vc := ctx.GetVoiceChannel()
 		if vc == nil {
-			ctx.Reply("You must be in a voice channel to use the bot!")
+			ctx.ReplyEmbed("", fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_must_be_in_voice"), "", false)
 			return
 		}
 		sess, err := ctx.Sessions.Join(ctx.Discord, ctx.Guild.ID, vc.ID, bot.JoinProperties{
@@ -38,16 +41,16 @@ func PlayerCommand(ctx bot.Context) {
 			Deafened: true,
 		})
 		if err != nil {
-			ctx.Reply("An error occurred!")
+			ctx.ReplyEmbed("", fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_error"), "", false)
 			return
 		}
-		ctx.Reply("Joined <#" + sess.ChannelID + ">!")
+		ctx.ReplyEmbed("", fmt.Sprintf("%v:", ctx.Loc("player")), fmt.Sprintf("%v <#%v>!", ctx.Loc("player_joined"), sess.ChannelID), "", false)
 	case "leave":
 		if sess == nil {
-			ctx.Reply("Not in a voice channel! To make the bot join one, use `music join`.")
+			ctx.ReplyEmbed("", fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_must_be_in_voice"), "", false)
 			return
 		}
 		ctx.Sessions.Leave(ctx.Discord, *sess)
-		ctx.Reply("Left <#" + sess.ChannelID + ">!")
+		ctx.ReplyEmbed("", fmt.Sprintf("%v:", ctx.Loc("player")), fmt.Sprintf("%v <#%v>!", ctx.Loc("player_left"), sess.ChannelID), "", false)
 	}
 }

@@ -48,6 +48,29 @@ func (ctx Context) Reply(content string) *discordgo.Message {
 	return msg
 }
 
+// ReplyEmbed reply on message with embed message
+func (ctx Context) ReplyEmbed(title, field, content, description string, inline bool) *discordgo.Message {
+	embed := &discordgo.MessageEmbed{
+		Author:      &discordgo.MessageEmbedAuthor{},
+		Color:       0x00ff00,
+		Description: description,
+		Fields: []*discordgo.MessageEmbedField{
+			&discordgo.MessageEmbedField{
+				Name:   field,
+				Value:  content,
+				Inline: inline,
+			},
+		},
+		Title: title,
+	}
+	msg, err := ctx.Discord.ChannelMessageSendEmbed(ctx.TextChannel.ID, embed)
+	if err != nil {
+		fmt.Println("Error whilst sending embed message, ", err)
+		return nil
+	}
+	return msg
+}
+
 // Loc Returns translated key string
 func (ctx *Context) Loc(key string) string {
 	// Check if translation exist
