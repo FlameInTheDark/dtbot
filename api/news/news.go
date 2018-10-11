@@ -22,7 +22,7 @@ type NewsArticleData struct {
 	Author      string                 `json:"author"`
 	Title       string                 `json:"title"`
 	Description string                 `json:"description"`
-	Url         string                 `json:"url"`
+	URL         string                 `json:"url"`
 	PublishedAt string                 `json:"publishedAt"`
 }
 
@@ -55,14 +55,14 @@ func GetNews(ctx *bot.Context) string {
 		if len(result.Articles) > 0 {
 			var news []string
 			for i := 0; i < ctx.Conf.News.Articles; i++ {
-				news = append(news, fmt.Sprintf("```%v\n\n%v\nLink: %v```", result.Articles[i].Title, result.Articles[i].Description, result.Articles[i].Url))
+				news = append(news, fmt.Sprintf("```%v\n\n%v\nLink: %v```", result.Articles[i].Title, result.Articles[i].Description, result.Articles[i].URL))
 			}
 
 			return strings.Join(news, "\n")
 		} else {
-			return ctx.Conf.GetLocale("news_404")
+			return ctx.Loc("news_404")
 		}
 	} else {
-		return ctx.Conf.GetLocale("news_api_error")
+		return ctx.Loc("news_api_error")
 	}
 }

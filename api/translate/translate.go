@@ -27,26 +27,26 @@ func GetTranslation(ctx *bot.Context) string {
 	if len(ctx.Args) > 1 {
 		translate = strings.Join(ctx.Args[1:], "+")
 	} else {
-		return ctx.Conf.GetLocale("translate_request_error")
+		return ctx.Loc("translate_request_error")
 	}
 
 	resp, err := http.Get(fmt.Sprintf("https://translate.yandex.net/api/v1.5/tr.json/translate?key=%v&text=%v&lang=%v&format=plain", ctx.Conf.Translate.ApiKey, translate, ctx.Args[0]))
 	if err != nil {
-		return fmt.Sprintf("Get translation error: %v", err)
+		return fmt.Sprintf("%v: %v", ctx.Loc("translate_get_error"), err)
 	}
 
 	err = json.NewDecoder(resp.Body).Decode(&result)
 	if err != nil {
-		return fmt.Sprintf("Parse translation error: %v", err)
+		return fmt.Sprintf("%v: %v", ctx.Loc("translate_parse_error"), err)
 	}
 
 	// Checking request status
 	switch result.Code {
 	case 502:
-		return ctx.Conf.GetLocale("translate_request_error")
+		return ctx.Loc("translate_request_error")
 	case 200:
 		return strings.Join(result.Text, "\n")
 	default:
-		return ctx.Conf.GetLocale("translate_api_error")
+		return ctx.Loc("translate_api_error")
 	}
 }

@@ -2,8 +2,9 @@ package bot
 
 import (
 	"fmt"
-	"github.com/bwmarrin/discordgo"
 	"io"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 // Context : Bot context structure
@@ -45,6 +46,11 @@ func (ctx Context) Reply(content string) *discordgo.Message {
 		return nil
 	}
 	return msg
+}
+
+// Loc Returns translated key string
+func (ctx *Context) Loc(key string) string {
+	return ctx.Conf.Locales[ctx.Conf.General.Language][key]
 }
 
 // ReplyFile reply on massege with file

@@ -1,6 +1,5 @@
 {
     "en": {
-        "weather_format":"Weather in %v: %v°C, pressure %v hPa, cloudiness %v%%, wind speed %v m/s, humidity %v%%, %v.",
         "weather_404":"Weather station not found",
         "weather_api_error":"Weather API error",
         "weather_parse_error":"Weather parse error",
@@ -9,10 +8,14 @@
         "news_api_error":"News API error",
         "news_404":"No news in this category",
         "translate_request_error":"Wrong request",
-        "translate_api_error":"Translate API error"
+        "translate_api_error":"Translate API error",
+        "translate_get_error":"Get translation error",
+        "translate_parse_error":"Parse translation error",
+        "available_currencies":"Available currencies",
+        "curr_resp_read_err":"Response read error",
+        "curr_resp_parse_err":"Response parse error"
     },
     "ru": {
-        "weather_format":"Погода в %v: %v°C, давление %v hPa, облачность %v%%, скорость ветра %v м/с, влажность %v%%, %v.",
         "weather_404":"Метеостанция не найдена",
         "weather_api_error":"Ошибка API погоды",
         "weather_parse_error":"Ошибка парсинга",
@@ -21,6 +24,11 @@
         "news_api_error":"Ошибка API новостей",
         "news_404":"Нет новостей в данной категории",
         "translate_request_error":"Неверный запрос",
-        "translate_api_error":"Ошибка API переводчика"
+        "translate_api_error":"Ошибка API переводчика",
+        "translate_get_error":"Ошибка получения перевода",
+        "translate_parse_error":"Ошибка парсинга перевода",
+        "available_currencies":"Доступные валюты",
+        "curr_resp_read_err":"Ошибка чтения ответа",
+        "curr_resp_parse_err":"Ошибка парсинга ответа"
     }
 }

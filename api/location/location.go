@@ -31,9 +31,8 @@ func (l LocationResultData) GetCoordinates() (string, string) {
 	return l.Geonames[0].Lat, l.Geonames[0].Lng
 }
 
-// New create and return location struct
-func New(user string, locationName string) (LocationResultData, error) {
-	var result LocationResultData
+// New creates and returns location struct
+func New(user string, locationName string) (result LocationResultData, err error) {
 	resp, err := http.Get(fmt.Sprintf("http://api.geonames.org/searchJSON?q=%v&maxRows=1&username=%v", locationName, user))
 	if err != nil {
 		return result, err
@@ -44,9 +43,9 @@ func New(user string, locationName string) (LocationResultData, error) {
 		return result, err
 	}
 
-	if len(result.Geonames) > 0 {
-		return result, nil
-	} else {
-		return result, errors.New("City not found!")
+	if len(result.Geonames) == 0 {
+		return result, errors.New("City not found")
 	}
+
+	return result, nil
 }

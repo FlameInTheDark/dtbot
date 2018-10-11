@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"fmt"
+
 	"../api/weather"
 	"../bot"
 )
@@ -9,7 +11,7 @@ import (
 func WeatherCommand(ctx bot.Context) {
 	buf, err := weather.GetWeatherImage(&ctx)
 	if err != nil {
-		ctx.Reply(err.Error())
+		ctx.Reply(fmt.Sprintf("%v: %v", ctx.Loc("weather_error"), err.Error()))
 		return
 	}
 	ctx.ReplyFile("weather.png", buf)

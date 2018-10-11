@@ -53,7 +53,7 @@ type Config struct {
 }
 
 // GetLocale returns locale string
-func (c Config) GetLocale(key string) string {
+func (c *Config) GetLocale(key string) string {
 	return c.Locales[c.General.Language][key]
 }
 
@@ -69,7 +69,7 @@ func LoadConfig() *Config {
 }
 
 // LoadLocales loading locales from file
-func (c Config) LoadLocales() {
+func (c *Config) LoadLocales() {
 	file, e := ioutil.ReadFile("./locales.json")
 	if e != nil {
 		fmt.Printf("Locale file error: %v\n", e)
@@ -82,6 +82,7 @@ func (c Config) LoadLocales() {
 	}
 
 	if _, ok := c.Locales[c.General.Language]; ok {
+		fmt.Printf("Loaded %v translations for '%v' language\n", len(c.Locales[c.General.Language]), c.General.Language)
 		return
 	} else {
 		fmt.Printf("Locale file not contain language \"%v\"\n", c.General.Language)
