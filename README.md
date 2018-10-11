@@ -22,6 +22,9 @@ Command | Description
 `!w [place]` | Shows the weather in a specified location `!w New York`
 `!n [category]` | Displays news in the specified category `!n technology`
 `!t [target_lang] [text]` | Translator `!t ru Hello world`
+`!c` | Shows currencies (default from config)
+`!c list` | Shows list of available currencies
+`!c [currency]` | Shows specified currency `!c USD EUR`
 
 ## Build for docker
 
