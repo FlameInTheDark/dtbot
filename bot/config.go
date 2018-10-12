@@ -21,6 +21,7 @@ type GeneralConfig struct {
 	Timezone         int
 	GeonamesUsername string
 	Game             string
+	EmbedColor       int
 }
 
 // NewsConfig : News config struct
