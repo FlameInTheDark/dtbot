@@ -16,6 +16,7 @@ GeonamesUsername = "Username from Geonames.org"
 Language = "en"
 # UTC 0 + Timezone
 Timezone = 5
+Game = "Half-Life 3"
 
 [currency]
 Default = ["USD", "EUR"]

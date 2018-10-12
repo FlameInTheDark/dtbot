@@ -61,7 +61,7 @@ func (emb *NewEmbedStruct) AttachThumbURL(url string) *NewEmbedStruct {
 }
 
 // Send send embed message to Discord
-func (emb *NewEmbedStruct) Send(ctx Context) *discordgo.Message {
+func (emb *NewEmbedStruct) Send(ctx *Context) *discordgo.Message {
 	msg, err := ctx.Discord.ChannelMessageSendComplex(ctx.TextChannel.ID, emb.MessageSend)
 	if err != nil {
 		fmt.Println("Error whilst sending embed message, ", err)
@@ -81,11 +81,11 @@ func (ctx Context) Reply(content string) *discordgo.Message {
 }
 
 // ReplyEmbed reply on message with embed message
-func (ctx Context) ReplyEmbed(name, content string) *discordgo.Message {
+func (ctx *Context) ReplyEmbed(name, content string) *discordgo.Message {
 	return NewEmbed("").Field(name, content, false).Footer(ctx.Loc("requested_by") + ": " + ctx.User.Username).Color(0x00ff00).Send(ctx)
 }
 
 // ReplyEmbedAttachment reply on message with embed message with attachment
-func (ctx Context) ReplyEmbedAttachment(name, content, fileName string, file io.Reader) *discordgo.Message {
+func (ctx *Context) ReplyEmbedAttachment(name, content, fileName string, file io.Reader) *discordgo.Message {
 	return NewEmbed("").Field(name, content, false).AttachImg(fileName, file).Footer(ctx.Loc("requested_by") + ": " + ctx.User.Username).Color(0x00ff00).Send(ctx)
 }

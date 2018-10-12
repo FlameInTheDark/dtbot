@@ -20,6 +20,7 @@ type GeneralConfig struct {
 	Language         string
 	Timezone         int
 	GeonamesUsername string
+	Game             string
 }
 
 // NewsConfig : News config struct

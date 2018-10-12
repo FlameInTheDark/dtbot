@@ -39,7 +39,7 @@ func main() {
 	botId = usr.ID
 	discord.AddHandler(commandHandler)
 	discord.AddHandler(func(discord *discordgo.Session, ready *discordgo.Ready) {
-		discord.UpdateStatus(0, "ящик")
+		discord.UpdateStatus(0, conf.General.Game)
 		guilds := discord.State.Guilds
 		fmt.Println("Ready with", len(guilds), "guilds.")
 	})
