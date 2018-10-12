@@ -8,6 +8,7 @@
 * Yandex Translate
 * Newsapi.org
 * Geonames.org
+* cbr-xml-daily.ru
 
 ## How to use
 
@@ -29,17 +30,18 @@ Command | Description
 ## Build for docker
 
 Easy way to build docker image for Ubuntu:
-Go inside app directory and compile app with command:
+
+Clone reposytory and move inside app directory. Сompile app with command:
 
 `go build`
 
 Make (or use my) Dockerfile:
 
-```
+```Dockerfile
 FROM ubuntu:18.04
-COPY . .
 RUN apt-get update
-RUN apt-get install -y ca-certificates ffmpeg 
+RUN apt-get install -y ca-certificates ffmpeg
+COPY . . 
 ENTRYPOINT ["./dtbot"]
 ```
 
