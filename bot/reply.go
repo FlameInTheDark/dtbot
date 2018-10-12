@@ -9,51 +9,60 @@ import (
 
 // NewEmbedStruct generated embed
 type NewEmbedStruct struct {
-	Emb discordgo.MessageSend
+	*discordgo.MessageSend
 }
 
 // NewEmbed creates new embed
-func NewEmbed(title string) NewEmbedStruct {
-	var emb = NewEmbedStruct{
-		Emb: discordgo.MessageSend{
-			Embed: &discordgo.MessageEmbed{
-				Title: title,
-				Color: 0x00ff00,
-			},
-		},
-	}
-	return emb
+func NewEmbed(title string) *NewEmbedStruct {
+	return &NewEmbedStruct{&discordgo.MessageSend{Embed: &discordgo.MessageEmbed{Title: title}}}
 }
 
 // Field adds field to embed
-func (emb NewEmbedStruct) Field(name, value string, inline bool) NewEmbedStruct {
-	emb.Emb.Embed.Fields = append(emb.Emb.Embed.Fields, &discordgo.MessageEmbedField{Name: name, Value: value, Inline: inline})
+func (emb *NewEmbedStruct) Field(name, value string, inline bool) *NewEmbedStruct {
+	emb.Embed.Fields = append(emb.Embed.Fields, &discordgo.MessageEmbedField{Name: name, Value: value, Inline: inline})
 	return emb
 }
 
 // Desc adds description to embed
-func (emb NewEmbedStruct) Desc(desc string) NewEmbedStruct {
-	emb.Emb.Embed.Description = desc
+func (emb *NewEmbedStruct) Desc(desc string) *NewEmbedStruct {
+	emb.Embed.Description = desc
+	return emb
+}
+
+// Footer adds footer text
+func (emb *NewEmbedStruct) Footer(text string) *NewEmbedStruct {
+	emb.Embed.Footer = &discordgo.MessageEmbedFooter{Text: text}
 	return emb
 }
 
 // Color adds color to embed
-func (emb NewEmbedStruct) Color(color int) NewEmbedStruct {
-	emb.Emb.Embed.Color = color
+func (emb *NewEmbedStruct) Color(color int) *NewEmbedStruct {
+	emb.Embed.Color = color
 	return emb
 }
 
-// AttachImg adds attached image to embed
-func (emb NewEmbedStruct) AttachImg(name string, file io.Reader) NewEmbedStruct {
-	fmt.Println(name)
-	emb.Emb.Embed.Image = &discordgo.MessageEmbedImage{URL: "attachment://" + name}
-	emb.Emb.Files = append(emb.Emb.Files, &discordgo.File{Name: name, Reader: file})
+// AttachImg adds attached image to embed frim io.Reader
+func (emb *NewEmbedStruct) AttachImg(name string, file io.Reader) *NewEmbedStruct {
+	emb.Embed.Image = &discordgo.MessageEmbedImage{URL: "attachment://" + name}
+	emb.Files = append(emb.Files, &discordgo.File{Name: name, Reader: file})
+	return emb
+}
+
+// AttachImgURL adds attached image to embed from url
+func (emb *NewEmbedStruct) AttachImgURL(url string) *NewEmbedStruct {
+	emb.Embed.Image = &discordgo.MessageEmbedImage{URL: url}
+	return emb
+}
+
+// AttachThumbURL adds attached thumbnail to embed from url
+func (emb *NewEmbedStruct) AttachThumbURL(url string) *NewEmbedStruct {
+	emb.Embed.Thumbnail = &discordgo.MessageEmbedThumbnail{URL: url}
 	return emb
 }
 
 // Send send embed message to Discord
-func (emb NewEmbedStruct) Send(ctx Context) *discordgo.Message {
-	msg, err := ctx.Discord.ChannelMessageSendComplex(ctx.TextChannel.ID, &emb.Emb)
+func (emb *NewEmbedStruct) Send(ctx Context) *discordgo.Message {
+	msg, err := ctx.Discord.ChannelMessageSendComplex(ctx.TextChannel.ID, emb.MessageSend)
 	if err != nil {
 		fmt.Println("Error whilst sending embed message, ", err)
 		return nil
@@ -73,11 +82,10 @@ func (ctx Context) Reply(content string) *discordgo.Message {
 
 // ReplyEmbed reply on message with embed message
 func (ctx Context) ReplyEmbed(name, content string) *discordgo.Message {
-	return NewEmbed("").Field(name, content, false).Send(ctx)
+	return NewEmbed("").Field(name, content, false).Footer(ctx.Loc("requested_by") + ": " + ctx.User.Username).Color(0x00ff00).Send(ctx)
 }
 
 // ReplyEmbedAttachment reply on message with embed message with attachment
 func (ctx Context) ReplyEmbedAttachment(name, content, fileName string, file io.Reader) *discordgo.Message {
-	fmt.Println(fileName)
-	return NewEmbed("").Field(name, content, false).AttachImg(fileName, file).Send(ctx)
+	return NewEmbed("").Field(name, content, false).AttachImg(fileName, file).Footer(ctx.Loc("requested_by") + ": " + ctx.User.Username).Color(0x00ff00).Send(ctx)
 }

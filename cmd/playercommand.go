@@ -21,7 +21,6 @@ func PlayerCommand(ctx bot.Context) {
 		}
 		player := sess.Player
 		go player.Start(sess, ctx.Args[1], func(msg string) {
-			ctx.Reply(msg)
 			ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), msg)
 		})
 	case "stop":

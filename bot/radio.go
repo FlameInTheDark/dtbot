@@ -17,10 +17,14 @@ import (
 )
 
 const (
-	CHANNELS   int = 2
+	// CHANNELS count of audio channels
+	CHANNELS int = 2
+	// FRAME_RATE ...
 	FRAME_RATE int = 48000
+	// FRAME_SIZE ...
 	FRAME_SIZE int = 960
-	MAX_BYTES  int = (FRAME_SIZE * 2) * 2
+	// MAX_BYTES max bytes per sample
+	MAX_BYTES int = (FRAME_SIZE * 2) * 2
 )
 
 // Play start playback
@@ -67,6 +71,7 @@ func (connection *Connection) Play(source string) error {
 	return nil
 }
 
+// sendPCM sends pulse code modulation to discord voice channel
 func (connection *Connection) sendPCM(voice *discordgo.VoiceConnection, pcm <-chan []int16) {
 	connection.lock.Lock()
 	if connection.sendpcm || pcm == nil {
