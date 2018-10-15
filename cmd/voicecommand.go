@@ -6,6 +6,7 @@ import (
 	"../bot"
 )
 
+// VoiceCommand voice handler
 func VoiceCommand(ctx bot.Context) {
 	sess := ctx.Sessions.GetByGuild(ctx.Guild.ID)
 	switch ctx.Args[0] {

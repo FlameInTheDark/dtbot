@@ -1,5 +1,9 @@
 package bot
 
+import (
+	"github.com/bwmarrin/discordgo"
+)
+
 type SongQueue struct {
 	list    []Song
 	current *Song
@@ -35,17 +39,17 @@ func (queue *SongQueue) Clear() {
 	queue.current = nil
 }
 
-func (queue *SongQueue) Start(sess *Session, callback func(string)) {
+func (queue *SongQueue) Start(sess *Session, msg *discordgo.Message, callback func(string, *discordgo.Message)) {
 	queue.Running = true
 	for queue.HasNext() && queue.Running {
 		song := queue.Next()
-		callback(song.Title)
+		callback(song.Title, msg)
 		sess.PlayYoutube(song)
 	}
 	if !queue.Running {
-		callback("stop")
+		callback("stop", msg)
 	} else {
-		callback("finish")
+		callback("finish", msg)
 	}
 }
 
