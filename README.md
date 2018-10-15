@@ -9,6 +9,7 @@
 * Newsapi.org
 * Geonames.org
 * cbr-xml-daily.ru
+* youtube-dl
 
 ## How to use
 
@@ -16,8 +17,12 @@ Bot commands
 
 Command | Description
 ------- | -----------
-`!r join` | Add bot into you voice channel
-`!r leave` | Remove bot from voice channel
+`!v join` | Add bot into you voice channel
+`!v leave` | Remove bot from voice channel
+`!y add [song]` | Adds song from youtube or soundcloud
+`!y clear` | Removes ass songs from queue
+`!y play` | Starts playing queue
+`!y stop` | Stops playing queue
 `!r play [radio_station]` | Plays specified network radio station `!r play http://air2.radiorecord.ru:9003/rr_320`
 `!r stop` | Stops radio
 `!w [place]` | Shows the weather in a specified location `!w New York`
@@ -41,7 +46,9 @@ Make (or use my) Dockerfile:
 FROM ubuntu:18.04
 RUN apt-get update
 RUN apt-get install -y ca-certificates ffmpeg
-COPY . . 
+RUN wget https://yt-dl.org/downloads/latest/youtube-dl
+RUN chmod a+rx /usr/local/bin/youtube-dl
+COPY . .
 ENTRYPOINT ["./dtbot"]
 ```
 
