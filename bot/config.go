@@ -22,6 +22,7 @@ type GeneralConfig struct {
 	GeonamesUsername string
 	Game             string
 	EmbedColor       int
+	ServiceURL       string
 }
 
 // NewsConfig : News config struct

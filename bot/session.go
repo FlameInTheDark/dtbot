@@ -7,6 +7,7 @@ import (
 type (
 	// Session : Session with radio player and voice connection struct
 	Session struct {
+		Queue              *SongQueue
 		Player             RadioPlayer
 		guildID, ChannelID string
 		connection         *Connection
@@ -27,6 +28,7 @@ type (
 // Creates and returns new session
 func newSession(newGuildID, newChannelID string, conn *Connection) *Session {
 	session := &Session{
+		Queue:      newSongQueue(),
 		guildID:    newGuildID,
 		ChannelID:  newChannelID,
 		connection: conn,
@@ -44,6 +46,10 @@ func (sess Session) Play(source string) error {
 	return sess.connection.Play(source)
 }
 
+func (sess Session) PlayYoutube(song Song) error {
+	return sess.connection.PlayYoutube(song.Ffmpeg())
+}
+
 // Stop stops radio
 func (sess *Session) Stop() {
 	sess.connection.Stop()
@@ -55,7 +61,7 @@ func NewSessionManager() *SessionManager {
 }
 
 // GetByGuild returns session by guild ID
-func (manager SessionManager) GetByGuild(guildID string) *Session {
+func (manager *SessionManager) GetByGuild(guildID string) *Session {
 	for _, sess := range manager.sessions {
 		if sess.guildID == guildID {
 			return sess

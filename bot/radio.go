@@ -6,13 +6,10 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"os/exec"
+	"strconv" // https://github.com/layeh/gopus
 
 	"github.com/bwmarrin/discordgo"
-
-	"os/exec"
-	"strconv"
-
-	// https://github.com/layeh/gopus
 	"layeh.com/gopus"
 )
 
@@ -105,6 +102,48 @@ func (connection *Connection) sendPCM(voice *discordgo.VoiceConnection, pcm <-ch
 		}
 		voice.OpusSend <- opus
 	}
+}
+
+func (connection *Connection) PlayYoutube(ffmpeg *exec.Cmd) error {
+	if connection.playing {
+		return errors.New("song already playing")
+	}
+	connection.stopRunning = false
+	out, err := ffmpeg.StdoutPipe()
+	if err != nil {
+		return err
+	}
+	buffer := bufio.NewReaderSize(out, 16384)
+	err = ffmpeg.Start()
+	if err != nil {
+		return err
+	}
+	connection.playing = true
+	defer func() {
+		connection.playing = false
+	}()
+	connection.voiceConnection.Speaking(true)
+	defer connection.voiceConnection.Speaking(false)
+	if connection.send == nil {
+		connection.send = make(chan []int16, 2)
+	}
+	go connection.sendPCM(connection.voiceConnection, connection.send)
+	for {
+		if connection.stopRunning {
+			ffmpeg.Process.Kill()
+			break
+		}
+		audioBuffer := make([]int16, FRAME_SIZE*CHANNELS)
+		err = binary.Read(buffer, binary.LittleEndian, &audioBuffer)
+		if err == io.EOF || err == io.ErrUnexpectedEOF {
+			return nil
+		}
+		if err != nil {
+			return err
+		}
+		connection.send <- audioBuffer
+	}
+	return nil
 }
 
 // Stop stops playback

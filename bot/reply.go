@@ -70,6 +70,11 @@ func (emb *NewEmbedStruct) Send(ctx *Context) *discordgo.Message {
 	return msg
 }
 
+// GetEmbed returns discords embed
+func (emb *NewEmbedStruct) GetEmbed() *discordgo.MessageEmbed {
+	return emb.Embed
+}
+
 // Reply reply on massege
 func (ctx Context) Reply(content string) *discordgo.Message {
 	msg, err := ctx.Discord.ChannelMessageSend(ctx.TextChannel.ID, content)
