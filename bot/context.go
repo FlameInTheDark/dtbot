@@ -1,9 +1,6 @@
 package bot
 
 import (
-	"fmt"
-	"io"
-
 	"github.com/bwmarrin/discordgo"
 )
 
@@ -42,23 +39,13 @@ func NewContext(discord *discordgo.Session, guild *discordgo.Guild, textChannel 
 	return ctx
 }
 
-// Loc Returns translated key string
+// Loc returns translated string by key
 func (ctx *Context) Loc(key string) string {
 	// Check if translation exist
 	if len(ctx.Conf.Locales[ctx.Conf.General.Language][key]) == 0 {
 		return ctx.Conf.Locales["en"][key]
 	}
 	return ctx.Conf.Locales[ctx.Conf.General.Language][key]
-}
-
-// ReplyFile reply on massege with file
-func (ctx Context) ReplyFile(name string, r io.Reader) *discordgo.Message {
-	msg, err := ctx.Discord.ChannelFileSend(ctx.TextChannel.ID, name, r)
-	if err != nil {
-		fmt.Println("Error whilst sending file,", err)
-		return nil
-	}
-	return msg
 }
 
 // GetVoiceChannel returns user voice channel

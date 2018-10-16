@@ -87,6 +87,17 @@ func (ctx *Context) Reply(content string) *discordgo.Message {
 	return msg
 }
 
+// ReplyFile reply on massege with file
+func (ctx *Context) ReplyFile(name string, r io.Reader) *discordgo.Message {
+	msg, err := ctx.Discord.ChannelFileSend(ctx.TextChannel.ID, name, r)
+	if err != nil {
+		fmt.Println("Error whilst sending file,", err)
+		return nil
+	}
+	ctx.BotMsg.Add(ctx, msg.ID)
+	return msg
+}
+
 // EditEmbed edits embed by id
 func (ctx *Context) EditEmbed(ID, name, value string, inline bool) {
 	ctx.Discord.ChannelMessageEditEmbed(ctx.TextChannel.ID, ID, NewEmbed("").Color(ctx.Conf.General.EmbedColor).Footer(fmt.Sprintf("%v %v", ctx.Loc("requested_by"), ctx.User.Username)).Field(name, value, inline).GetEmbed())

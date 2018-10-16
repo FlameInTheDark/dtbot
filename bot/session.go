@@ -5,7 +5,7 @@ import (
 )
 
 type (
-	// Session : Session with radio player and voice connection struct
+	// Session structure with radio player and voice connection
 	Session struct {
 		Queue              *SongQueue
 		Player             RadioPlayer
@@ -13,12 +13,12 @@ type (
 		connection         *Connection
 	}
 
-	// SessionManager : Contains all sessions
+	// SessionManager contains all sessions
 	SessionManager struct {
 		sessions map[string]*Session
 	}
 
-	// JoinProperties : Voice connection propperties struct
+	// JoinProperties voice connection propperties struct
 	JoinProperties struct {
 		Muted    bool
 		Deafened bool
