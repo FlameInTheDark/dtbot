@@ -24,13 +24,13 @@ func (handler CommandHandler) GetCmds() CmdMap {
 	return handler.cmds
 }
 
-// Get return handler command by command name
+// Get returns command by command name
 func (handler CommandHandler) Get(name string) (*Command, bool) {
 	cmd, found := handler.cmds[name]
 	return &cmd, found
 }
 
-// Register add new command in handler
+// Register adds new command in handler
 func (handler CommandHandler) Register(name string, command Command) {
 	handler.cmds[name] = command
 	if len(name) > 1 {

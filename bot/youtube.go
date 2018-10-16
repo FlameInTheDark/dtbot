@@ -11,8 +11,11 @@ import (
 )
 
 const (
-	ERROR_TYPE    = -1
-	VIDEO_TYPE    = 0
+	// ERROR_TYPE returns if error
+	ERROR_TYPE = -1
+	// VIDEO_TYPE returns if video
+	VIDEO_TYPE = 0
+	// PLAYLIST_TYPE returns if playlist
 	PLAYLIST_TYPE = 1
 )
 
@@ -88,7 +91,7 @@ func (youtube Youtube) Video(input string) (*VideoResult, error) {
 	return &VideoResult{resp.Formats[0].Url, resp.Title}, nil
 }
 
-// PlayList returns Playlist
+// Playlist returns Playlist
 func (youtube Youtube) Playlist(input string) (*[]PlaylistVideo, error) {
 	lines := strings.Split(input, "\n")
 	videos := make([]PlaylistVideo, 0)

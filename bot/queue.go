@@ -31,7 +31,7 @@ func (queue *SongQueue) HasNext() bool {
 	return len(queue.list) > 0
 }
 
-// Newx returns next song from queue
+// Next returns next song from queue
 func (queue *SongQueue) Next() Song {
 	song := queue.list[0]
 	queue.list = queue.list[1:]

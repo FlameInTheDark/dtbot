@@ -1,5 +1,6 @@
 package bot
 
+// BotMessages contains map with key = guild ID, value = array of messages IDs
 type BotMessages struct {
 	Messages map[string][]string
 }

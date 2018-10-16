@@ -46,6 +46,7 @@ func (sess Session) Play(source string) error {
 	return sess.connection.Play(source)
 }
 
+// PlayYoutube starts to play song from youtube
 func (sess Session) PlayYoutube(song Song) error {
 	return sess.connection.PlayYoutube(song.Ffmpeg())
 }
