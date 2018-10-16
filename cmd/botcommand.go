@@ -22,5 +22,7 @@ func BotCommand(ctx bot.Context) {
 			return
 		}
 		ctx.BotMsg.Clear(&ctx, from)
+	case "help":
+		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_reply"))
 	}
 }
