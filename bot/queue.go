@@ -4,28 +4,34 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
+// SongQueue struct containts songs array
 type SongQueue struct {
 	list    []Song
 	current *Song
 	Running bool
 }
 
+// Get returns songs array
 func (queue SongQueue) Get() []Song {
 	return queue.list
 }
 
+// Set sets songs array
 func (queue *SongQueue) Set(list []Song) {
 	queue.list = list
 }
 
+// Add adds one song in songs array
 func (queue *SongQueue) Add(song *Song) {
 	queue.list = append(queue.list, *song)
 }
 
+// HasNext check if exist newx song in queue
 func (queue *SongQueue) HasNext() bool {
 	return len(queue.list) > 0
 }
 
+// Newx returns next song from queue
 func (queue *SongQueue) Next() Song {
 	song := queue.list[0]
 	queue.list = queue.list[1:]
@@ -33,12 +39,14 @@ func (queue *SongQueue) Next() Song {
 	return song
 }
 
+// Clear removes all songs from queue
 func (queue *SongQueue) Clear() {
 	queue.list = make([]Song, 0)
 	queue.Running = false
 	queue.current = nil
 }
 
+// Start starts queue playing
 func (queue *SongQueue) Start(sess *Session, msg *discordgo.Message, callback func(string, *discordgo.Message)) {
 	queue.Running = true
 	for queue.HasNext() && queue.Running {
@@ -53,10 +61,12 @@ func (queue *SongQueue) Start(sess *Session, msg *discordgo.Message, callback fu
 	}
 }
 
+// Current returns current song
 func (queue *SongQueue) Current() *Song {
 	return queue.current
 }
 
+// Pause pauses queue playing
 func (queue *SongQueue) Pause() {
 	queue.Running = false
 }

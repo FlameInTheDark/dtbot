@@ -104,6 +104,7 @@ func (connection *Connection) sendPCM(voice *discordgo.VoiceConnection, pcm <-ch
 	}
 }
 
+// PlayYoutube starts playing song from youtube
 func (connection *Connection) PlayYoutube(ffmpeg *exec.Cmd) error {
 	if connection.playing {
 		return errors.New("song already playing")

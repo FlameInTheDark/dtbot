@@ -19,6 +19,8 @@ Timezone = 5
 Game = "Half-Life 3"
 # Default embed color (Hex color converted to int)
 EmbedColor = 4039680
+ServiceURL = "https://youtube.com"
+MessagePool = 10
 
 [currency]
 Default = ["USD", "EUR"]

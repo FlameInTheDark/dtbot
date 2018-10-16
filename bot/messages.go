@@ -9,6 +9,7 @@ func NewMessagesMap() *BotMessages {
 	return &BotMessages{Messages: make(map[string][]string)}
 }
 
+// Add adds bot message to index
 func (m *BotMessages) Add(ctx *Context, messageID string) {
 	m.Messages[ctx.Message.ChannelID] = append(m.Messages[ctx.Message.ChannelID], messageID)
 	if len(m.Messages[ctx.Message.ChannelID]) > ctx.Conf.General.MessagePool {
@@ -16,6 +17,7 @@ func (m *BotMessages) Add(ctx *Context, messageID string) {
 	}
 }
 
+// Clear deletes bot messages
 func (m *BotMessages) Clear(ctx *Context, from int) {
 	channelID := ctx.Message.ChannelID
 	if len(m.Messages[channelID][:(len(m.Messages[channelID])-1)-from]) > 0 {

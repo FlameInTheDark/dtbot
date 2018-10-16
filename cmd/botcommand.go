@@ -6,7 +6,7 @@ import (
 	"../bot"
 )
 
-// NewsCommand News handler
+// BotCommand special bot commands handler
 func BotCommand(ctx bot.Context) {
 	if len(ctx.Args) == 0 {
 		return
