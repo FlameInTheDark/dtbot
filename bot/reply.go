@@ -67,6 +67,7 @@ func (emb *NewEmbedStruct) Send(ctx *Context) *discordgo.Message {
 		fmt.Println("Error whilst sending embed message, ", err)
 		return nil
 	}
+	ctx.BotMsg.Add(ctx, msg.ID)
 	return msg
 }
 
@@ -76,12 +77,13 @@ func (emb *NewEmbedStruct) GetEmbed() *discordgo.MessageEmbed {
 }
 
 // Reply reply on massege
-func (ctx Context) Reply(content string) *discordgo.Message {
+func (ctx *Context) Reply(content string) *discordgo.Message {
 	msg, err := ctx.Discord.ChannelMessageSend(ctx.TextChannel.ID, content)
 	if err != nil {
 		fmt.Println("Error whilst sending message,", err)
 		return nil
 	}
+	ctx.BotMsg.Add(ctx, msg.ID)
 	return msg
 }
 

@@ -21,12 +21,13 @@ type Context struct {
 	CmdHandler *CommandHandler
 	Sessions   *SessionManager
 	Youtube    *Youtube
+	BotMsg     *BotMessages
 }
 
 // NewContext create new context
 func NewContext(discord *discordgo.Session, guild *discordgo.Guild, textChannel *discordgo.Channel,
 	user *discordgo.User, message *discordgo.MessageCreate, conf *Config, cmdHandler *CommandHandler,
-	sessions *SessionManager, youtube *Youtube) *Context {
+	sessions *SessionManager, youtube *Youtube, botMsg *BotMessages) *Context {
 	ctx := new(Context)
 	ctx.Discord = discord
 	ctx.Guild = guild
@@ -37,6 +38,7 @@ func NewContext(discord *discordgo.Session, guild *discordgo.Guild, textChannel 
 	ctx.CmdHandler = cmdHandler
 	ctx.Sessions = sessions
 	ctx.Youtube = youtube
+	ctx.BotMsg = botMsg
 	return ctx
 }
 

@@ -23,6 +23,7 @@ type GeneralConfig struct {
 	Game             string
 	EmbedColor       int
 	ServiceURL       string
+	MessagePool      int
 }
 
 // NewsConfig : News config struct

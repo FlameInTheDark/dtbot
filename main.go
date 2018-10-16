@@ -20,6 +20,7 @@ var (
 	Sessions *bot.SessionManager
 	botId    string
 	youtube  *bot.Youtube
+	botMsg   *bot.BotMessages
 )
 
 func main() {
@@ -28,6 +29,7 @@ func main() {
 	registerCommands()
 	Sessions = bot.NewSessionManager()
 	youtube = &bot.Youtube{Conf: conf}
+	botMsg = bot.NewMessagesMap()
 	discord, err := discordgo.New("Bot " + os.Getenv("BOT_TOKEN"))
 	if err != nil {
 		fmt.Println("Create session error, ", err)
@@ -81,7 +83,7 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 		fmt.Println("Error getting guild,", err)
 		return
 	}
-	ctx := bot.NewContext(discord, guild, channel, user, message, conf, CmdHandler, Sessions, youtube)
+	ctx := bot.NewContext(discord, guild, channel, user, message, conf, CmdHandler, Sessions, youtube, botMsg)
 	ctx.Args = args[1:]
 	c := *command
 	c(*ctx)
@@ -96,4 +98,5 @@ func registerCommands() {
 	CmdHandler.Register("!c", cmd.CurrencyCommand)
 	CmdHandler.Register("!y", cmd.YoutubeCommand)
 	CmdHandler.Register("!v", cmd.VoiceCommand)
+	CmdHandler.Register("!b", cmd.BotCommand)
 }
