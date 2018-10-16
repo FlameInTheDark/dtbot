@@ -4,7 +4,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-// SongQueue struct containts songs array
+// SongQueue struct contains songs array
 type SongQueue struct {
 	list    []Song
 	current *Song
@@ -12,7 +12,7 @@ type SongQueue struct {
 }
 
 // Get returns songs array
-func (queue SongQueue) Get() []Song {
+func (queue *SongQueue) Get() []Song {
 	return queue.list
 }
 
