@@ -19,7 +19,8 @@ Command | Description
 ------- | -----------
 `!v join` | Add bot into you voice channel
 `!v leave` | Remove bot from voice channel
-`!b clear [from_num]` | Remove bot's messages `!b clear` or `!b clea 3` removes all messages from 3rd message
+`!b clear [from_num]` | Remove bot's messages `!b clear` or `!b clear 3` removes all messages from 3rd message
+`!b help` | Shows help
 `!y add [song]` | Adds song from youtube or soundcloud
 `!y clear` | Removes ass songs from queue
 `!y play` | Starts playing queue
