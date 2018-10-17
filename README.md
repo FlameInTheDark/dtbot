@@ -23,7 +23,7 @@ Command | Description
 `!b help` | Shows help
 `!play [youtube_url]` | Adds track (or playlist) in queue and start playing
 `!y add [song]` | Adds song from youtube or soundcloud
-`!y clear` | Removes ass songs from queue
+`!y clear` | Removes all songs from queue
 `!y play` | Starts playing queue
 `!y stop` | Stops playing queue
 `!y skip` | Skipping one song
