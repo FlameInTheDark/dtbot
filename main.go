@@ -99,4 +99,5 @@ func registerCommands() {
 	CmdHandler.Register("!y", cmd.YoutubeCommand)
 	CmdHandler.Register("!v", cmd.VoiceCommand)
 	CmdHandler.Register("!b", cmd.BotCommand)
+	CmdHandler.Register("!play", cmd.YoutubeShortCommand)
 }

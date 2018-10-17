@@ -1,9 +1,5 @@
 package bot
 
-import (
-	"github.com/bwmarrin/discordgo"
-)
-
 // SongQueue struct contains songs array
 type SongQueue struct {
 	list    []Song
@@ -47,17 +43,17 @@ func (queue *SongQueue) Clear() {
 }
 
 // Start starts queue playing
-func (queue *SongQueue) Start(sess *Session, msg *discordgo.Message, callback func(string, *discordgo.Message)) {
+func (queue *SongQueue) Start(sess *Session, callback func(string)) {
 	queue.Running = true
 	for queue.HasNext() && queue.Running {
 		song := queue.Next()
-		callback(song.Title, msg)
+		callback(song.Title)
 		sess.PlayYoutube(song)
 	}
 	if !queue.Running {
-		callback("stop", msg)
+		callback("stop")
 	} else {
-		callback("finish", msg)
+		callback("finish")
 	}
 }
 

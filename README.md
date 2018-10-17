@@ -21,10 +21,12 @@ Command | Description
 `!v leave` | Remove bot from voice channel
 `!b clear [from_num]` | Remove bot's messages `!b clear` or `!b clear 3` removes all messages from 3rd message
 `!b help` | Shows help
+`!play [youtube_url]` | Adds track (or playlist) in queue and start playing
 `!y add [song]` | Adds song from youtube or soundcloud
 `!y clear` | Removes ass songs from queue
 `!y play` | Starts playing queue
 `!y stop` | Stops playing queue
+`!y skip` | Skipping one song
 `!r play [radio_station]` | Plays specified network radio station `!r play http://air2.radiorecord.ru:9003/rr_320`
 `!r stop` | Stops radio
 `!w [place]` | Shows the weather in a specified location `!w New York`
