@@ -27,6 +27,7 @@ Command | Description
 `!y play` | Starts playing queue
 `!y stop` | Stops playing queue
 `!y skip` | Skipping one song
+`!y list` | List of songs in queue
 `!r play [radio_station]` | Plays specified network radio station `!r play http://air2.radiorecord.ru:9003/rr_320`
 `!r stop` | Stops radio
 `!w [place]` | Shows the weather in a specified location `!w New York`

@@ -71,6 +71,21 @@ func (emb *NewEmbedStruct) Send(ctx *Context) *discordgo.Message {
 	return msg
 }
 
+// Send send embed personal message to Discord
+func (emb *NewEmbedStruct) SendPM(ctx *Context) *discordgo.Message {
+	ch, err := ctx.Discord.UserChannelCreate(ctx.User.ID)
+	if err != nil {
+		fmt.Println("Error whilst creating private channel, ", err)
+		return nil
+	}
+	msg, err := ctx.Discord.ChannelMessageSendComplex(ch.ID, emb.MessageSend)
+	if err != nil {
+		fmt.Println("Error whilst sending embed message, ", err)
+		return nil
+	}
+	return msg
+}
+
 // GetEmbed returns discords embed
 func (emb *NewEmbedStruct) GetEmbed() *discordgo.MessageEmbed {
 	return emb.Embed
@@ -110,6 +125,14 @@ func (ctx *Context) ReplyEmbed(name, content string) *discordgo.Message {
 		Footer(ctx.Loc("requested_by") + ": " + ctx.User.Username).
 		Color(ctx.Conf.General.EmbedColor).
 		Send(ctx)
+}
+
+func (ctx *Context) ReplyEmbedPM(name, content string) *discordgo.Message {
+	return NewEmbed("").
+		Field(name, content, false).
+		Footer(ctx.Loc("requested_by") + ": " + ctx.User.Username).
+		Color(ctx.Conf.General.EmbedColor).
+		SendPM(ctx)
 }
 
 // ReplyEmbedAttachment reply on message with embed message with attachment

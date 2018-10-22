@@ -1,7 +1,7 @@
 {
     "en": {
         "help": "Bot commands help",
-        "help_reply": "`!v join` | Add bot into you voice channel\n`!v leave` | Remove bot from voice channel\n`!b clear [from_num]` | Remove bot's messages `!b clear` or `!b clea 3` removes all messages from 3rd message\n`!play [youtube_url]` | Add bot in channel and start playing from URL\n`!y add [song]` | Adds song from youtube or soundcloud\n`!y clear` | Removes ass songs from queue\n`!y play` | Starts playing queue\n`!y stop` | Stops playing queue\n`!r play [radio_station]` | Plays specified network radio station `!r play http://air2.radiorecord.ru:9003/rr_320`\n`!r stop` | Stops radio\n`!w [place]` | Shows the weather in a specified location `!w New York`\n`!n [category]` | Displays news in the specified category `!n technology`\n`!t [target_lang] [text]` | Translator `!t ru Hello world`\n`!c` | Shows currencies (default from config)\n`!c list` | Shows list of available currencies\n`!c [currency]` | Shows specified currency `!c USD EUR`",
+        "help_reply": "`!v join` | Add bot into you voice channel\n`!v leave` | Remove bot from voice channel\n`!b clear [from_num]` | Remove bot's messages `!b clear` or `!b clea 3` removes all messages from 3rd message\n`!play [youtube_url]` | Add bot in channel and start playing from URL\n`!y add [song]` | Adds song from youtube or soundcloud\n`!y clear` | Removes ass songs from queue\n`!y play` | Starts playing queue\n`!y stop` | Stops playing queue\n`!y list` | List of songs in queue\n`!r play [radio_station]` | Plays specified network radio station `!r play http://air2.radiorecord.ru:9003/rr_320`\n`!r stop` | Stops radio\n`!w [place]` | Shows the weather in a specified location `!w New York`\n`!n [category]` | Displays news in the specified category `!n technology`\n`!t [target_lang] [text]` | Translator `!t ru Hello world`\n`!c` | Shows currencies (default from config)\n`!c list` | Shows list of available currencies\n`!c [currency]` | Shows specified currency `!c USD EUR`",
         "error": "An error occured!",
         "requested_by": "Requested by",
         "weather": "weather",
@@ -42,11 +42,12 @@
         "youtube_finished": "Playing finished",
         "youtube_adding_song": "Adding songs to queue...",
         "youtube_added_format": "Added `%v` to the song queue.",
-        "youtube_starting": "Starting"
+        "youtube_starting": "Starting",
+        "youtube_list_format": "List of songs in queue:\n%v"
     },
     "ru": {
         "help": "Помощь по командам бота",
-        "help_reply": "`!v join` | Добавить бота в голосовой канал\n`!v leave` | Удалить бота из голосового канала\n`!b clear [from_num]` | Удалить сообщения бота `!b clear` или `!b clear 3` Удалить все индексированные сообщения начиная с 3-его\n`!play [youtube_url]` | Добавить бота в голосовой канал и начать проигрывать трек из ссылки\n`!y add [song]` | Добавить трек с YouTube или SoundCloud\n`!y clear` | Удалить все треки из очереди\n`!y play` | Начать играть очередь\n`!y stop` | Закончить играть очередь\n`!r play [radio_station]` | Воспроизвести радиостанцию из потока `!r play http://air2.radiorecord.ru:9003/rr_320`\n`!r stop` | Остановить радио\n`!w [place]` | Показать погоду в указанном месте `!w New York`\n`!n [category]` | Показать новости из указанной категории `!n technology`\n`!t [target_lang] [text]` | Переводчик `!t ru Hello world`\n`!c` | Показать курс валюты (default from config)\n`!c list` | Показать список доступных валют\n`!c [currency]` | Показать курс по указанной валюте `!c USD EUR`",
+        "help_reply": "`!v join` | Добавить бота в голосовой канал\n`!v leave` | Удалить бота из голосового канала\n`!b clear [from_num]` | Удалить сообщения бота `!b clear` или `!b clear 3` Удалить все индексированные сообщения начиная с 3-его\n`!play [youtube_url]` | Добавить бота в голосовой канал и начать проигрывать трек из ссылки\n`!y add [song]` | Добавить трек с YouTube или SoundCloud\n`!y clear` | Удалить все треки из очереди\n`!y play` | Начать играть очередь\n`!y stop` | Закончить играть очередь\n`!y list` | Список треков в очереди\n`!r play [radio_station]` | Воспроизвести радиостанцию из потока `!r play http://air2.radiorecord.ru:9003/rr_320`\n`!r stop` | Остановить радио\n`!w [place]` | Показать погоду в указанном месте `!w New York`\n`!n [category]` | Показать новости из указанной категории `!n technology`\n`!t [target_lang] [text]` | Переводчик `!t ru Hello world`\n`!c` | Показать курс валюты (default from config)\n`!c list` | Показать список доступных валют\n`!c [currency]` | Показать курс по указанной валюте `!c USD EUR`",
         "error": "Произошла ошибка!",
         "requested_by": "Запрос от",
         "weather": "Погода",
@@ -87,6 +88,7 @@
         "youtube_finished": "Проигрывание закончено",
         "youtube_adding_song": "Добавление трека в очередь...",
         "youtube_added_format": "Трек `%v` добавлен в очередь.",
-        "youtube_starting": "Начинаем"
+        "youtube_starting": "Начинаем",
+        "youtube_list_format": "Список треков в очереди:\n%v"
     }
 }

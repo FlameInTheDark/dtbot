@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 
 	"../bot"
 	"github.com/bwmarrin/discordgo"
@@ -124,6 +125,20 @@ func YoutubeCommand(ctx bot.Context) {
 				}
 			}
 		}
+	case "list":
+		if sess == nil {
+			ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("player_not_in_voice"))
+			return
+		}
+		if !sess.Queue.HasNext() {
+			ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("youtube_queue_is_empty"))
+			return
+		}
+		var songsNames []string
+		for _, val := range sess.Queue.Get() {
+			songsNames = append(songsNames, val.Title)
+		}
+		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("youtube")), fmt.Sprintf(ctx.Loc("youtube_list_format"), strings.Join(songsNames, "\n")))
 	case "clear":
 
 		if sess == nil {
