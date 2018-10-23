@@ -36,6 +36,9 @@ Command | Description
 `!c` | Shows currencies (default from config)
 `!c list` | Shows list of available currencies
 `!c [currency]` | Shows specified currency `!c USD EUR`
+`!p new [fields]` | Creates new poll `!p new field one | field two | field three`
+`!p vote [field_num]` | Votes in poll
+`!p end` | Ends poll and shows results
 
 ## Build for docker
 
