@@ -20,7 +20,8 @@ Command | Description
 `!v join` | Add bot into you voice channel
 `!v leave` | Remove bot from voice channel
 `!b clear [from_num]` | Remove bot's messages `!b clear` or `!b clear 3` removes all messages from 3rd message
-`!b help` | Shows help
+`!help` | Shows help
+`!help [command]` | Detail help `!help !y`
 `!play [youtube_url]` | Adds track (or playlist) in queue and start playing
 `!y add [song]` | Adds song from youtube or soundcloud
 `!y clear` | Removes all songs from queue

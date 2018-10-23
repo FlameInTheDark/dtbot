@@ -105,4 +105,5 @@ func registerCommands() {
 	CmdHandler.Register("!d", cmd.DebugCommand)
 	CmdHandler.Register("!p", cmd.PollCommand)
 	CmdHandler.Register("!dice", cmd.DiceCommand)
+	CmdHandler.Register("!help", cmd.HelpCommand)
 }
