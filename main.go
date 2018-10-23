@@ -21,6 +21,7 @@ var (
 	botId    string
 	youtube  *bot.Youtube
 	botMsg   *bot.BotMessages
+	dataType *bot.DataType
 )
 
 func main() {
@@ -30,6 +31,7 @@ func main() {
 	Sessions = bot.NewSessionManager()
 	youtube = &bot.Youtube{Conf: conf}
 	botMsg = bot.NewMessagesMap()
+	dataType = bot.NewDataType()
 	discord, err := discordgo.New("Bot " + os.Getenv("BOT_TOKEN"))
 	if err != nil {
 		fmt.Println("Create session error, ", err)
@@ -83,7 +85,7 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 		fmt.Println("Error getting guild,", err)
 		return
 	}
-	ctx := bot.NewContext(discord, guild, channel, user, message, conf, CmdHandler, Sessions, youtube, botMsg)
+	ctx := bot.NewContext(discord, guild, channel, user, message, conf, CmdHandler, Sessions, youtube, botMsg, dataType)
 	ctx.Args = args[1:]
 	c := *command
 	c(*ctx)
@@ -101,4 +103,5 @@ func registerCommands() {
 	CmdHandler.Register("!b", cmd.BotCommand)
 	CmdHandler.Register("!play", cmd.YoutubeShortCommand)
 	CmdHandler.Register("!d", cmd.DebugCommand)
+	CmdHandler.Register("!p", cmd.PollCommand)
 }

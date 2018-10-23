@@ -43,7 +43,14 @@
         "youtube_adding_song": "Adding songs to queue...",
         "youtube_added_format": "Added `%v` to the song queue.",
         "youtube_starting": "Starting",
-        "youtube_list_format": "List of songs in queue:\n%v"
+        "youtube_list_format": "List of songs in queue:\n%v",
+        "polls": "Polls",
+        "polls_created": "Created new poll",
+        "polls_wrong_field": "Wrong field",
+        "polls_ends": "Poll end",
+        "polls_already_exists": "Poll already exists",
+        "polls_not_exists": "Poll not exists",
+        "polls_already_voted": "You already voted in this poll"
     },
     "ru": {
         "help": "Помощь по командам бота",
@@ -89,6 +96,13 @@
         "youtube_adding_song": "Добавление трека в очередь...",
         "youtube_added_format": "Трек `%v` добавлен в очередь.",
         "youtube_starting": "Начинаем",
-        "youtube_list_format": "Список треков в очереди:\n%v"
+        "youtube_list_format": "Список треков в очереди:\n%v",
+        "polls": "Опросы",
+        "polls_created": "Создан новый опрос",
+        "polls_wrong_field": "Неверное поле",
+        "polls_ends": "Опрос окончен",
+        "polls_already_exists": "Опрос уже существует",
+        "polls_not_exists": "Опрос не существует",
+        "polls_already_voted": "Вы уже проголосовали в этом опросе"
     }
 }
