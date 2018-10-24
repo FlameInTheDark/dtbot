@@ -4,6 +4,7 @@ import (
 	"../bot"
 )
 
+// HelpCommand shows help
 func HelpCommand(ctx bot.Context) {
 	if len(ctx.Args) == 0 {
 		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_reply"))
@@ -17,7 +18,7 @@ func HelpCommand(ctx bot.Context) {
 	case "!y":
 		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!y"))
 	case "!r":
-		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!vr"))
+		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!r"))
 	case "!w":
 		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!w"))
 	case "!n":
