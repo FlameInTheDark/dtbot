@@ -11,6 +11,16 @@
 * cbr-xml-daily.ru
 * youtube-dl
 
+## Bot's features
+
+* Shows weather
+* Translate words
+* Shows news
+* Shows currency
+* Plays music from Youtube and Soundcloud
+* Plays music from online radiostations
+* Makes polls
+
 ## How to use
 
 Bot commands
@@ -45,7 +55,8 @@ Command | Description
 
 Easy way to build docker image for Ubuntu:
 
-Clone reposytory and move inside app directory. Сompile app with command:
+Clone reposytory and move inside app directory.  
+Compile app with command:
 
 `go build`
 
@@ -65,7 +76,7 @@ Build docker image
 
 `docker build -t dtbot .`
 
-Add environment variable `BOT_TOKEN` with token of discord bot.
+Add environment variable `BOT_TOKEN` with token of discord bot.  
 And run container:
 
 `docker run -d --rm -e BOT_TOKEN=$BOT_TOKEN --name dtbot dtbot:latest`
