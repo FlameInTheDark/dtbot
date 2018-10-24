@@ -11,6 +11,16 @@
 * cbr-xml-daily.ru
 * youtube-dl
 
+## Bot's features
+
+* Shows weather
+* Translate words
+* Shows news
+* Shows currency
+* Plays music from Youtube and Soundcloud
+* Plays music from online radiostations
+* Makes polls
+
 ## How to use
 
 Bot commands
@@ -45,9 +55,38 @@ Command | Description
 
 Easy way to build docker image for Ubuntu:
 
-Clone reposytory and move inside app directory. Сompile app with command:
+Clone reposytory and move inside app directory.  
+Compile app with command:
 
 `go build`
+
+Create `config.toml` file from sample `sample.config.toml`
+
+```toml
+[weather]
+WeatherToken = "OpenWeatherMap API Token"
+City = "Moscow" # Default forecast city
+
+[news]
+ApiKey = "Api key from Newsapi.org"
+Country = "us" # News country
+Articles = 5 # Count of articles per request
+
+[translate]
+ApiKey = "Yandex Translate API key"
+
+[general]
+GeonamesUsername = "Username from Geonames.org"
+Language = "en" # Bot language
+Timezone = 5 # UTC 0 + Timezone
+Game = "Half-Life 3" # Shows "Play in Half-Life 3" status
+EmbedColor = 4039680 # Default embed color (Hex color converted to int)
+ServiceURL = "https://youtube.com" # Dont touch this value
+MessagePool = 10 # Count of indexed messages for delete
+
+[currency]
+Default = ["USD", "EUR"] # Array of default currencies
+```
 
 Make (or use my) Dockerfile:
 
@@ -65,7 +104,7 @@ Build docker image
 
 `docker build -t dtbot .`
 
-Add environment variable `BOT_TOKEN` with token of discord bot.
+Add environment variable `BOT_TOKEN` with token of discord bot.  
 And run container:
 
 `docker run -d --rm -e BOT_TOKEN=$BOT_TOKEN --name dtbot dtbot:latest`

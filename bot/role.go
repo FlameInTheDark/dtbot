@@ -10,6 +10,7 @@ type UserRoles struct {
 	Roles []*discordgo.Role
 }
 
+// GetRole returns UserRoles struct pointer
 func (ctx *Context) GetRoles() *UserRoles {
 	var userRoles = new(UserRoles)
 	memb, err := ctx.Discord.GuildMember(ctx.Guild.ID, ctx.User.ID)
@@ -26,6 +27,7 @@ func (ctx *Context) GetRoles() *UserRoles {
 	return userRoles
 }
 
+// ExistsName checks if user role nema exists on user
 func (r *UserRoles) ExistsName(name string) bool {
 	for _, val := range r.Roles {
 		if val.Name == name {
