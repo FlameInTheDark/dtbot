@@ -1,0 +1,10 @@
+language: go
+go:
+    - 1.8
+    - 1.9
+    - "1.10"
+install:
+    - go get github.com/fogleman/gg
+    - go get github.com/bwmarrin/discordgo
+    - go get github.com/BurntSushi/toml
+    - go get github.com/layeh/gopus
