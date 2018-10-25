@@ -2,10 +2,12 @@ package bot
 
 import "errors"
 
+// DataType contains some data
 type DataType struct {
 	Polls map[string]*PollType
 }
 
+// PollType contains poll's data
 type PollType struct {
 	// Fields array of field names
 	Fields []string

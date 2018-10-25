@@ -99,6 +99,7 @@ func (c *Config) LoadLocales() {
 	return
 }
 
+// LoadWeatherCodes loads weather font codes in map
 func (c *Config) LoadWeatherCodes() {
 	file, e := ioutil.ReadFile("./codes.json")
 	if e != nil {

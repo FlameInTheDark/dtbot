@@ -8,6 +8,7 @@ import (
 	"../bot"
 )
 
+// PollCommand handle polls commands
 func PollCommand(ctx bot.Context) {
 	if len(ctx.Args) == 0 {
 		return

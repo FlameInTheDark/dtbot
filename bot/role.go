@@ -6,6 +6,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
+// UserRoles struct with array of user roles in guild
 type UserRoles struct {
 	Roles []*discordgo.Role
 }

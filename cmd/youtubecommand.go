@@ -177,6 +177,7 @@ func shortPlay(ctx *bot.Context, sess *bot.Session, msg *discordgo.Message) (isP
 	return false
 }
 
+// YoutubeShortCommand handle short command for playing song from youtube
 func YoutubeShortCommand(ctx bot.Context) {
 	sess := ctx.Sessions.GetByGuild(ctx.Guild.ID)
 	newargs := ctx.Args
@@ -238,7 +239,7 @@ func YoutubeShortCommand(ctx bot.Context) {
 					fmt.Println("error getting playlist,", err)
 					return
 				}
-				var is_playing bool
+				var isPlaying bool
 				for _, v := range *videos {
 					id := v.Id
 					_, i, err := ctx.Youtube.Get(id)
@@ -256,9 +257,9 @@ func YoutubeShortCommand(ctx bot.Context) {
 					song := bot.NewSong(video.Media, video.Title, arg)
 					sess.Queue.Add(song)
 					ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), fmt.Sprintf(ctx.Loc("youtube_added_format"), song.Title), true)
-					if !is_playing {
+					if !isPlaying {
 						shortPlay(&ctx, sess, msg)
-						is_playing = true
+						isPlaying = true
 					}
 				}
 				ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("youtube_added"), true)

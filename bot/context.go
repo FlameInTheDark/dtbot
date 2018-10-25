@@ -50,6 +50,7 @@ func (ctx *Context) Loc(key string) string {
 	return ctx.Conf.Locales[ctx.Conf.General.Language][key]
 }
 
+// WeatherCode returns unicode symbol of weather font icon
 func (ctx *Context) WeatherCode(code string) string {
 	return ctx.Conf.WeatherCodes[code]
 }
