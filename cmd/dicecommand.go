@@ -15,7 +15,7 @@ func DiceCommand(ctx bot.Context) {
 		if err != nil {
 			return
 		}
-		if val < 0 {
+		if val <= 0 {
 			return
 		}
 		ctx.Reply(fmt.Sprintf("Dice: %v", rand.Intn(val)))
