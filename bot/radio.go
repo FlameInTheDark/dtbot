@@ -9,8 +9,8 @@ import (
 	"os/exec"
 	"strconv" // https://github.com/layeh/gopus
 
+	"github.com/FlameInTheDark/gopus"
 	"github.com/bwmarrin/discordgo"
-	"layeh.com/gopus"
 )
 
 const (
