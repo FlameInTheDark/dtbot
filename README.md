@@ -10,6 +10,7 @@
 * Geonames.org
 * cbr-xml-daily.ru
 * youtube-dl
+* owfont
 
 ## Bot's features
 

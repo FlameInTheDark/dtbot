@@ -46,14 +46,18 @@ type CurrencyConfig struct {
 // LocalesMap Map with locales
 type LocalesMap map[string]map[string]string
 
+// WeatherCodesMap symbols for font
+type WeatherCodesMap map[string]string
+
 // Config Main config struct
 type Config struct {
-	Weather   WeatherConfig
-	General   GeneralConfig
-	News      NewsConfig
-	Translate TranslateConfig
-	Locales   LocalesMap
-	Currency  CurrencyConfig
+	Weather      WeatherConfig
+	General      GeneralConfig
+	News         NewsConfig
+	Translate    TranslateConfig
+	Locales      LocalesMap
+	Currency     CurrencyConfig
+	WeatherCodes WeatherCodesMap
 }
 
 // GetLocale returns locale string
@@ -69,6 +73,7 @@ func LoadConfig() *Config {
 		os.Exit(1)
 	}
 	cfg.LoadLocales()
+	cfg.LoadWeatherCodes()
 	return &cfg
 }
 
@@ -91,5 +96,21 @@ func (c *Config) LoadLocales() {
 	}
 
 	fmt.Printf("Loaded %v translations for '%v' language\n", len(c.Locales[c.General.Language]), c.General.Language)
+	return
+}
+
+func (c *Config) LoadWeatherCodes() {
+	file, e := ioutil.ReadFile("./codes.json")
+	if e != nil {
+		fmt.Printf("Codes file error: %v\n", e)
+		os.Exit(1)
+	}
+
+	err := json.Unmarshal(file, &c.WeatherCodes)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("Loaded %v weather codes\n", len(c.WeatherCodes))
 	return
 }

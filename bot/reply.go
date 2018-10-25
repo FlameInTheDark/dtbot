@@ -127,6 +127,7 @@ func (ctx *Context) ReplyEmbed(name, content string) *discordgo.Message {
 		Send(ctx)
 }
 
+// RelpyEmbedPM sends embed in personal channel
 func (ctx *Context) ReplyEmbedPM(name, content string) *discordgo.Message {
 	return NewEmbed("").
 		Field(name, content, false).

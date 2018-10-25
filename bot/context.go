@@ -50,6 +50,10 @@ func (ctx *Context) Loc(key string) string {
 	return ctx.Conf.Locales[ctx.Conf.General.Language][key]
 }
 
+func (ctx *Context) WeatherCode(code string) string {
+	return ctx.Conf.WeatherCodes[code]
+}
+
 // GetVoiceChannel returns user voice channel
 func (ctx *Context) GetVoiceChannel() *discordgo.Channel {
 	if ctx.VoiceChannel != nil {

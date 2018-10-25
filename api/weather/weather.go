@@ -76,19 +76,11 @@ func DrawOne(temp, hum, clo int, time, icon string) image.Image {
 	dpc.Clear()
 	dpc.SetRGB(1, 1, 1)
 
-	// Getting and drawing weather icon
-	res, err := http.Get(fmt.Sprintf("http://openweathermap.org/img/w/%v.png", icon))
-	if err != nil || res.StatusCode != 200 {
-		fmt.Println(err)
-	}
-	defer res.Body.Close()
-	m, _, err := image.Decode(res.Body)
-	if err != nil {
-		fmt.Println(err)
-	}
 	dpc.Push()
-	dpc.Scale(3, 3)
-	dpc.DrawImage(m, 25, 12)
+	if err := dpc.LoadFontFace("owfont-regular.ttf", 140); err != nil {
+		fmt.Printf("Weather font: %v", err)
+	}
+	dpc.DrawStringAnchored(icon, 150, 135, 0.5, 0.5)
 	dpc.Pop()
 
 	// Drawing temperature, hummidity and cloudnes
@@ -96,13 +88,13 @@ func DrawOne(temp, hum, clo int, time, icon string) image.Image {
 		fmt.Printf("Image font: %v", err)
 	}
 	dpc.DrawStringAnchored(time, 150, 30, 0.5, 0.5)
-	dpc.DrawStringAnchored(fmt.Sprintf("H: %v%%", hum), 150, 280, 0.5, 0.5)
-	dpc.DrawStringAnchored(fmt.Sprintf("C: %v%%", clo), 150, 330, 0.5, 0.5)
+	dpc.DrawStringAnchored(fmt.Sprintf("H: %v%%", hum), 150, 300, 0.5, 0.5)
+	dpc.DrawStringAnchored(fmt.Sprintf("C: %v%%", clo), 150, 350, 0.5, 0.5)
 
 	if err := dpc.LoadFontFace("arial.ttf", 80); err != nil {
 		fmt.Printf("Image font: %v", err)
 	}
-	dpc.DrawStringAnchored(fmt.Sprintf("%v°", temp), 150, 200, 0.5, 0.5)
+	dpc.DrawStringAnchored(fmt.Sprintf("%v°", temp), 150, 215, 0.5, 0.5)
 
 	return dpc.Image()
 }
@@ -148,7 +140,7 @@ func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 			forecast.Weather[i].Main.Humidity,
 			int(forecast.Weather[i].Clouds.All),
 			fmt.Sprintf("%.2v:00", forecast.Weather[i].TZTime(ctx.Conf.General.Timezone).Hour()),
-			forecast.Weather[i].WDesc[0].Icon), 300*i, 0)
+			ctx.WeatherCode(fmt.Sprintf("%v", forecast.Weather[i].WDesc[0].Id))), 300*i, 0)
 	}
 
 	buf = new(bytes.Buffer)
