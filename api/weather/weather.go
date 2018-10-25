@@ -77,24 +77,35 @@ func DrawOne(temp, hum, clo int, time, icon string) image.Image {
 	dpc.SetRGB(1, 1, 1)
 
 	dpc.Push()
+
 	if err := dpc.LoadFontFace("owfont-regular.ttf", 140); err != nil {
 		fmt.Printf("Weather font: %v", err)
 	}
-	dpc.DrawStringAnchored(icon, 150, 135, 0.5, 0.5)
+	dpc.DrawStringAnchored(icon, 150, 145, 0.5, 0.5)
 	dpc.Pop()
 
 	// Drawing temperature, hummidity and cloudnes
 	if err := dpc.LoadFontFace("arial.ttf", 50); err != nil {
 		fmt.Printf("Image font: %v", err)
 	}
+
+	dpc.DrawRectangle(0, 0, 300, 60)
+	dpc.DrawLine(0, 61, 300, 61)
+	dpc.DrawLine(300, 61, 300, 400)
+	dpc.DrawLine(300, 400, 0, 400)
+	dpc.DrawLine(0, 400, 0, 61)
+	dpc.SetRGBA(4, 4, 4, 0.5)
+	dpc.Fill()
+	dpc.SetRGB(256, 256, 256)
 	dpc.DrawStringAnchored(time, 150, 30, 0.5, 0.5)
-	dpc.DrawStringAnchored(fmt.Sprintf("H: %v%%", hum), 150, 300, 0.5, 0.5)
-	dpc.DrawStringAnchored(fmt.Sprintf("C: %v%%", clo), 150, 350, 0.5, 0.5)
+	dpc.SetRGB(1, 1, 1)
+	dpc.DrawStringAnchored(fmt.Sprintf("H: %v%%", hum), 150, 305, 0.5, 0.5)
+	dpc.DrawStringAnchored(fmt.Sprintf("C: %v%%", clo), 150, 355, 0.5, 0.5)
 
 	if err := dpc.LoadFontFace("arial.ttf", 80); err != nil {
 		fmt.Printf("Image font: %v", err)
 	}
-	dpc.DrawStringAnchored(fmt.Sprintf("%v°", temp), 150, 215, 0.5, 0.5)
+	dpc.DrawStringAnchored(fmt.Sprintf("%v°", temp), 150, 230, 0.5, 0.5)
 
 	return dpc.Image()
 }
