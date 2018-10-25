@@ -18,8 +18,8 @@ func DiceCommand(ctx bot.Context) {
 		if val <= 0 {
 			return
 		}
-		ctx.Reply(fmt.Sprintf("Dice: %v", rand.Intn(val+1)))
+		ctx.Reply(fmt.Sprintf("Dice: %v", rand.Intn(val)+1))
 	} else {
-		ctx.Reply(fmt.Sprintf("Dice: %v", rand.Intn(7)))
+		ctx.Reply(fmt.Sprintf("Dice: %v", rand.Intn(6)+1))
 	}
 }
