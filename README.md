@@ -1,3 +1,4 @@
+![Discord Tools Bot](/logo.png?raw=true "Discord Tools Bot")
 # Discord Tools Bot
 
 [![Go report](http://goreportcard.com/badge/FlameInTheDark/dtbot)](http://goreportcard.com/report/FlameInTheDark/dtbot)
