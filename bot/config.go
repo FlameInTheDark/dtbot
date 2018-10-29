@@ -49,7 +49,7 @@ type LocalesMap map[string]map[string]string
 // WeatherCodesMap symbols for font
 type WeatherCodesMap map[string]string
 
-// Config Main config struct
+// Config Main config struct. Contains all another config structs data.
 type Config struct {
 	Weather      WeatherConfig
 	General      GeneralConfig
@@ -60,12 +60,12 @@ type Config struct {
 	WeatherCodes WeatherCodesMap
 }
 
-// GetLocale returns locale string
+// GetLocale returns locale string by key
 func (c *Config) GetLocale(key string) string {
 	return c.Locales[c.General.Language][key]
 }
 
-// LoadConfig loading configs from file
+// LoadConfig loads configs from file 'config.toml'. Terminate program if error.
 func LoadConfig() *Config {
 	var cfg Config
 	if _, err := toml.DecodeFile("config.toml", &cfg); err != nil {
@@ -77,7 +77,7 @@ func LoadConfig() *Config {
 	return &cfg
 }
 
-// LoadLocales loading locales from file
+// LoadLocales loads locales from file 'locales.json'. Terminate program if error.
 func (c *Config) LoadLocales() {
 	file, e := ioutil.ReadFile("./locales.json")
 	if e != nil {
@@ -99,7 +99,7 @@ func (c *Config) LoadLocales() {
 	return
 }
 
-// LoadWeatherCodes loads weather font codes in map
+// LoadWeatherCodes loads weather font codes from file 'codes.json' in map. Terminate program if error.
 func (c *Config) LoadWeatherCodes() {
 	file, e := ioutil.ReadFile("./codes.json")
 	if e != nil {
