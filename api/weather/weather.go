@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	".github.com/FlameInTheDark/dtbot/bot"
 	"github.com/FlameInTheDark/dtbot/api/location"
+	"github.com/FlameInTheDark/dtbot/bot"
 	"github.com/fogleman/gg"
 )
 
