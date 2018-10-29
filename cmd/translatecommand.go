@@ -3,8 +3,8 @@ package cmd
 import (
 	"fmt"
 
-	"../api/translate"
-	"../bot"
+	"github.com/FlameInTheDark/dtbot/api/translate"
+	"github.com/FlameInTheDark/dtbot/bot"
 )
 
 // TranslateCommand Translate handler

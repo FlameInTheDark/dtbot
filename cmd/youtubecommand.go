@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"../bot"
+	"github.com/FlameInTheDark/dtbot/bot"
 	"github.com/bwmarrin/discordgo"
 )
 

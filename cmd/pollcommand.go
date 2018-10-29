@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"../bot"
+	"github.com/FlameInTheDark/dtbot/bot"
 )
 
 // PollCommand handle polls commands

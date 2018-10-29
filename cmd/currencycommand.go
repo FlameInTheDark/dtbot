@@ -3,8 +3,8 @@ package cmd
 import (
 	"fmt"
 
-	"../api/currency"
-	"../bot"
+	"github.com/FlameInTheDark/dtbot/api/currency"
+	"github.com/FlameInTheDark/dtbot/bot"
 )
 
 // CurrencyCommand Translate handlergt

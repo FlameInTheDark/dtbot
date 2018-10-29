@@ -5,7 +5,7 @@ import (
 	"math/rand"
 	"strconv"
 
-	"../bot"
+	"github.com/FlameInTheDark/dtbot/bot"
 )
 
 // DiceCommand handle dice

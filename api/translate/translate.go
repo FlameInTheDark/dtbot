@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"../../bot"
+	".github.com/FlameInTheDark/dtbot/bot"
 )
 
 // TranslateResponse : Translate API struct

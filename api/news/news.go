@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"../../bot"
+	"github.com/FlameInTheDark/dtbot/bot"
 )
 
 // NewsResponseData : News main struct

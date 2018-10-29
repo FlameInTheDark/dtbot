@@ -3,7 +3,7 @@ package cmd
 import (
 	"strings"
 
-	"../bot"
+	"github.com/FlameInTheDark/dtbot/bot"
 )
 
 // DebugCommand special bot commands handler

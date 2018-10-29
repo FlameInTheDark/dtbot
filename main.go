@@ -7,8 +7,8 @@ import (
 	"strings"
 	"syscall"
 
-	"./bot"
-	"./cmd"
+	"github.com/FlameInTheDark/dtbot/bot"
+	"github.com/FlameInTheDark/dtbot/cmd"
 	"github.com/bwmarrin/discordgo"
 )
 

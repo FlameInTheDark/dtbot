@@ -3,7 +3,7 @@ package cmd
 import (
 	"strconv"
 
-	"../bot"
+	"github.com/FlameInTheDark/dtbot/bot"
 )
 
 // BotCommand special bot commands handler

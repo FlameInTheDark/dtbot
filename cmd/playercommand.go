@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"../bot"
+	"github.com/FlameInTheDark/dtbot/bot"
 )
 
 // PlayerCommand Player handler

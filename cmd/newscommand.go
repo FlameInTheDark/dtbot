@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"../api/news"
-	"../bot"
+	"github.com/FlameInTheDark/dtbot/api/news"
+	"github.com/FlameInTheDark/dtbot/bot"
 )
 
 // NewsCommand News handler

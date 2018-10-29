@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"../bot"
+	"github.com/FlameInTheDark/dtbot/bot"
 )
 
 // HelpCommand shows help

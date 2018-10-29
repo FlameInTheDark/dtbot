@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"../../bot"
+	".github.com/FlameInTheDark/dtbot/bot"
 )
 
 // Data currency structure

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"../api/weather"
-	"../bot"
+	"github.com/FlameInTheDark/dtbot/api/weather"
+	"github.com/FlameInTheDark/dtbot/bot"
 )
 
 // WeatherCommand weather handler
