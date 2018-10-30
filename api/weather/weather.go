@@ -15,14 +15,14 @@ import (
 	"github.com/fogleman/gg"
 )
 
-// Forecast : Weather forecast struct
+// Forecast Weather forecast struct
 type Forecast struct {
 	Cod     string        `json:"cod"`
 	Weather []WeatherData `json:"list"`
 	City    CityData      `json:"city"`
 }
 
-// WeatherData : Weather data struct
+// WeatherData Weather data struct
 type WeatherData struct {
 	Time   int64       `json:"dt"`
 	Main   MainData    `json:"main"`
@@ -36,7 +36,7 @@ func (w WeatherData) TZTime(tz int) time.Time {
 	return time.Unix(w.Time, 0).UTC().Add(time.Hour * time.Duration(tz))
 }
 
-// WDescData : Weather description struct
+// WDescData Weather description struct
 type WDescData struct {
 	Id   int64  `json:"id"`
 	Main string `json:"main"`
@@ -44,7 +44,7 @@ type WDescData struct {
 	Icon string `json:"icon"`
 }
 
-// MainData : Weather main data struct
+// MainData Weather main data struct
 type MainData struct {
 	Temp     float64 `json:"temp"`
 	Pressure float64 `json:"pressure"`
@@ -53,18 +53,18 @@ type MainData struct {
 	Humidity int     `json:"humidity"`
 }
 
-// WindData : Weather wind data struct
+// WindData Weather wind data struct
 type WindData struct {
 	Speed float64 `json:"speed"`
 	Deg   float64 `json:"deg"`
 }
 
-// CloudsData : Weather cloud data struct
+// CloudsData Weather cloud data struct
 type CloudsData struct {
 	All int `json:"all"`
 }
 
-// CityData : Weather city data struct
+// CityData Weather city data struct
 type CityData struct {
 	Name string `json:"name"`
 }
@@ -87,8 +87,6 @@ func DrawOne(temp, hum, clo int, time, icon string) image.Image {
 	// Drawing lines
 	dpc.SetLineWidth(1)
 	dpc.DrawLine(299, 61, 299, 400)
-	dpc.Stroke()
-	dpc.DrawLine(0, 400, 0, 61)
 	dpc.Stroke()
 
 	// Drawing rectangle
