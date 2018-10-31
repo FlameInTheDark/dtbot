@@ -5,3 +5,4 @@ config.toml
 .directory
 .vscode
 youtube-dl
+.idea

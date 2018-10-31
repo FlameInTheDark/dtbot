@@ -138,7 +138,11 @@ func YoutubeCommand(ctx bot.Context) {
 		for _, val := range sess.Queue.Get() {
 			songsNames = append(songsNames, val.Title)
 		}
-		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("youtube")), fmt.Sprintf(ctx.Loc("youtube_list_format"), strings.Join(songsNames, "\n")))
+		repl := strings.Join(songsNames, "\n")
+		if len(repl) > 1024 {
+			repl = repl[:1021] + "..."
+		}
+		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("youtube")), fmt.Sprintf(ctx.Loc("youtube_list_format"), repl))
 	case "clear":
 
 		if sess == nil {

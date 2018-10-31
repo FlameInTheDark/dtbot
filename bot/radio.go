@@ -25,8 +25,7 @@ const (
 )
 
 var (
-	speakers    map[uint32]*gopus.Decoder
-	opusEncoder *gopus.Encoder
+	speakers map[uint32]*gopus.Decoder
 )
 
 // Play start playback
@@ -109,6 +108,7 @@ func (connection *Connection) sendPCM(voice *discordgo.VoiceConnection, pcm <-ch
 	}
 }
 
+// receivePCM receives PCM from discord voice channel
 func (connection *Connection) receivePCM(v *discordgo.VoiceConnection, c chan *discordgo.Packet) {
 	if c == nil {
 		return
