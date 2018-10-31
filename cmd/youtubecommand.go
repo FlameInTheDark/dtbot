@@ -135,16 +135,21 @@ func YoutubeCommand(ctx bot.Context) {
 			return
 		}
 		var songsNames []string
+		var count = 0
+		var countMore = 0
 		for _, val := range sess.Queue.Get() {
-			songsNames = append(songsNames, val.Title)
+			count++
+			if count <= 10 {
+				songsNames = append(songsNames, fmt.Sprintf("[%v]: %v",count,val.Title))
+			} else {
+				countMore++
+			}
 		}
-		repl := strings.Join(songsNames, "\n")
-		if len(repl) > 1024 {
-			repl = repl[:1021] + "..."
+		if countMore > 0 {
+			songsNames = append(songsNames, fmt.Sprintf(ctx.Loc("youtube_list_more_format"),countMore))
 		}
-		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("youtube")), fmt.Sprintf(ctx.Loc("youtube_list_format"), repl))
+		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("youtube")), fmt.Sprintf(ctx.Loc("youtube_list_format"), strings.Join(songsNames, "\n")))
 	case "clear":
-
 		if sess == nil {
 			ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("player_not_in_voice"))
 			return
