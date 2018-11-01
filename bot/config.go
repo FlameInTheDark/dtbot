@@ -24,6 +24,7 @@ type GeneralConfig struct {
 	EmbedColor       int
 	ServiceURL       string
 	MessagePool      int
+	DatabaseName     string
 }
 
 // NewsConfig News config struct

@@ -14,18 +14,20 @@ type Context struct {
 	Message      *discordgo.MessageCreate
 	Args         []string
 
+	DB         *DBWorker
 	Conf       *Config
 	CmdHandler *CommandHandler
 	Sessions   *SessionManager
 	Youtube    *Youtube
 	BotMsg     *BotMessages
 	Data       *DataType
+	Guilds     GuildsMap
 }
 
 // NewContext create new context
 func NewContext(discord *discordgo.Session, guild *discordgo.Guild, textChannel *discordgo.Channel,
 	user *discordgo.User, message *discordgo.MessageCreate, conf *Config, cmdHandler *CommandHandler,
-	sessions *SessionManager, youtube *Youtube, botMsg *BotMessages, dataType *DataType) *Context {
+	sessions *SessionManager, youtube *Youtube, botMsg *BotMessages, dataType *DataType, dbWorker *DBWorker, guilds GuildsMap) *Context {
 	ctx := new(Context)
 	ctx.Discord = discord
 	ctx.Guild = guild
@@ -38,6 +40,8 @@ func NewContext(discord *discordgo.Session, guild *discordgo.Guild, textChannel 
 	ctx.Youtube = youtube
 	ctx.BotMsg = botMsg
 	ctx.Data = dataType
+	ctx.DB = dbWorker
+	ctx.Guilds = guilds
 	return ctx
 }
 
@@ -47,7 +51,7 @@ func (ctx *Context) Loc(key string) string {
 	if len(ctx.Conf.Locales[ctx.Conf.General.Language][key]) == 0 {
 		return ctx.Conf.Locales["en"][key]
 	}
-	return ctx.Conf.Locales[ctx.Conf.General.Language][key]
+	return ctx.Conf.Locales[ctx.GetGuild().Language][key]
 }
 
 // WeatherCode returns unicode symbol of weather font icon
@@ -68,4 +72,8 @@ func (ctx *Context) GetVoiceChannel() *discordgo.Channel {
 		}
 	}
 	return nil
+}
+
+func (ctx *Context) GetGuild() *GuildData {
+	return ctx.Guilds[ctx.Guild.ID]
 }

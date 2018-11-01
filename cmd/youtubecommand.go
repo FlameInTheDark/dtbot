@@ -29,6 +29,7 @@ func YoutubeCommand(ctx bot.Context) {
 			})
 			if err != nil {
 				ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_error"))
+				ctx.DB.Log("Youtube",fmt.Sprintf("player error: %v", err.Error()))
 				return
 			}
 			sess = nsess
@@ -71,23 +72,22 @@ func YoutubeCommand(ctx bot.Context) {
 		for _, arg := range newargs {
 			t, inp, err := ctx.Youtube.Get(arg)
 			if err != nil {
-				ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("error"), true)
-				fmt.Println("error getting input,", err)
-				fmt.Println(arg)
+				//ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("error"), true)
+				ctx.DB.Log("Youtube",fmt.Sprintf("error getting input: %v", err.Error()))
 				return
 			}
 
 			switch t {
 			case bot.ERROR_TYPE:
-				ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("error"), true)
-				fmt.Println("error type", t)
+				//ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("error"), true)
+				ctx.DB.Log("Youtube",fmt.Sprintf("error type: %v", t))
 				return
 			case bot.VIDEO_TYPE:
 				{
 					video, err := ctx.Youtube.Video(*inp)
 					if err != nil {
-						ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("error"), true)
-						fmt.Println("error getting video1,", err)
+						//ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("error"), true)
+						ctx.DB.Log("Youtube",fmt.Sprintf("error getting video1: %v", err.Error()))
 						return
 					}
 					song := bot.NewSong(video.Media, video.Title, arg)
@@ -99,22 +99,22 @@ func YoutubeCommand(ctx bot.Context) {
 				{
 					videos, err := ctx.Youtube.Playlist(*inp)
 					if err != nil {
-						ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("error"), true)
-						fmt.Println("error getting playlist,", err)
+						//ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("error"), true)
+						ctx.DB.Log("Youtube",fmt.Sprintf("error getting playlist: %v", err.Error()))
 						return
 					}
 					for _, v := range *videos {
 						id := v.Id
 						_, i, err := ctx.Youtube.Get(id)
 						if err != nil {
-							ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("error"), true)
-							fmt.Println("error getting video2,", err)
+							//ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("error"), true)
+							ctx.DB.Log("Youtube",fmt.Sprintf("error getting video2: %v", err.Error()))
 							continue
 						}
 						video, err := ctx.Youtube.Video(*i)
 						if err != nil {
-							ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("error"), true)
-							fmt.Println("error getting video3,", err)
+							//ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("error"), true)
+							ctx.DB.Log("Youtube",fmt.Sprintf("error getting video3: %v", err.Error()))
 							return
 						}
 						song := bot.NewSong(video.Media, video.Title, arg)
@@ -230,8 +230,8 @@ func YoutubeShortCommand(ctx bot.Context) {
 			{
 				video, err := ctx.Youtube.Video(*inp)
 				if err != nil {
-					ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("error"), true)
-					fmt.Println("error getting video1,", err)
+					//ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("error"), true)
+					ctx.DB.Log("Youtube",fmt.Sprintf("error getting video1: %v", err.Error()))
 					return
 				}
 				song := bot.NewSong(video.Media, video.Title, arg)
@@ -244,8 +244,8 @@ func YoutubeShortCommand(ctx bot.Context) {
 			{
 				videos, err := ctx.Youtube.Playlist(*inp)
 				if err != nil {
-					ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("error"), true)
-					fmt.Println("error getting playlist,", err)
+					//ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("error"), true)
+					ctx.DB.Log("Youtube",fmt.Sprintf("error getting playlist: %v", err.Error()))
 					return
 				}
 				var isPlaying bool
@@ -253,14 +253,14 @@ func YoutubeShortCommand(ctx bot.Context) {
 					id := v.Id
 					_, i, err := ctx.Youtube.Get(id)
 					if err != nil {
-						ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("error"), true)
-						fmt.Println("error getting video2,", err)
+						//ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("error"), true)
+						ctx.DB.Log("Youtube",fmt.Sprintf("error getting video2: %v", err.Error()))
 						continue
 					}
 					video, err := ctx.Youtube.Video(*i)
 					if err != nil {
-						ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("error"), true)
-						fmt.Println("error getting video3,", err)
+						//ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("error"), true)
+						ctx.DB.Log("Youtube",fmt.Sprintf("error getting video3: %v", err.Error()))
 						return
 					}
 					song := bot.NewSong(video.Media, video.Title, arg)
