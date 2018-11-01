@@ -33,7 +33,7 @@ type GuildsMap map[string]*GuildData
 func NewDBSession(dbname string) *DBWorker {
 	session, err := mgo.Dial(os.Getenv("MONGO_CONN"))
 	if err != nil {
-		fmt.Printf("Mongo connection error: ", err)
+		fmt.Printf("Mongo connection error: %v", err)
 	}
 	count, err := session.DB("dtbot").C("logs").Count()
 	if err != nil {
