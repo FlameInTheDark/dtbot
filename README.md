@@ -58,7 +58,11 @@ Command | Description
 
 Easy way to build docker image for Ubuntu:
 
-Clone reposytory and move inside app directory.  
+Install MongoDB and set environment variable with mongo connection string  
+
+`export MONGO_CONN=mongodb://user:password@some-host.com/dtbot`
+
+Clone repository and move inside app directory.  
 Compile app with command:
 
 `go build`
@@ -86,6 +90,7 @@ Game = "Half-Life 3" # Shows "Play in Half-Life 3" status
 EmbedColor = 4039680 # Default embed color (Hex color converted to int)
 ServiceURL = "https://youtube.com" # Dont touch this value
 MessagePool = 10 # Count of indexed messages for delete
+DatabaseName = "dtbot" # Bot's database name in MongoDB 
 
 [currency]
 Default = ["USD", "EUR"] # Array of default currencies
@@ -110,4 +115,4 @@ Build docker image
 Add environment variable `BOT_TOKEN` with token of discord bot.  
 And run container:
 
-`docker run -d --rm -e BOT_TOKEN=$BOT_TOKEN --name dtbot dtbot:latest`
+`docker run -d --restart always -e BOT_TOKEN=$BOT_TOKEN -e MONGO_CONN=$MONGO_CONN --name dtbot dtbot:latest`
