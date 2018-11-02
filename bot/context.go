@@ -48,7 +48,7 @@ func NewContext(discord *discordgo.Session, guild *discordgo.Guild, textChannel 
 // Loc returns translated string by key
 func (ctx *Context) Loc(key string) string {
 	// Check if translation exist
-	if len(ctx.Conf.Locales[ctx.Conf.General.Language][key]) == 0 {
+	if len(ctx.Conf.Locales[ctx.GetGuild().Language][key]) == 0 {
 		return ctx.Conf.Locales["en"][key]
 	}
 	return ctx.Conf.Locales[ctx.GetGuild().Language][key]

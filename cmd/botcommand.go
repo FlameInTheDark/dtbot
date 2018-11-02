@@ -87,12 +87,14 @@ func BotCommand(ctx bot.Context) {
 						if strings.HasPrefix(ctx.Args[2], "#") {
 							color, err = strconv.ParseInt(ctx.Args[2][1:], 16, 32)
 							if err != nil {
-								ctx.DB.Log("Config", fmt.Sprintf("error setting parameter %v to value %v: %v", ctx.Args[1], target[1], err.Error()))
+								ctx.DB.Log("Config", fmt.Sprintf("error setting parameter %v to value %v: %v", ctx.Args[1], target[2], err.Error()))
+								return
 							}
 						} else {
 							color, err = strconv.ParseInt(ctx.Args[2], 16, 32)
 							if err != nil {
-								ctx.DB.Log("Config", fmt.Sprintf("error setting parameter %v to value %v: %v", ctx.Args[1], target[1], err.Error()))
+								ctx.DB.Log("Config", fmt.Sprintf("error setting parameter %v to value %v: %v", ctx.Args[1], ctx.Args[2], err.Error()))
+								return
 							}
 						}
 						ctx.Guilds[ctx.Guild.ID].EmbedColor = int(color)
