@@ -9,6 +9,15 @@ import (
 	"github.com/FlameInTheDark/dtbot/bot"
 )
 
+func showLogs(ctx *bot.Context, count int) {
+	logs := ctx.DB.LogGet(count)
+	var logString = []string{""}
+	for _, log := range logs {
+		logString = append(logString, fmt.Sprintf("[%v] %v: %v\n", log.Date, log.Module, log.Text))
+	}
+	ctx.ReplyEmbedPM("Logs", strings.Join(logString, ""))
+}
+
 // BotCommand special bot commands handler
 func BotCommand(ctx bot.Context) {
 	if ctx.GetRoles().ExistsName("bot.admin") {
@@ -30,24 +39,14 @@ func BotCommand(ctx bot.Context) {
 			ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_reply"))
 		case "logs":
 			if len(ctx.Args) < 2 {
-				logs := ctx.DB.LogGet(10)
-				var logString = []string{""}
-				for _, log := range logs {
-					logString = append(logString, fmt.Sprintf("[%v] %v: %v\n", log.Date, log.Module, log.Text))
-				}
-				ctx.ReplyEmbedPM("Logs", strings.Join(logString, ""))
+				showLogs(&ctx, 10)
 			} else {
 				count, err := strconv.Atoi(ctx.Args[1])
 				if err != nil {
 					fmt.Println(err)
 					return
 				}
-				logs := ctx.DB.LogGet(count)
-				var logString = []string{""}
-				for _, log := range logs {
-					logString = append(logString, fmt.Sprintf("[%v] %v: %v\n", log.Date, log.Module, log.Text))
-				}
-				ctx.ReplyEmbedPM("Logs", strings.Join(logString, ""))
+				showLogs(&ctx, count)
 			}
 		case "setconf":
 			if len(ctx.Args) > 2 {
@@ -55,7 +54,7 @@ func BotCommand(ctx bot.Context) {
 				switch target[0] {
 				case "language":
 					ctx.Guilds[ctx.Guild.ID].Language = ctx.Args[2]
-					ctx.DB.DBSession.DB(ctx.DB.DBName).C("guilds").Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"language": ctx.Args[2]}})
+					ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"language": ctx.Args[2]}})
 					ctx.ReplyEmbedPM("Config", fmt.Sprintf("Language set to: %v", ctx.Args[2]))
 				case "timezone":
 					tz, err := strconv.Atoi(ctx.Args[1])
@@ -63,20 +62,20 @@ func BotCommand(ctx bot.Context) {
 						ctx.ReplyEmbedPM("Settings", "Not a number")
 					}
 					ctx.Guilds[ctx.Guild.ID].Timezone = tz
-					ctx.DB.DBSession.DB(ctx.DB.DBName).C("guilds").Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"timezone": tz}})
+					ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"timezone": tz}})
 					ctx.ReplyEmbedPM("Config", fmt.Sprintf("Timezone set to: %v", ctx.Args[2]))
 				case "weather":
 					switch target[1] {
 					case "city":
 						ctx.Guilds[ctx.Guild.ID].WeatherCity = ctx.Args[2]
-						ctx.DB.DBSession.DB(ctx.DB.DBName).C("guilds").Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"weathercity": ctx.Args[2]}})
+						ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"weathercity": ctx.Args[2]}})
 						ctx.ReplyEmbedPM("Config", fmt.Sprintf("Weather city set to: %v", ctx.Args[2]))
 					}
 				case "news":
 					switch target[1] {
 					case "country":
 						ctx.Guilds[ctx.Guild.ID].NewsCounty = ctx.Args[2]
-						ctx.DB.DBSession.DB(ctx.DB.DBName).C("guilds").Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"weathercountry": ctx.Args[2]}})
+						ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"weathercountry": ctx.Args[2]}})
 						ctx.ReplyEmbedPM("Config", fmt.Sprintf("News country set to: %v", ctx.Args[2]))
 					}
 				case "embed":
@@ -98,7 +97,7 @@ func BotCommand(ctx bot.Context) {
 							}
 						}
 						ctx.Guilds[ctx.Guild.ID].EmbedColor = int(color)
-						ctx.DB.DBSession.DB(ctx.DB.DBName).C("guilds").Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"embedcolor": int(color)}})
+						ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"embedcolor": int(color)}})
 						ctx.ReplyEmbedPM("Config", fmt.Sprintf("Embed color set to: %v", ctx.Args[2]))
 					}
 				}

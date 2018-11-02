@@ -34,7 +34,6 @@ func main() {
 	youtube = &bot.Youtube{Conf: conf}
 	botMsg = bot.NewMessagesMap()
 	dataType = bot.NewDataType()
-	dbWorker = bot.NewDBSession(conf.General.DatabaseName)
 	discord, err := discordgo.New("Bot " + os.Getenv("BOT_TOKEN"))
 	if err != nil {
 		fmt.Println("Create session error, ", err)
@@ -63,7 +62,9 @@ func main() {
 
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
+	dbWorker = bot.NewDBSession(conf.General.DatabaseName)
 	guilds = dbWorker.InitGuilds(discord, conf)
+	defer dbWorker.DBSession.Close()
 	<-sc
 }
 
@@ -89,7 +90,20 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 		fmt.Println("Error getting guild,", err)
 		return
 	}
-	ctx := bot.NewContext(discord, guild, channel, user, message, conf, CmdHandler, Sessions, youtube, botMsg, dataType, dbWorker, guilds)
+	ctx := bot.NewContext(
+		discord,
+		guild,
+		channel,
+		user,
+		message,
+		conf,
+		CmdHandler,
+		Sessions,
+		youtube,
+		botMsg,
+		dataType,
+		dbWorker,
+		guilds)
 	ctx.Args = args[1:]
 	c := *command
 	c(*ctx)

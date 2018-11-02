@@ -91,3 +91,7 @@ func (db *DBWorker) LogGet(count int) []dbLog {
 	db.DBSession.DB(db.DBName).C("logs").Find(nil).Sort("-$natural").Limit(count).All(&log)
 	return log
 }
+
+func (db *DBWorker) Guilds() *mgo.Collection {
+	return db.DBSession.DB(db.DBName).C("guilds")
+}

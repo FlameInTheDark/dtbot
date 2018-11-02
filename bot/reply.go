@@ -41,7 +41,7 @@ func (emb *NewEmbedStruct) Color(color int) *NewEmbedStruct {
 	return emb
 }
 
-// AttachImg adds attached image to embed frim io.Reader
+// AttachImg adds attached image to embed from io.Reader
 func (emb *NewEmbedStruct) AttachImg(name string, file io.Reader) *NewEmbedStruct {
 	emb.Embed.Image = &discordgo.MessageEmbedImage{URL: "attachment://" + name}
 	emb.Files = append(emb.Files, &discordgo.File{Name: name, Reader: file})
@@ -91,7 +91,7 @@ func (emb *NewEmbedStruct) GetEmbed() *discordgo.MessageEmbed {
 	return emb.Embed
 }
 
-// Reply reply on massege
+// Reply reply on massage
 func (ctx *Context) Reply(content string) *discordgo.Message {
 	msg, err := ctx.Discord.ChannelMessageSend(ctx.TextChannel.ID, content)
 	if err != nil {
@@ -102,7 +102,7 @@ func (ctx *Context) Reply(content string) *discordgo.Message {
 	return msg
 }
 
-// ReplyFile reply on massege with file
+// ReplyFile reply on massage with file
 func (ctx *Context) ReplyFile(name string, r io.Reader) *discordgo.Message {
 	msg, err := ctx.Discord.ChannelFileSend(ctx.TextChannel.ID, name, r)
 	if err != nil {
