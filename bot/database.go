@@ -26,6 +26,7 @@ type GuildData struct {
 	NewsCounty  string
 	Language    string
 	Timezone    int
+	EmbedColor  int
 }
 
 type GuildsMap map[string]*GuildData
@@ -59,6 +60,7 @@ func (db *DBWorker) InitGuilds(sess *discordgo.Session, conf *Config) GuildsMap 
 				NewsCounty:  conf.News.Country,
 				Language:    conf.General.Language,
 				Timezone:    conf.General.Timezone,
+				EmbedColor:  conf.General.EmbedColor,
 			}
 			db.DBSession.DB(db.DBName).C("guilds").Insert(newData)
 			data[guild.ID] = newData
@@ -74,7 +76,7 @@ func (db *DBWorker) InitGuilds(sess *discordgo.Session, conf *Config) GuildsMap 
 			loaded++
 		}
 	}
-	fmt.Printf("Guilds loaded [%v], initiatet [%v]", loaded, initiated)
+	fmt.Printf("Guilds loaded [%v], initiatet [%v]\n", loaded, initiated)
 	return data
 }
 

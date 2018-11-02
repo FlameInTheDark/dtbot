@@ -62,7 +62,7 @@ func main() {
 	fmt.Println("Bot is now running.")
 
 	sc := make(chan os.Signal, 1)
-	guilds = dbWorker.InitGuilds(discord,conf)
+	guilds = dbWorker.InitGuilds(discord, conf)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
 	<-sc
 }
