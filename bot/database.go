@@ -47,7 +47,7 @@ func NewDBSession(dbname string) *DBWorker {
 // InitGuilds initialize guilds in database
 func (db *DBWorker) InitGuilds(sess *discordgo.Session, conf *Config) GuildsMap {
 	var data = make(GuildsMap)
-	var loaded, initiated = 0, 0
+	var loaded, initialized = 0, 0
 	for _, guild := range sess.State.Guilds {
 		count, err := db.DBSession.DB(db.DBName).C("guilds").Find(bson.M{"id": guild.ID}).Count()
 		if err != nil {
@@ -64,7 +64,7 @@ func (db *DBWorker) InitGuilds(sess *discordgo.Session, conf *Config) GuildsMap 
 			}
 			db.DBSession.DB(db.DBName).C("guilds").Insert(newData)
 			data[guild.ID] = newData
-			initiated++
+			initialized++
 		} else {
 			var newData = &GuildData{}
 			db.DBSession.DB(db.DBName).C("guilds").Find(bson.M{"id": guild.ID}).One(newData)
@@ -76,7 +76,7 @@ func (db *DBWorker) InitGuilds(sess *discordgo.Session, conf *Config) GuildsMap 
 			loaded++
 		}
 	}
-	fmt.Printf("Guilds loaded [%v], initiatet [%v]\n", loaded, initiated)
+	fmt.Printf("Guilds loaded [%v], initialized [%v]\n", loaded, initialized)
 	return data
 }
 
