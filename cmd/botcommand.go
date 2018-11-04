@@ -18,6 +18,7 @@ func showLogs(ctx *bot.Context, count int) {
 	ctx.ReplyEmbedPM("Logs", strings.Join(logString, ""))
 }
 
+// TODO: I should make it more tasty and remove all "switch/case"!
 // BotCommand special bot commands handler
 func BotCommand(ctx bot.Context) {
 	if ctx.GetRoles().ExistsName("bot.admin") {
@@ -52,18 +53,24 @@ func BotCommand(ctx bot.Context) {
 			if len(ctx.Args) > 2 {
 				target := strings.Split(ctx.Args[1], ".")
 				switch target[0] {
-				case "language":
-					ctx.Guilds[ctx.Guild.ID].Language = ctx.Args[2]
-					ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"language": ctx.Args[2]}})
-					ctx.ReplyEmbedPM("Config", fmt.Sprintf("Language set to: %v", ctx.Args[2]))
-				case "timezone":
-					tz, err := strconv.Atoi(ctx.Args[1])
-					if err != nil {
-						ctx.ReplyEmbedPM("Settings", "Not a number")
+				case "general":
+					switch target[1] {
+					case "language":
+						ctx.Guilds[ctx.Guild.ID].Language = ctx.Args[2]
+						ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"language": ctx.Args[2]}})
+						ctx.ReplyEmbedPM("Config", fmt.Sprintf("Language set to: %v", ctx.Args[2]))
+					case "timezone":
+						tz, err := strconv.Atoi(ctx.Args[1])
+						if err != nil {
+							ctx.ReplyEmbedPM("Settings", "Not a number")
+						}
+						ctx.Guilds[ctx.Guild.ID].Timezone = tz
+						ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"timezone": tz}})
+						ctx.ReplyEmbedPM("Config", fmt.Sprintf("Timezone set to: %v", ctx.Args[2]))
+					case "nick":
+						ctx.Discord.GuildMemberNickname(ctx.Guild.ID,"@me",ctx.Args[2])
+						ctx.ReplyEmbedPM("Config",fmt.Sprintf("Nickname changed to %v",ctx.Args[2]))
 					}
-					ctx.Guilds[ctx.Guild.ID].Timezone = tz
-					ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"timezone": tz}})
-					ctx.ReplyEmbedPM("Config", fmt.Sprintf("Timezone set to: %v", ctx.Args[2]))
 				case "weather":
 					switch target[1] {
 					case "city":
