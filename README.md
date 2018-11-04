@@ -28,11 +28,14 @@
 
 Bot commands
 
+To use the `!b` command you need to add a guild role named `bot.admin` and add it to you!
+
 Command | Description
 ------- | -----------
 `!v join` | Add bot into you voice channel
 `!v leave` | Remove bot from voice channel
 `!b clear [from_num]` | Remove bot's messages `!b clear` or `!b clear 3` removes all messages from 3rd message
+`!b setconf [parameter] [value]` | Sets the bot configuration for your channel.
 `!help` | Shows help
 `!help [command]` | Detail help `!help !y`
 `!play [youtube_url]` | Adds track (or playlist) in queue and start playing
@@ -53,6 +56,17 @@ Command | Description
 `!p new [fields]` | Creates new poll `!p new field one \| field two \| field three`
 `!p vote [field_num]` | Votes in poll
 `!p end` | Ends poll and shows results
+
+## Set config parameters
+
+Parameter | Description
+--------- | -----------
+`general.language [string]` | Sets bot language
+`general.timezone [num]` | Sets bot timezone
+`general.nixk` | Sets bot nickname
+`embed.color` | Sets bot embed color
+`news.country` | Sets bot news country
+`weather.city` | Sets default city for weather
 
 ## Build for docker
 
