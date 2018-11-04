@@ -63,10 +63,10 @@ Parameter | Description
 --------- | -----------
 `general.language [string]` | Sets bot language
 `general.timezone [num]` | Sets bot timezone
-`general.nixk` | Sets bot nickname
-`embed.color` | Sets bot embed color
-`news.country` | Sets bot news country
-`weather.city` | Sets default city for weather
+`general.nick [string]` | Sets bot nickname
+`embed.color [hex color like #007700]` | Sets bot embed color
+`news.country [string]` | Sets bot news country
+`weather.city [string]` | Sets default city for weather
 
 ## Build for docker
 
