@@ -15,19 +15,36 @@ func CronCommand(ctx bot.Context) {
 		case "add":
 			if len(ctx.Args) > 7 {
 				if ctx.Args[0] != "*" && ctx.Args[1] != "*" && ctx.Args[2] != "*" {
-					switch ctx.Args[7] {
-					case "!w":
-						if len(ctx.Args) > 7 {
-							if !ctx.Data.CronIsFull(&ctx) {
-								cmd := strings.Join(ctx.Args[1:], " ")
-								cronTime := strings.Join(ctx.Args[1:7], " ")
-								ctx.Args = ctx.Args[8:]
-								id, _ := ctx.Cron.AddFunc(cronTime, func() { WeatherCommand(ctx) })
-								ctx.Data.AddCronJob(&ctx, id, cmd)
-								ctx.ReplyEmbedPM("Cron", fmt.Sprintf("Job added: [%v] [%v]", cmd, id))
-							} else {
-								ctx.ReplyEmbedPM("Cron", "Schedule is full")
-							}
+					if len(ctx.Args) > 7 {
+						if !ctx.Data.CronIsFull(&ctx) {
+							cmd := strings.Join(ctx.Args[1:], " ")
+							cronTime := strings.Join(ctx.Args[1:7], " ")
+							trigger := ctx.Args[7]
+							ctx.Args = ctx.Args[8:]
+							id, _ := ctx.Cron.AddFunc(cronTime, func() {
+								switch trigger {
+								case "!w":
+									WeatherCommand(ctx)
+								case "!c":
+									CurrencyCommand(ctx)
+								case "!p":
+									PollCommand(ctx)
+								case "!v":
+									VoiceCommand(ctx)
+								case "!y":
+									YoutubeCommand(ctx)
+								case "!play":
+									YoutubeShortCommand(ctx)
+								case "!b":
+									BotCommand(ctx)
+								case "!n":
+									NewsCommand(ctx)
+								}
+							})
+							ctx.Data.AddCronJob(&ctx, id, cmd)
+							ctx.ReplyEmbedPM("Cron", fmt.Sprintf("Job added: [%v] [%v]", cmd, id))
+						} else {
+							ctx.ReplyEmbedPM("Cron", "Schedule is full")
 						}
 					}
 				}
@@ -52,7 +69,7 @@ func CronCommand(ctx bot.Context) {
 			}
 			var reply = []string{"Jobs:"}
 			for key,val := range s.CronJobs {
-				reply = append(reply, fmt.Sprintf("Job [%v] ID [%v]", val, key))
+				reply = append(reply, fmt.Sprintf("[%v] - [%v]", key, val))
 			}
 			ctx.ReplyEmbedPM("Cron", strings.Join(reply,"\n"))
 		}
