@@ -2,6 +2,7 @@ package bot
 
 import (
 	"github.com/bwmarrin/discordgo"
+	"gopkg.in/robfig/cron.v2"
 )
 
 // Context : Bot context structure
@@ -14,7 +15,9 @@ type Context struct {
 	Message      *discordgo.MessageCreate
 	Args         []string
 
-	DB         *DBWorker
+	DB   *DBWorker
+	Cron *cron.Cron
+
 	Conf       *Config
 	CmdHandler *CommandHandler
 	Sessions   *SessionManager
@@ -27,7 +30,7 @@ type Context struct {
 // NewContext create new context
 func NewContext(discord *discordgo.Session, guild *discordgo.Guild, textChannel *discordgo.Channel,
 	user *discordgo.User, message *discordgo.MessageCreate, conf *Config, cmdHandler *CommandHandler,
-	sessions *SessionManager, youtube *Youtube, botMsg *BotMessages, dataType *DataType, dbWorker *DBWorker, guilds GuildsMap) *Context {
+	sessions *SessionManager, youtube *Youtube, botMsg *BotMessages, dataType *DataType, dbWorker *DBWorker, guilds GuildsMap, botCron *cron.Cron) *Context {
 	ctx := new(Context)
 	ctx.Discord = discord
 	ctx.Guild = guild
@@ -42,6 +45,7 @@ func NewContext(discord *discordgo.Session, guild *discordgo.Guild, textChannel 
 	ctx.Data = dataType
 	ctx.DB = dbWorker
 	ctx.Guilds = guilds
+	ctx.Cron = botCron
 	return ctx
 }
 

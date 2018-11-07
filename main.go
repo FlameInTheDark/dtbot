@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"gopkg.in/robfig/cron.v2"
 	"os"
 	"os/signal"
 	"strings"
@@ -24,9 +25,11 @@ var (
 	dataType *bot.DataType
 	dbWorker *bot.DBWorker
 	guilds   bot.GuildsMap
+	botCron  *cron.Cron
 )
 
 func main() {
+	botCron = cron.New()
 	conf = bot.LoadConfig()
 	CmdHandler = bot.NewCommandHandler()
 	registerCommands()
@@ -64,6 +67,8 @@ func main() {
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
 	dbWorker = bot.NewDBSession(conf.General.DatabaseName)
 	guilds = dbWorker.InitGuilds(discord, conf)
+	botCron.Start()
+	defer botCron.Stop()
 	defer dbWorker.DBSession.Close()
 	<-sc
 }
@@ -103,7 +108,8 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 		botMsg,
 		dataType,
 		dbWorker,
-		guilds)
+		guilds,
+		botCron)
 	ctx.Args = args[1:]
 	c := *command
 	c(*ctx)
@@ -124,4 +130,5 @@ func registerCommands() {
 	CmdHandler.Register("!p", cmd.PollCommand)
 	CmdHandler.Register("!dice", cmd.DiceCommand)
 	CmdHandler.Register("!help", cmd.HelpCommand)
+	CmdHandler.Register("!cron", cmd.CronCommand)
 }

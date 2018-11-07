@@ -1,10 +1,18 @@
 package bot
 
-import "errors"
+import (
+	"errors"
+	"gopkg.in/robfig/cron.v2"
+)
 
 // DataType contains some data
 type DataType struct {
 	Polls map[string]*PollType
+	GuildSchedules map[string]*GuildSchedule
+}
+
+type GuildSchedule struct {
+	CronJobs map[cron.EntryID]string
 }
 
 // PollType contains poll's data
@@ -19,6 +27,7 @@ type PollType struct {
 func NewDataType() *DataType {
 	var newData = new(DataType)
 	newData.Polls = make(map[string]*PollType)
+	newData.GuildSchedules = make(map[string]*GuildSchedule)
 	return newData
 }
 
@@ -61,4 +70,45 @@ func (data *DataType) EndPoll(ctx *Context) (results map[string]int, err error) 
 	}
 	delete(data.Polls, ctx.Guild.ID)
 	return newResults, nil
+}
+
+func (data *DataType) AddCronJob(ctx *Context,id cron.EntryID, cmd string) error {
+	if _, ok := data.GuildSchedules[ctx.Guild.ID]; !ok {
+		data.GuildSchedules[ctx.Guild.ID] = &GuildSchedule{CronJobs:make(map[cron.EntryID]string)}
+		data.GuildSchedules[ctx.Guild.ID].CronJobs[id] = cmd
+		return nil
+	} else {
+		data.GuildSchedules[ctx.Guild.ID].CronJobs[id] = cmd
+		return nil
+	}
+	return errors.New("Error adding cron job")
+}
+
+func (data *DataType) CronIsFull(ctx *Context) bool {
+	if _,ok := data.GuildSchedules[ctx.Guild.ID]; ok {
+		if len(data.GuildSchedules[ctx.Guild.ID].CronJobs) >= 10 {
+			return true
+		}
+	}
+	return false
+}
+
+func (data *DataType) CronRemove(ctx *Context, id cron.EntryID) error {
+	if _,ok := data.GuildSchedules[ctx.Guild.ID]; ok {
+		if _,ok :=data.GuildSchedules[ctx.Guild.ID].CronJobs[id]; ok {
+			ctx.Cron.Remove(id)
+			delete(data.GuildSchedules[ctx.Guild.ID].CronJobs, id)
+			return nil
+		}
+	}
+	return errors.New("Job not found")
+}
+
+func (data *DataType) CronList(ctx *Context) (*GuildSchedule, error) {
+	if _,ok := data.GuildSchedules[ctx.Guild.ID]; ok {
+		if len(data.GuildSchedules[ctx.Guild.ID].CronJobs) > 0 {
+			return data.GuildSchedules[ctx.Guild.ID], nil
+		}
+	}
+	return nil, errors.New("Schedule is empty")
 }
