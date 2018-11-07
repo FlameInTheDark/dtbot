@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"strings"
+	"time"
 
 	"github.com/FlameInTheDark/dtbot/bot"
 )
@@ -19,6 +20,8 @@ func DebugCommand(ctx bot.Context) {
 				roles = append(roles, val.Name)
 			}
 			ctx.ReplyEmbedPM("Debug", strings.Join(roles, ", "))
+		case "time":
+			ctx.ReplyEmbedPM("Debug", time.Now().String())
 		}
 	} else {
 		ctx.ReplyEmbedPM("Debug", "Not a Admin")
