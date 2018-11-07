@@ -114,7 +114,7 @@ func DrawOne(temp, hum, clo int, time, icon string) image.Image {
 }
 
 // GetWeatherImage returns buffer with weather image
-func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
+func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, cityName string, err error) {
 	var (
 		forecast Forecast
 		city     = ctx.GetGuild().WeatherCity
@@ -129,6 +129,8 @@ func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 		fmt.Printf("Location API: %v", err)
 		return
 	}
+
+	cityName = loc.Geonames[0].CountryName + ", " + loc.Geonames[0].Name
 
 	// Get coordinates and get weather data
 	newlat, newlng := loc.GetCoordinates()
