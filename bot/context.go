@@ -2,7 +2,6 @@ package bot
 
 import (
 	"github.com/bwmarrin/discordgo"
-	"github.com/pkg/errors"
 	"gopkg.in/robfig/cron.v2"
 )
 
@@ -53,14 +52,11 @@ func NewContext(discord *discordgo.Session, guild *discordgo.Guild, textChannel 
 // Loc returns translated string by key
 func (ctx *Context) Loc(key string) string {
 	// Check if translation exist
-	g, err := ctx.GetGuild()
-	if err != nil {
+
+	if len(ctx.Conf.Locales[ctx.GetGuild().Language][key]) == 0 {
 		return ctx.Conf.Locales["en"][key]
 	}
-	if len(ctx.Conf.Locales[g.Language][key]) == 0 {
-		return ctx.Conf.Locales["en"][key]
-	}
-	return ctx.Conf.Locales[g.Language][key]
+	return ctx.Conf.Locales[ctx.GetGuild().Language][key]
 }
 
 // WeatherCode returns unicode symbol of weather font icon
@@ -83,9 +79,19 @@ func (ctx *Context) GetVoiceChannel() *discordgo.Channel {
 	return nil
 }
 
-func (ctx *Context) GetGuild() (*GuildData, error) {
-	if _,ok := ctx.Guilds[ctx.Guild.ID]; ok {
-		return ctx.Guilds[ctx.Guild.ID], nil
+func (ctx *Context) GetGuild() *GuildData {
+	if _, ok := ctx.Guilds[ctx.Guild.ID]; !ok {
+		newData := &GuildData{
+			ID:          ctx.Guild.ID,
+			WeatherCity: ctx.Conf.Weather.City,
+			NewsCounty:  ctx.Conf.News.Country,
+			Language:    ctx.Conf.General.Language,
+			Timezone:    ctx.Conf.General.Timezone,
+			EmbedColor:  ctx.Conf.General.EmbedColor,
+		}
+		ctx.DB.DBSession.DB(ctx.DB.DBName).C("guilds").Insert(newData)
+		ctx.Guilds[ctx.Guild.ID] = newData
+		return ctx.Guilds[ctx.Guild.ID]
 	}
-	return nil, errors.New("guild not found")
+	return ctx.Guilds[ctx.Guild.ID]
 }
