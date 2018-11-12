@@ -74,33 +74,37 @@ func DrawOne(temp, hum, clo int, time, icon string) image.Image {
 	dpc := gg.NewContext(300, 400)
 	dpc.SetRGBA(0, 0, 0, 0)
 	dpc.Clear()
-	dpc.SetRGB(1, 1, 1)
-
 	// Drawing weather icon
+
 	dpc.Push()
 	if err := dpc.LoadFontFace("owfont-regular.ttf", 140); err != nil {
 		fmt.Printf("Weather font: %v", err)
+	}
+	if temp < 0 {
+		dpc.SetRGB255(51,179,216)
+	} else {
+		dpc.SetRGB255(231,81,56)
 	}
 	dpc.DrawStringAnchored(icon, 150, 145, 0.5, 0.5)
 	dpc.Pop()
 
 	// Drawing lines
-	dpc.SetLineWidth(1)
+	dpc.SetRGB255(76,90,109)
+	dpc.SetLineWidth(6)
 	dpc.DrawLine(299, 61, 299, 400)
 	dpc.Stroke()
 
 	// Drawing rectangle
-	dpc.DrawRectangle(0, 0, 300, 60)
-	dpc.SetRGBA(1, 1, 1, 0.6)
-	dpc.Fill()
+	//dpc.DrawRectangle(0, 0, 300, 60)
+	//dpc.SetRGBA(1, 1, 1, 0.6)
+	//dpc.Fill()
 
 	// Drawing hummidity and cloudnes
 	if err := dpc.LoadFontFace("arial.ttf", 50); err != nil {
 		fmt.Printf("Image font: %v", err)
 	}
-	dpc.SetRGB(256, 256, 256)
+	dpc.SetRGB255(255,255,255)
 	dpc.DrawStringAnchored(time, 150, 30, 0.5, 0.5)
-	dpc.SetRGB(1, 1, 1)
 	dpc.DrawStringAnchored(fmt.Sprintf("H: %v%%", hum), 150, 305, 0.5, 0.5)
 	dpc.DrawStringAnchored(fmt.Sprintf("C: %v%%", clo), 150, 355, 0.5, 0.5)
 
@@ -149,7 +153,7 @@ func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, cityName string, err 
 
 	// Drawing forecast
 	dc := gg.NewContext(1500, 400)
-	dc.SetRGBA(0, 0, 0, 0.7)
+	dc.SetRGBA255(36, 48, 64, 255)
 	dc.Clear()
 	for i := 0; i < 6; i++ {
 		dc.DrawImage(DrawOne(int(forecast.Weather[i].Main.TempMin),
