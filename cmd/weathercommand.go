@@ -10,7 +10,7 @@ import (
 func WeatherCommand(ctx bot.Context) {
 	buf, city, err := weather.GetWeatherImage(&ctx)
 	if err != nil {
-		bot.NewEmbed("").Color(0xff0000).Field(fmt.Sprintf("%v:", ctx.Loc("weather_error")), err.Error(), false).Footer(ctx.Loc("requested_by") + ": " + ctx.User.Username).Send(&ctx)
+		ctx.DB.Log("Weather",err.Error())
 		return
 	}
 	ctx.ReplyEmbedAttachment(fmt.Sprintf("%v:", ctx.Loc("weather")), city, "weather.png", buf)

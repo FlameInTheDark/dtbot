@@ -15,11 +15,11 @@ type Data struct {
 	PreviousDate string            `json:"PreviousDate"`
 	PreviousURL  string            `json:"PreviousURL"`
 	Timestamp    string            `json:"Timestamp"`
-	Valutes      map[string]Valute `json:"Valute"`
+	Currencies      map[string]Currency `json:"Valute"`
 }
 
-// Valute valute structure
-type Valute struct {
+// Currency structure
+type Currency struct {
 	ID       string
 	NumCode  string
 	CharCode string
@@ -63,7 +63,7 @@ func GetCurrency(ctx *bot.Context) (response string) {
 	// List of currencies
 	if args[0] == "list" {
 		response = fmt.Sprintf("%v: ", ctx.Loc("available_currencies"))
-		for key := range newData.Valutes {
+		for key := range newData.Currencies {
 			response = fmt.Sprintf("%v %v", response, key)
 		}
 		return
@@ -72,13 +72,13 @@ func GetCurrency(ctx *bot.Context) (response string) {
 	var arrow string
 	// Current currency
 	for _, arg := range args {
-		if newData.Valutes[arg].Value > 0 {
-			if newData.Valutes[arg].Value > newData.Valutes[arg].Previous {
+		if newData.Currencies[arg].Value > 0 {
+			if newData.Currencies[arg].Value > newData.Currencies[arg].Previous {
 				arrow = "▲"
 			} else {
 				arrow = "▼"
 			}
-			response = fmt.Sprintf("%v%v\n`%v %v  %0.2v`\n", response, newData.Valutes[arg].Name, newData.Valutes[arg].Value, arrow, newData.Valutes[arg].Value-newData.Valutes[arg].Previous)
+			response = fmt.Sprintf("%v%v\n`%v %v = %v RUB %v  %0.2v`\n", response, newData.Currencies[arg].Name, newData.Currencies[arg].Nominal, newData.Currencies[arg].CharCode, newData.Currencies[arg].Value, arrow, newData.Currencies[arg].Value - newData.Currencies[arg].Previous)
 		}
 	}
 	return
