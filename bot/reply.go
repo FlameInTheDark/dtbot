@@ -62,17 +62,6 @@ func (emb *NewEmbedStruct) AttachThumbURL(url string) *NewEmbedStruct {
 
 // Send send embed message to Discord
 func (emb *NewEmbedStruct) Send(ctx *Context) *discordgo.Message {
-	perm, err := ctx.Discord.State.UserChannelPermissions("@me",ctx.TextChannel.ID)
-	if err != nil {
-		fmt.Println("Error whilst getting bot permissions, ",err)
-		return nil
-	}
-
-	if perm < discordgo.PermissionSendMessages {
-		fmt.Println("Can't send messages, permissions denied.")
-		return nil
-	}
-
 	msg, err := ctx.Discord.ChannelMessageSendComplex(ctx.TextChannel.ID, emb.MessageSend)
 	if err != nil {
 		fmt.Println("Error whilst sending embed message, ", err)
