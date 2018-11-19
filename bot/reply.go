@@ -113,20 +113,10 @@ func (ctx *Context) ReplyFile(name string, r io.Reader) *discordgo.Message {
 	return msg
 }
 
-func getEmbColor(ctx *Context) int {
-	guild, err := ctx.GetGuild()
-	if err != nil {
-		fmt.Println(err)
-		return ctx.Conf.General.EmbedColor
-	} else {
-		return guild.EmbedColor
-	}
-}
-
 // EditEmbed edits embed by id
 func (ctx *Context) EditEmbed(ID, name, value string, inline bool) {
 	ctx.Discord.ChannelMessageEditEmbed(ctx.TextChannel.ID, ID, NewEmbed("").
-		Color(getEmbColor(ctx)).
+		Color(ctx.GetGuild().EmbedColor).
 		Footer(fmt.Sprintf("%v %v", ctx.Loc("requested_by"), ctx.User.Username)).
 		Field(name, value, inline).
 		GetEmbed())
@@ -137,7 +127,7 @@ func (ctx *Context) ReplyEmbed(name, content string) *discordgo.Message {
 	return NewEmbed("").
 		Field(name, content, false).
 		Footer(ctx.Loc("requested_by") + ": " + ctx.User.Username).
-		Color(getEmbColor(ctx)).
+		Color(ctx.GetGuild().EmbedColor).
 		Send(ctx)
 }
 
@@ -146,7 +136,7 @@ func (ctx *Context) ReplyEmbedPM(name, content string) *discordgo.Message {
 	return NewEmbed("").
 		Field(name, content, false).
 		Footer(ctx.Loc("requested_by") + ": " + ctx.User.Username).
-		Color(getEmbColor(ctx)).
+		Color(ctx.GetGuild().EmbedColor).
 		SendPM(ctx)
 }
 
@@ -156,6 +146,6 @@ func (ctx *Context) ReplyEmbedAttachment(name, content, fileName string, file io
 		Field(name, content, false).
 		AttachImg(fileName, file).
 		Footer(ctx.Loc("requested_by") + ": " + ctx.User.Username).
-		Color(getEmbColor(ctx)).
+		Color(ctx.GetGuild().EmbedColor).
 		Send(ctx)
 }

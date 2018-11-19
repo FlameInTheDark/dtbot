@@ -95,16 +95,21 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 		fmt.Println("Error getting guild,", err)
 		return
 	}
-	perm, err := discord.State.UserChannelPermissions("424221765321883658",message.ChannelID)
+	// Checking permissions
+	perm, err := discord.State.UserChannelPermissions(botId, message.ChannelID)
 	if err != nil {
 		fmt.Printf("Error whilst getting bot permissions in guild \"%v\", %v", guild.ID ,err)
 		return
 	}
 
-	if perm < discordgo.PermissionVoiceSpeak + discordgo.PermissionVoiceConnect + discordgo.PermissionSendMessages + discordgo.PermissionEmbedLinks + discordgo.PermissionAttachFiles{
-		fmt.Println("Permissions denied.")
+	if perm&discordgo.PermissionSendMessages != discordgo.PermissionSendMessages ||
+		perm&discordgo.PermissionVoiceConnect != discordgo.PermissionVoiceConnect ||
+		perm&discordgo.PermissionVoiceSpeak != discordgo.PermissionVoiceSpeak ||
+		perm&discordgo.PermissionAttachFiles != discordgo.PermissionAttachFiles{
+		fmt.Printf("Permissions denied on guild %v.", guild.ID)
 		return
 	}
+
 	ctx := bot.NewContext(
 		discord,
 		guild,

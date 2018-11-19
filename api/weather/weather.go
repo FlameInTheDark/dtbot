@@ -121,15 +121,8 @@ func DrawOne(temp, hum, clo int, time, icon string) image.Image {
 func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, cityName string, err error) {
 	var (
 		forecast Forecast
-		city     string
+		city     = ctx.GetGuild().WeatherCity
 	)
-
-	g, err := ctx.GetGuild()
-	if err != nil {
-		city = "";
-	}
-
-	city = g.WeatherCity
 
 	if len(ctx.Args) > 0 {
 		city = strings.Join(ctx.Args, "+")
