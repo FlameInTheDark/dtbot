@@ -80,14 +80,14 @@ func (ctx *Context) GetVoiceChannel() *discordgo.Channel {
 			// Check voice permissions
 			perm, err := ctx.Discord.State.UserChannelPermissions(ctx.BotID, state.ChannelID)
 			if err != nil {
-				fmt.Printf("Error whilst getting bot permissions in guild \"%v\", %v\n", ctx.Guild.ID, err)
+				ctx.DB.Log("Voice", fmt.Sprintf("Error whilst getting bot permissions in guild \"%v\", %v\n", ctx.Guild.ID, err))
 				return nil
 			}
 
 			if 	perm&discordgo.PermissionVoiceConnect != discordgo.PermissionVoiceConnect ||
 				perm&discordgo.PermissionVoiceSpeak != discordgo.PermissionVoiceSpeak ||
 				perm&0x00000400 != 0x00000400{
-				fmt.Printf("Voice permissions denied on guild \"%v\"\n", ctx.Guild.ID)
+				ctx.DB.Log("Voice", fmt.Sprintf("Voice permissions denied on guild \"%v\"\n", ctx.Guild.ID))
 				return nil
 			}
 
