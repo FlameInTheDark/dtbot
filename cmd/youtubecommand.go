@@ -211,12 +211,12 @@ func YoutubeShortCommand(ctx bot.Context) {
 			ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_must_be_in_voice"))
 			return
 		}
-		nsess, err := ctx.Sessions.Join(ctx.Discord, ctx.Guild.ID, vc.ID, bot.JoinProperties{
+		nsess, serr := ctx.Sessions.Join(ctx.Discord, ctx.Guild.ID, vc.ID, bot.JoinProperties{
 			Muted:    false,
 			Deafened: true,
 		})
 		sess = nsess
-		if err != nil {
+		if serr != nil {
 			ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_error"))
 			return
 		}
