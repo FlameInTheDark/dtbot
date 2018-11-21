@@ -1,12 +1,15 @@
 package bot
 
 import (
+	"fmt"
 	"github.com/bwmarrin/discordgo"
 	"gopkg.in/robfig/cron.v2"
 )
 
 // Context : Bot context structure
 type Context struct {
+	BotID string
+
 	Discord      *discordgo.Session
 	Guild        *discordgo.Guild
 	VoiceChannel *discordgo.Channel
@@ -28,10 +31,11 @@ type Context struct {
 }
 
 // NewContext create new context
-func NewContext(discord *discordgo.Session, guild *discordgo.Guild, textChannel *discordgo.Channel,
+func NewContext(botID string, discord *discordgo.Session, guild *discordgo.Guild, textChannel *discordgo.Channel,
 	user *discordgo.User, message *discordgo.MessageCreate, conf *Config, cmdHandler *CommandHandler,
 	sessions *SessionManager, youtube *Youtube, botMsg *BotMessages, dataType *DataType, dbWorker *DBWorker, guilds GuildsMap, botCron *cron.Cron) *Context {
 	ctx := new(Context)
+	ctx.BotID = botID
 	ctx.Discord = discord
 	ctx.Guild = guild
 	ctx.TextChannel = textChannel
@@ -69,8 +73,24 @@ func (ctx *Context) GetVoiceChannel() *discordgo.Channel {
 	if ctx.VoiceChannel != nil {
 		return ctx.VoiceChannel
 	}
+
+
 	for _, state := range ctx.Guild.VoiceStates {
 		if state.UserID == ctx.User.ID {
+			// Check voice permissions
+			perm, err := ctx.Discord.State.UserChannelPermissions(ctx.BotID, state.ChannelID)
+			if err != nil {
+				fmt.Printf("Error whilst getting bot permissions in guild \"%v\", %v\n", ctx.Guild.ID, err)
+				return nil
+			}
+
+			if 	perm&discordgo.PermissionVoiceConnect != discordgo.PermissionVoiceConnect ||
+				perm&discordgo.PermissionVoiceSpeak != discordgo.PermissionVoiceSpeak ||
+				perm&0x00000400 != 0x00000400{
+				fmt.Printf("Voice permissions denied on guild \"%v\"\n", ctx.Guild.ID)
+				return nil
+			}
+
 			channel, _ := ctx.Discord.State.Channel(state.ChannelID)
 			ctx.VoiceChannel = channel
 			return channel

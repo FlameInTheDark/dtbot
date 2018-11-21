@@ -23,13 +23,13 @@ func YoutubeCommand(ctx bot.Context) {
 				ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_must_be_in_voice"))
 				return
 			}
-			nsess, err := ctx.Sessions.Join(ctx.Discord, ctx.Guild.ID, vc.ID, bot.JoinProperties{
+			nsess, serr := ctx.Sessions.Join(ctx.Discord, ctx.Guild.ID, vc.ID, bot.JoinProperties{
 				Muted:    false,
 				Deafened: true,
 			})
-			if err != nil {
-				ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_error"))
-				ctx.DB.Log("Youtube", fmt.Sprintf("player error: %v", err.Error()))
+			if serr != nil {
+				ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_error") + " : " + serr.Error())
+				ctx.DB.Log("Youtube", fmt.Sprintf("player error: %v", serr.Error()))
 				return
 			}
 			sess = nsess
@@ -217,7 +217,7 @@ func YoutubeShortCommand(ctx bot.Context) {
 		})
 		sess = nsess
 		if serr != nil {
-			ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_error"))
+			ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_error") + serr.Error())
 			return
 		}
 		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), fmt.Sprintf("%v <#%v>!", ctx.Loc("player_joined"), sess.ChannelID))
