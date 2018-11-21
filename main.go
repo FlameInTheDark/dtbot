@@ -103,8 +103,6 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 	}
 
 	if perm&discordgo.PermissionSendMessages != discordgo.PermissionSendMessages ||
-		perm&discordgo.PermissionVoiceConnect != discordgo.PermissionVoiceConnect ||
-		perm&discordgo.PermissionVoiceSpeak != discordgo.PermissionVoiceSpeak ||
 		perm&discordgo.PermissionAttachFiles != discordgo.PermissionAttachFiles{
 		fmt.Printf("Permissions denied on guild \"%v\"\n", guild.ID)
 		return
