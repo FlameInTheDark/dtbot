@@ -18,6 +18,7 @@ type dbLog struct {
 	Date   time.Time
 	Text   string
 	Module string
+	Guild  string
 }
 
 type GuildData struct {
@@ -81,8 +82,8 @@ func (db *DBWorker) InitGuilds(sess *discordgo.Session, conf *Config) GuildsMap 
 }
 
 // Log saves log in database
-func (db *DBWorker) Log(module, text string) {
-	db.DBSession.DB(db.DBName).C("logs").Insert(dbLog{Date: time.Now(), Text: text, Module: module})
+func (db *DBWorker) Log(module, guildID, text string, ) {
+	db.DBSession.DB(db.DBName).C("logs").Insert(dbLog{Date: time.Now(), Text: text, Module: module, Guild: guildID})
 }
 
 // LogGet returns last N log rows
