@@ -68,8 +68,8 @@ func BotCommand(ctx bot.Context) {
 						ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"timezone": tz}})
 						ctx.ReplyEmbedPM("Config", fmt.Sprintf("Timezone set to: %v", ctx.Args[2]))
 					case "nick":
-						ctx.Discord.GuildMemberNickname(ctx.Guild.ID,"@me",ctx.Args[2])
-						ctx.ReplyEmbedPM("Config",fmt.Sprintf("Nickname changed to %v",ctx.Args[2]))
+						ctx.Discord.GuildMemberNickname(ctx.Guild.ID, "@me", ctx.Args[2])
+						ctx.ReplyEmbedPM("Config", fmt.Sprintf("Nickname changed to %v", ctx.Args[2]))
 					}
 				case "weather":
 					switch target[1] {

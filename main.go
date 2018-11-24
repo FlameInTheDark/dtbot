@@ -98,13 +98,13 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 	// Checking permissions
 	perm, err := discord.State.UserChannelPermissions(botId, message.ChannelID)
 	if err != nil {
-		fmt.Printf("Error whilst getting bot permissions in guild \"%v\", %v\n", guild.ID ,err)
+		dbWorker.Log("Message", guild.ID, fmt.Sprintf("Error whilst getting bot permissions %v\n", err))
 		return
 	}
 
 	if perm&discordgo.PermissionSendMessages != discordgo.PermissionSendMessages ||
-		perm&discordgo.PermissionAttachFiles != discordgo.PermissionAttachFiles{
-		fmt.Printf("Permissions denied on guild \"%v\"\n", guild.ID)
+		perm&discordgo.PermissionAttachFiles != discordgo.PermissionAttachFiles {
+		dbWorker.Log("Message", guild.ID, fmt.Sprintf("Permissions denied"))
 		return
 	}
 

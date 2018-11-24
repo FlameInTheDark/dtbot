@@ -74,7 +74,6 @@ func (ctx *Context) GetVoiceChannel() *discordgo.Channel {
 		return ctx.VoiceChannel
 	}
 
-
 	for _, state := range ctx.Guild.VoiceStates {
 		if state.UserID == ctx.User.ID {
 			// Check voice permissions
@@ -84,9 +83,9 @@ func (ctx *Context) GetVoiceChannel() *discordgo.Channel {
 				return nil
 			}
 
-			if 	perm&discordgo.PermissionVoiceConnect != discordgo.PermissionVoiceConnect ||
+			if perm&discordgo.PermissionVoiceConnect != discordgo.PermissionVoiceConnect ||
 				perm&discordgo.PermissionVoiceSpeak != discordgo.PermissionVoiceSpeak ||
-				perm&0x00000400 != 0x00000400{
+				perm&0x00000400 != 0x00000400 {
 				ctx.DB.Log("Voice", ctx.Guild.ID, fmt.Sprintf("Voice permissions denied on guild \"%v\"", ctx.Guild.ID))
 				return nil
 			}

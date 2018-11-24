@@ -11,11 +11,11 @@ import (
 
 // Data currency structure
 type Data struct {
-	Date         string            `json:"Date"`
-	PreviousDate string            `json:"PreviousDate"`
-	PreviousURL  string            `json:"PreviousURL"`
-	Timestamp    string            `json:"Timestamp"`
-	Currencies      map[string]Currency `json:"Valute"`
+	Date         string              `json:"Date"`
+	PreviousDate string              `json:"PreviousDate"`
+	PreviousURL  string              `json:"PreviousURL"`
+	Timestamp    string              `json:"Timestamp"`
+	Currencies   map[string]Currency `json:"Valute"`
 }
 
 // Currency structure
@@ -78,7 +78,7 @@ func GetCurrency(ctx *bot.Context) (response string) {
 			} else {
 				arrow = "▼"
 			}
-			response = fmt.Sprintf("%v%v\n`%v %v = %v RUB %v  %0.2v`\n", response, newData.Currencies[arg].Name, newData.Currencies[arg].Nominal, newData.Currencies[arg].CharCode, newData.Currencies[arg].Value, arrow, newData.Currencies[arg].Value - newData.Currencies[arg].Previous)
+			response = fmt.Sprintf("%v%v\n`%v %v = %v RUB %v  %0.2v`\n", response, newData.Currencies[arg].Name, newData.Currencies[arg].Nominal, newData.Currencies[arg].CharCode, newData.Currencies[arg].Value, arrow, newData.Currencies[arg].Value-newData.Currencies[arg].Previous)
 		}
 	}
 	return
