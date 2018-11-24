@@ -188,17 +188,6 @@ func shortPlay(ctx *bot.Context, sess *bot.Session, msg *discordgo.Message) (isP
 
 // YoutubeShortCommand handle short command for playing song from youtube
 func YoutubeShortCommand(ctx bot.Context) {
-	perm, err := ctx.Discord.State.UserChannelPermissions("@me",ctx.TextChannel.ID)
-	if err != nil {
-		fmt.Println("Error whilst getting bot permissions, ",err)
-		return
-	}
-
-	if perm < discordgo.PermissionVoiceSpeak {
-		fmt.Println("Can't speak, permissions denied.")
-		return
-	}
-
 	sess := ctx.Sessions.GetByGuild(ctx.Guild.ID)
 	newargs := ctx.Args
 	if len(newargs) == 0 {
