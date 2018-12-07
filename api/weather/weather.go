@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"image"
 	"image/png"
 	"net/http"
 	"strings"
@@ -69,54 +68,6 @@ type CityData struct {
 	Name string `json:"name"`
 }
 
-// DrawOne returns image with one day forecast
-func DrawOne(temp, hum, clo int, time, icon string) image.Image {
-	dpc := gg.NewContext(300, 400)
-	dpc.SetRGBA(0, 0, 0, 0)
-	dpc.Clear()
-	// Drawing weather icon
-
-	dpc.Push()
-	if err := dpc.LoadFontFace("owfont-regular.ttf", 140); err != nil {
-		fmt.Printf("Weather font: %v", err)
-	}
-	if temp < 0 {
-		dpc.SetRGB255(51, 179, 216)
-	} else {
-		dpc.SetRGB255(231, 81, 56)
-	}
-	dpc.DrawStringAnchored(icon, 150, 145, 0.5, 0.5)
-	dpc.Pop()
-
-	// Drawing lines
-	dpc.SetRGB255(76, 90, 109)
-	dpc.SetLineWidth(6)
-	dpc.DrawLine(299, 61, 299, 400)
-	dpc.Stroke()
-
-	// Drawing rectangle
-	//dpc.DrawRectangle(0, 0, 300, 60)
-	//dpc.SetRGBA(1, 1, 1, 0.6)
-	//dpc.Fill()
-
-	// Drawing hummidity and cloudnes
-	if err := dpc.LoadFontFace("arial.ttf", 50); err != nil {
-		fmt.Printf("Image font: %v", err)
-	}
-	dpc.SetRGB255(255, 255, 255)
-	dpc.DrawStringAnchored(time, 150, 30, 0.5, 0.5)
-	dpc.DrawStringAnchored(fmt.Sprintf("H: %v%%", hum), 150, 305, 0.5, 0.5)
-	dpc.DrawStringAnchored(fmt.Sprintf("C: %v%%", clo), 150, 355, 0.5, 0.5)
-
-	// Drawing temperature
-	if err := dpc.LoadFontFace("arial.ttf", 80); err != nil {
-		fmt.Printf("Image font: %v", err)
-	}
-	dpc.DrawStringAnchored(fmt.Sprintf("%v°", temp), 150, 230, 0.5, 0.5)
-
-	return dpc.Image()
-}
-
 // GetWeatherImage returns buffer with weather image
 func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	var (
@@ -150,18 +101,6 @@ func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 		fmt.Printf("Weather Decode: %v", err)
 		return
 	}
-
-	// Drawing forecast
-	//dc := gg.NewContext(1500, 400)
-	//dc.SetRGBA255(36, 48, 64, 255)
-	//dc.Clear()
-	//for i := 0; i < 6; i++ {
-	//	dc.DrawImage(DrawOne(int(forecast.Weather[i].Main.TempMin),
-	//		forecast.Weather[i].Main.Humidity,
-	//		int(forecast.Weather[i].Clouds.All),
-	//		fmt.Sprintf("%.2v:00", forecast.Weather[i].TZTime(ctx.Conf.General.Timezone).Hour()),
-	//		ctx.WeatherCode(fmt.Sprintf("%v", forecast.Weather[i].WDesc[0].Id))), 300*i, 0)
-	//}
 
 	gc := gg.NewContext(400, 650)
 	gc.SetRGBA(0,0,0,0)
