@@ -149,7 +149,7 @@ func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 		panic(err)
 	}
 
-	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Weather[0].Main.TempMin)), 30, 120, 0, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Weather[0].Main.TempMin)), 100, 120, 0.5, 0.5)
 
 	if err := gc.LoadFontFace("owfont-regular.ttf", 90); err != nil {
 		panic(err)
