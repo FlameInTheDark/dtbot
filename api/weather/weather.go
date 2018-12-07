@@ -118,7 +118,7 @@ func DrawOne(temp, hum, clo int, time, icon string) image.Image {
 }
 
 // GetWeatherImage returns buffer with weather image
-func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, cityName string, err error) {
+func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	var (
 		forecast Forecast
 		city     = ctx.GetGuild().WeatherCity
@@ -134,7 +134,7 @@ func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, cityName string, err 
 		return
 	}
 
-	cityName = loc.Geonames[0].CountryName + ", " + loc.Geonames[0].Name
+	cityName := loc.Geonames[0].CountryName + ", " + loc.Geonames[0].Name
 
 	// Get coordinates and get weather data
 	newlat, newlng := loc.GetCoordinates()
@@ -163,28 +163,27 @@ func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, cityName string, err 
 	//		ctx.WeatherCode(fmt.Sprintf("%v", forecast.Weather[i].WDesc[0].Id))), 300*i, 0)
 	//}
 
-	gc := gg.NewContext(400, 700)
+	gc := gg.NewContext(400, 650)
+	gc.SetRGBA(0,0,0,0)
 	gc.Clear()
 
 	// Template
 	gc.SetRGB255(242, 97, 73)
-	gc.DrawRectangle(0, 0, 400, 700)
+	gc.DrawRoundedRectangle(0, 0, 400, 650, 10)
 	gc.Fill()
 
+	// Weather lines
 	gc.SetRGB255(234, 89, 65)
 	gc.DrawRectangle(0, 250, 400, 100)
 	gc.DrawRectangle(0, 450, 400, 100)
-	gc.DrawRectangle(0, 650, 400, 100)
 	gc.Fill()
 
 	gc.SetLineWidth(2)
 	gc.SetRGBA(0, 0, 0,0.05)
 	gc.DrawLine(0, 250, 400, 250)
-	gc.DrawLine(0, 348, 400, 348)
+	gc.DrawLine(0, 349, 400, 348)
 	gc.DrawLine(0, 450, 400, 450)
-	gc.DrawLine(0, 548, 400, 548)
-	gc.DrawLine(0, 650, 400, 650)
-	gc.DrawLine(0, 748, 400, 748)
+	gc.DrawLine(0, 549, 400, 548)
 	gc.Stroke()
 
 	// Text
