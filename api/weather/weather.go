@@ -162,20 +162,37 @@ func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	}
 
 	// Time
-	gc.DrawStringAnchored(fmt.Sprintf("%.2v:00", forecast.Weather[1].TZTime(ctx.Conf.General.Timezone).Hour()), 100, 300, 0, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("%.2v:00", forecast.Weather[2].TZTime(ctx.Conf.General.Timezone).Hour()), 100, 400, 0, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("%.2v:00", forecast.Weather[3].TZTime(ctx.Conf.General.Timezone).Hour()), 100, 500, 0, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("%.2v:00", forecast.Weather[4].TZTime(ctx.Conf.General.Timezone).Hour()), 100, 600, 0, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%.2v:00", forecast.Weather[1].TZTime(ctx.Conf.General.Timezone).Hour()), 100, 285, 0, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%.2v:00", forecast.Weather[2].TZTime(ctx.Conf.General.Timezone).Hour()), 100, 385, 0, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%.2v:00", forecast.Weather[3].TZTime(ctx.Conf.General.Timezone).Hour()), 100, 485, 0, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%.2v:00", forecast.Weather[4].TZTime(ctx.Conf.General.Timezone).Hour()), 100, 585, 0, 0.5)
 
+	// Humidity and cloudiness
+	if err := gc.LoadFontFace("lato.ttf", 20); err != nil {
+		panic(err)
+	}
+	gc.SetRGBA(1, 1, 1, 0.5)
+
+	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", forecast.Weather[1].Main.Humidity), 100, 315, 0, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", forecast.Weather[2].Main.Humidity), 100, 415, 0, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", forecast.Weather[3].Main.Humidity), 100, 515, 0, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", forecast.Weather[4].Main.Humidity), 100, 615, 0, 0.5)
+
+	gc.DrawStringAnchored(fmt.Sprintf("C:%v%%", int(forecast.Weather[1].Clouds.All)), 170, 315, 0, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("C:%v%%", int(forecast.Weather[2].Clouds.All)), 170, 415, 0, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("C:%v%%", int(forecast.Weather[3].Clouds.All)), 170, 515, 0, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("C:%v%%", int(forecast.Weather[4].Clouds.All)), 170, 615, 0, 0.5)
+
+	gc.SetRGBA(1,1,1,1)
 	if err := gc.LoadFontFace("lato.ttf", 50); err != nil {
 		panic(err)
 	}
 
 	// Temperature
-	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Weather[1].Main.TempMin)), 250, 300, 0, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Weather[2].Main.TempMin)), 250, 400, 0, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Weather[3].Main.TempMin)), 250, 500, 0, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Weather[4].Main.TempMin)), 250, 600, 0, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Weather[1].Main.TempMin)), 300, 300, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Weather[2].Main.TempMin)), 300, 400, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Weather[3].Main.TempMin)), 300, 500, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Weather[4].Main.TempMin)), 300, 600, 0.5, 0.5)
 
 	if err := gc.LoadFontFace("owfont-regular.ttf", 60); err != nil {
 		panic(err)
