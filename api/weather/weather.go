@@ -189,10 +189,10 @@ func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	}
 
 	// Temperature
-	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Weather[1].Main.TempMin)), 300, 300, 0.5, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Weather[2].Main.TempMin)), 300, 400, 0.5, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Weather[3].Main.TempMin)), 300, 500, 0.5, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Weather[4].Main.TempMin)), 300, 600, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Weather[1].Main.TempMin)), 320, 300, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Weather[2].Main.TempMin)), 320, 400, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Weather[3].Main.TempMin)), 320, 500, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Weather[4].Main.TempMin)), 320, 600, 0.5, 0.5)
 
 	if err := gc.LoadFontFace("owfont-regular.ttf", 60); err != nil {
 		panic(err)
