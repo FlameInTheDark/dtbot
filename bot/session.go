@@ -18,7 +18,7 @@ type (
 		sessions map[string]*Session
 	}
 
-	// JoinProperties voice connection propperties struct
+	// JoinProperties voice connection properties struct
 	JoinProperties struct {
 		Muted    bool
 		Deafened bool
