@@ -25,6 +25,7 @@ type GeneralConfig struct {
 	ServiceURL       string
 	MessagePool      int
 	DatabaseName     string
+	GeocodingApiKey  string
 }
 
 // NewsConfig News config struct

@@ -142,6 +142,7 @@ func registerCommands() {
 	CmdHandler.Register("!play", cmd.YoutubeShortCommand)
 	CmdHandler.Register("!d", cmd.DebugCommand)
 	CmdHandler.Register("!p", cmd.PollCommand)
+	CmdHandler.Register("!m", cmd.YandexmapCommand)
 	CmdHandler.Register("!dice", cmd.DiceCommand)
 	CmdHandler.Register("!help", cmd.HelpCommand)
 	CmdHandler.Register("!cron", cmd.CronCommand)
