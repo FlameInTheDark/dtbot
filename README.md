@@ -4,6 +4,7 @@
 [![Go report](http://goreportcard.com/badge/FlameInTheDark/dtbot)](http://goreportcard.com/report/FlameInTheDark/dtbot)
 [![Build Status](https://travis-ci.org/FlameInTheDark/dtbot.svg?branch=master)](https://travis-ci.org/FlameInTheDark/dtbot)
 [![Scrutinizer Quality Score](https://img.shields.io/scrutinizer/g/FlameInTheDark/dtbot/master.svg)](https://scrutinizer-ci.com/g/FlameInTheDark/dtbot/)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FFlameInTheDark%2Fdtbot.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FFlameInTheDark%2Fdtbot?ref=badge_shield)
 
 ## Used APIs
 
@@ -131,3 +132,6 @@ Add environment variable `BOT_TOKEN` with token of discord bot.
 And run container:
 
 `docker run -d --restart always -e BOT_TOKEN=$BOT_TOKEN -e MONGO_CONN=$MONGO_CONN --name dtbot dtbot:latest`
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FFlameInTheDark%2Fdtbot.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FFlameInTheDark%2Fdtbot?ref=badge_large)
