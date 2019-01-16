@@ -114,3 +114,8 @@ func (ctx *Context) GetGuild() *GuildData {
 	}
 	return ctx.Guilds[ctx.Guild.ID]
 }
+
+func (ctx *Context) Log(module, guildID, text string) {
+	ctx.DB.Log(module, guildID, text)
+	ctx.MetricsLog(module)
+}
