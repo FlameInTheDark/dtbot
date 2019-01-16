@@ -35,6 +35,11 @@ type NewsConfig struct {
 	Articles int
 }
 
+type MetricsConfig struct {
+	Address  string
+	Database string
+}
+
 // TranslateConfig Yandex translate config struct
 type TranslateConfig struct {
 	APIKey string
@@ -60,6 +65,7 @@ type Config struct {
 	Locales      LocalesMap
 	Currency     CurrencyConfig
 	WeatherCodes WeatherCodesMap
+	Metrics      MetricsConfig
 }
 
 // GetLocale returns locale string by key

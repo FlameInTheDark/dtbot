@@ -7,7 +7,8 @@ import (
 	"github.com/FlameInTheDark/dtbot/bot"
 )
 
-// CurrencyCommand Translate handlergt
+// CurrencyCommand Translate handler
 func CurrencyCommand(ctx bot.Context) {
 	ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("currency")), currency.GetCurrency(&ctx))
+	ctx.MetricsCommand("metrics")
 }
