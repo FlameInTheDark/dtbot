@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"gopkg.in/robfig/cron.v2"
+	"net/http"
 	"os"
 	"os/signal"
 	"strings"
@@ -95,38 +97,52 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 		fmt.Println("Error getting guild,", err)
 		return
 	}
+
+	var permission = true
+	var msg string
 	// Checking permissions
 	perm, err := discord.State.UserChannelPermissions(botId, message.ChannelID)
 	if err != nil {
-		dbWorker.Log("Message", guild.ID, fmt.Sprintf("Error whilst getting bot permissions %v\n", err))
-		return
+		//dbWorker.Log("Message", guild.ID, fmt.Sprintf("Error whilst getting bot permissions %v\n", err))
+		msg = fmt.Sprintf("Error whilst getting bot permissions %v\n", err)
+		permission = false
+	} else {
+		if perm&discordgo.PermissionSendMessages != discordgo.PermissionSendMessages ||
+			perm&discordgo.PermissionAttachFiles != discordgo.PermissionAttachFiles {
+			//dbWorker.Log("Message", guild.ID, fmt.Sprintf("Permissions denied"))
+			msg = "Permissions denied"
+			permission = false
+		}
 	}
 
-	if perm&discordgo.PermissionSendMessages != discordgo.PermissionSendMessages ||
-		perm&discordgo.PermissionAttachFiles != discordgo.PermissionAttachFiles {
-		dbWorker.Log("Message", guild.ID, fmt.Sprintf("Permissions denied"))
-		return
+	if permission {
+		ctx := bot.NewContext(
+			botId,
+			discord,
+			guild,
+			channel,
+			user,
+			message,
+			conf,
+			CmdHandler,
+			Sessions,
+			youtube,
+			botMsg,
+			dataType,
+			dbWorker,
+			guilds,
+			botCron)
+		ctx.Args = args[1:]
+		c := *command
+		c(*ctx)
+		ctx.MetricsMessage()
+	} else {
+		dbWorker.Log("Message", guild.ID, msg)
+		query := []byte(fmt.Sprintf("logs,server=%v module=\"%v\"", guild.ID, "message"))
+		addr := fmt.Sprintf("%v/write?db=%v", conf.Metrics.Address, conf.Metrics.Database)
+		r := bytes.NewReader(query)
+		_, _ = http.Post(addr, "", r)
 	}
-
-	ctx := bot.NewContext(
-		botId,
-		discord,
-		guild,
-		channel,
-		user,
-		message,
-		conf,
-		CmdHandler,
-		Sessions,
-		youtube,
-		botMsg,
-		dataType,
-		dbWorker,
-		guilds,
-		botCron)
-	ctx.Args = args[1:]
-	c := *command
-	c(*ctx)
 }
 
 // Adds bot commands

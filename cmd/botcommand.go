@@ -112,5 +112,5 @@ func BotCommand(ctx bot.Context) {
 
 		}
 	}
-	ctx.MetricsCommand("currency")
+	ctx.MetricsCommand("bot")
 }

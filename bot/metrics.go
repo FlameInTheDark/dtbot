@@ -19,3 +19,10 @@ func (ctx *Context) MetricsLog(module string) {
 	r := bytes.NewReader(query)
 	_, _ = http.Post(addr, "", r)
 }
+
+func (ctx *Context) MetricsMessage() {
+	query := []byte(fmt.Sprintf("messages,server=%v user=\"%v\"", ctx.Guild.ID, ctx.Message.Author.ID))
+	addr := fmt.Sprintf("%v/write?db=%v", ctx.Conf.Metrics.Address, ctx.Conf.Metrics.Database)
+	r := bytes.NewReader(query)
+	_, _ = http.Post(addr, "", r)
+}
