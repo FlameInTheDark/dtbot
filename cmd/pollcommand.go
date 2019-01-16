@@ -48,4 +48,5 @@ func PollCommand(ctx bot.Context) {
 		}
 		ctx.ReplyEmbed(ctx.Loc("polls"), fmt.Sprintf("%v:\n%v", ctx.Loc("polls_ends"), strings.Join(newResults, "\n")))
 	}
+	ctx.MetricsCommand("poll")
 }

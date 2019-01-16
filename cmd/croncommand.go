@@ -74,4 +74,5 @@ func CronCommand(ctx bot.Context) {
 			ctx.ReplyEmbedPM("Cron", strings.Join(reply,"\n"))
 		}
 	}
+	ctx.MetricsCommand("cron")
 }

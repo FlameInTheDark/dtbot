@@ -22,4 +22,5 @@ func DiceCommand(ctx bot.Context) {
 	} else {
 		ctx.Reply(fmt.Sprintf("Dice: %v", rand.Intn(6)+1))
 	}
+	ctx.MetricsCommand("dice")
 }

@@ -39,4 +39,5 @@ func VoiceCommand(ctx bot.Context) {
 		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), fmt.Sprintf("%v <#%v>!", ctx.Loc("player_left"), sess.ChannelID))
 		break
 	}
+	ctx.MetricsCommand("voice")
 }

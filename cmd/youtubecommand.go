@@ -279,4 +279,5 @@ func YoutubeShortCommand(ctx bot.Context) {
 			}
 		}
 	}
+	ctx.MetricsCommand("youtube")
 }

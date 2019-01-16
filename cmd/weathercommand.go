@@ -13,4 +13,5 @@ func WeatherCommand(ctx bot.Context) {
 		return
 	}
 	ctx.ReplyFile("weather.png",buf)
+	ctx.MetricsCommand("weather")
 }

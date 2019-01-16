@@ -19,4 +19,5 @@ func TranslateCommand(ctx bot.Context) {
 	} else {
 		ctx.ReplyEmbed(fmt.Sprintf("%v: ", ctx.Loc("translate")), resp)
 	}
+	ctx.MetricsCommand("translate")
 }

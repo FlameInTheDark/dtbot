@@ -13,4 +13,5 @@ func YandexmapCommand(ctx bot.Context) {
 		return
 	}
 	ctx.ReplyFile("map.png",buf)
+	ctx.MetricsCommand("yandexmap")
 }

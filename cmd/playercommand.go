@@ -26,4 +26,5 @@ func PlayerCommand(ctx bot.Context) {
 	case "stop":
 		sess.Stop()
 	}
+	ctx.MetricsCommand("player")
 }

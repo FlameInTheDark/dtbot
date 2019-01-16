@@ -26,4 +26,5 @@ func DebugCommand(ctx bot.Context) {
 	} else {
 		ctx.ReplyEmbedPM("Debug", "Not a Admin")
 	}
+	ctx.MetricsCommand("debug")
 }
