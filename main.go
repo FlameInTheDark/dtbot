@@ -77,16 +77,6 @@ func main() {
 
 // Handle discord messages
 func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate) {
-	user := message.Author
-	if user.ID == botId || user.Bot {
-		return
-	}
-	args := strings.Split(message.Content, " ")
-	name := strings.ToLower(args[0])
-	command, found := CmdHandler.Get(name)
-	if !found {
-		return
-	}
 	channel, err := discord.State.Channel(message.ChannelID)
 	if err != nil {
 		fmt.Println("Error getting channel,", err)
@@ -95,6 +85,20 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 	guild, err := discord.State.Guild(channel.GuildID)
 	if err != nil {
 		fmt.Println("Error getting guild,", err)
+		return
+	}
+	query := []byte(fmt.Sprintf("messages,server=%v user=\"%v\"", guild.ID, message.Author.ID))
+	addr := fmt.Sprintf("%v/write?db=%v", conf.Metrics.Address, conf.Metrics.Database)
+	r := bytes.NewReader(query)
+	_, _ = http.Post(addr, "", r)
+	user := message.Author
+	if user.ID == botId || user.Bot {
+		return
+	}
+	args := strings.Split(message.Content, " ")
+	name := strings.ToLower(args[0])
+	command, found := CmdHandler.Get(name)
+	if !found {
 		return
 	}
 
@@ -135,7 +139,7 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 		ctx.Args = args[1:]
 		c := *command
 		c(*ctx)
-		ctx.MetricsMessage()
+		//ctx.MetricsMessage()
 	} else {
 		dbWorker.Log("Message", guild.ID, msg)
 		query := []byte(fmt.Sprintf("logs,server=%v module=\"%v\"", guild.ID, "message"))
