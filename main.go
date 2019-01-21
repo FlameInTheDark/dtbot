@@ -172,7 +172,8 @@ func registerCommands() {
 func MetricsSender() {
 	for {
 		query := []byte(fmt.Sprintf("messages count=%v", messagesCounter))
-		addr := fmt.Sprintf("%v/write?db=%v", conf.Metrics.Address, conf.Metrics.Database)
+		addr := fmt.Sprintf("%v/write?db=%v",
+			conf.Metrics.Address, conf.Metrics.Database, conf.Metrics.User, conf.Metrics.Password)
 		r := bytes.NewReader(query)
 		_, _ = http.Post(addr, "", r)
 		messagesCounter = 0

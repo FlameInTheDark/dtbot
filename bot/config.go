@@ -35,9 +35,12 @@ type NewsConfig struct {
 	Articles int
 }
 
+// MetricsConfig InfluxDB connection settings
 type MetricsConfig struct {
 	Address  string
 	Database string
+	User     string
+	Password string
 }
 
 // TranslateConfig Yandex translate config struct
