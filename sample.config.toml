@@ -22,6 +22,14 @@ EmbedColor = 4039680
 ServiceURL = "https://youtube.com"
 MessagePool = 10
 DatabaseName = "dtbot"
+GeocodingApiKey = "yandex_geocode_api_key"
 
 [currency]
 Default = ["USD", "EUR"]
+
+[metrics]
+# InfluxDB connection address
+Address = "http://some_server.com:8086"
+Database = "dtbot"
+User = "user"
+Password = "password"

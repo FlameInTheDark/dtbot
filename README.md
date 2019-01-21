@@ -29,7 +29,7 @@
 
 Bot commands
 
-To use the `!b` command you need to add a guild role named `bot.admin` and add it to you!
+To use the `!b` or `!cron` commands you need to create a guild role named `bot.admin` and add it to you!
 
 Command | Description
 ------- | -----------
@@ -57,6 +57,10 @@ Command | Description
 `!p new [fields]` | Creates new poll `!p new field one \| field two \| field three`
 `!p vote [field_num]` | Votes in poll
 `!p end` | Ends poll and shows results
+`!m [map/sat] [location]` | Sends location image from yandex map `!m map New-York` or `!m sat New-York`
+`!cron add [cron_time] [command]` | Creates cron job for command `!cron add 0 0 12 * * * !w Chelyabinsk` - everyday in 12:00 UTC 0 use command `!w`
+`!cron list` | Shows cron jobs
+`!cron remove [id]` | Removes cron job by ID `!cron remove 1`
 
 ## Set config parameters
 
@@ -87,28 +91,39 @@ Create `config.toml` file from sample `sample.config.toml`
 ```toml
 [weather]
 WeatherToken = "OpenWeatherMap API Token"
-City = "Moscow" # Default forecast city
+# Default forecast city
+City = "Moscow"
 
 [news]
 ApiKey = "Api key from Newsapi.org"
-Country = "us" # News country
-Articles = 5 # Count of articles per request
+Country = "us"
+Articles = 5
 
 [translate]
 ApiKey = "Yandex Translate API key"
 
 [general]
 GeonamesUsername = "Username from Geonames.org"
-Language = "en" # Bot language
-Timezone = 5 # UTC 0 + Timezone
-Game = "Half-Life 3" # Shows "Play in Half-Life 3" status
-EmbedColor = 4039680 # Default embed color (Hex color converted to int)
-ServiceURL = "https://youtube.com" # Dont touch this value
-MessagePool = 10 # Count of indexed messages for delete
-DatabaseName = "dtbot" # Bot's database name in MongoDB 
+Language = "en"
+# UTC 0 + Timezone
+Timezone = 5
+Game = "Half-Life 3"
+# Default embed color (Hex color converted to int)
+EmbedColor = 4039680
+ServiceURL = "https://youtube.com"
+MessagePool = 10
+DatabaseName = "dtbot"
+GeocodingApiKey = "yandex_geocode_api_key"
 
 [currency]
-Default = ["USD", "EUR"] # Array of default currencies
+Default = ["USD", "EUR"]
+
+[metrics]
+# InfluxDB connection address
+Address = "http://some_server.com:8086"
+Database = "dtbot"
+User = "user"
+Password = "password"
 ```
 
 Make (or use my) Dockerfile:

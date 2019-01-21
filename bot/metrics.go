@@ -16,7 +16,7 @@ func (ctx *Context) MetricsCommand(command string) {
 
 func (ctx *Context) MetricsLog(module string) {
 	query := []byte(fmt.Sprintf("logs,server=%v module=\"%v\"", ctx.Guild.ID, module))
-	addr := fmt.Sprintf("%v/write?db=%v",
+	addr := fmt.Sprintf("%v/write?db=%v&u=%v&p=%v",
 		ctx.Conf.Metrics.Address, ctx.Conf.Metrics.Database, ctx.Conf.Metrics.User, ctx.Conf.Metrics.Password)
 	r := bytes.NewReader(query)
 	_, _ = http.Post(addr, "", r)
@@ -24,7 +24,7 @@ func (ctx *Context) MetricsLog(module string) {
 
 func (ctx *Context) MetricsMessage() {
 	query := []byte(fmt.Sprintf("messages,server=%v user=\"%v\"", ctx.Guild.ID, ctx.Message.Author.ID))
-	addr := fmt.Sprintf("%v/write?db=%v",
+	addr := fmt.Sprintf("%v/write?db=%v&u=%v&p=%v",
 		ctx.Conf.Metrics.Address, ctx.Conf.Metrics.Database, ctx.Conf.Metrics.User, ctx.Conf.Metrics.Password)
 	r := bytes.NewReader(query)
 	_, _ = http.Post(addr, "", r)
