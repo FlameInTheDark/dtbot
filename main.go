@@ -9,6 +9,7 @@ import (
 	"os/signal"
 	"strings"
 	"syscall"
+	"time"
 
 	"github.com/FlameInTheDark/dtbot/bot"
 	"github.com/FlameInTheDark/dtbot/cmd"
@@ -20,14 +21,15 @@ var (
 	// CmdHandler bot command handler
 	CmdHandler *bot.CommandHandler
 	// Sessions bot session manager
-	Sessions *bot.SessionManager
-	botId    string
-	youtube  *bot.Youtube
-	botMsg   *bot.BotMessages
-	dataType *bot.DataType
-	dbWorker *bot.DBWorker
-	guilds   bot.GuildsMap
-	botCron  *cron.Cron
+	Sessions        *bot.SessionManager
+	botId           string
+	youtube         *bot.Youtube
+	botMsg          *bot.BotMessages
+	dataType        *bot.DataType
+	dbWorker        *bot.DBWorker
+	guilds          bot.GuildsMap
+	botCron         *cron.Cron
+	messagesCounter int
 )
 
 func main() {
@@ -70,6 +72,7 @@ func main() {
 	dbWorker = bot.NewDBSession(conf.General.DatabaseName)
 	guilds = dbWorker.InitGuilds(discord, conf)
 	botCron.Start()
+	go MetricsSender()
 	defer botCron.Stop()
 	defer dbWorker.DBSession.Close()
 	<-sc
@@ -77,20 +80,7 @@ func main() {
 
 // Handle discord messages
 func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate) {
-	channel, err := discord.State.Channel(message.ChannelID)
-	if err != nil {
-		fmt.Println("Error getting channel,", err)
-		return
-	}
-	guild, err := discord.State.Guild(channel.GuildID)
-	if err != nil {
-		fmt.Println("Error getting guild,", err)
-		return
-	}
-	query := []byte(fmt.Sprintf("messages,server=%v user=\"%v\"", guild.ID, message.Author.ID))
-	addr := fmt.Sprintf("%v/write?db=%v", conf.Metrics.Address, conf.Metrics.Database)
-	r := bytes.NewReader(query)
-	_, _ = http.Post(addr, "", r)
+	messagesCounter++
 	user := message.Author
 	if user.ID == botId || user.Bot {
 		return
@@ -117,6 +107,17 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 			msg = "Permissions denied"
 			permission = false
 		}
+	}
+
+	channel, err := discord.State.Channel(message.ChannelID)
+	if err != nil {
+		fmt.Println("Error getting channel,", err)
+		return
+	}
+	guild, err := discord.State.Guild(channel.GuildID)
+	if err != nil {
+		fmt.Println("Error getting guild,", err)
+		return
 	}
 
 	if permission {
@@ -166,4 +167,15 @@ func registerCommands() {
 	CmdHandler.Register("!dice", cmd.DiceCommand)
 	CmdHandler.Register("!help", cmd.HelpCommand)
 	CmdHandler.Register("!cron", cmd.CronCommand)
+}
+
+func MetricsSender() {
+	for {
+		query := []byte(fmt.Sprintf("messages count=%v", messagesCounter))
+		addr := fmt.Sprintf("%v/write?db=%v", conf.Metrics.Address, conf.Metrics.Database)
+		r := bytes.NewReader(query)
+		_, _ = http.Post(addr, "", r)
+		messagesCounter = 0
+		time.Sleep(time.Minute)
+	}
 }
