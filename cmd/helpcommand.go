@@ -30,5 +30,5 @@ func HelpCommand(ctx bot.Context) {
 	case "!p":
 		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!p"))
 	}
-	ctx.MetricsCommand("help")
+	ctx.MetricsCommand("help_command")
 }

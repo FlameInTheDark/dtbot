@@ -161,6 +161,7 @@ func YoutubeCommand(ctx bot.Context) {
 		sess.Queue.Clear()
 		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("youtube_queue_cleared"))
 	}
+	ctx.MetricsCommand("youtube_command")
 }
 
 func shortPlay(ctx *bot.Context, sess *bot.Session, msg *discordgo.Message) (isPlaying bool) {
@@ -279,5 +280,5 @@ func YoutubeShortCommand(ctx bot.Context) {
 			}
 		}
 	}
-	ctx.MetricsCommand("youtube")
+	ctx.MetricsCommand("youtube_command")
 }
