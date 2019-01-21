@@ -9,6 +9,7 @@ import (
 )
 
 func CronCommand(ctx bot.Context) {
+	ctx.MetricsCommand("cron")
 	if ctx.GetRoles().ExistsName("bot.admin") {
 		// !cron add 0 0 7 * * * !w Chelyabinsk
 		switch ctx.Args[0] {
@@ -74,5 +75,4 @@ func CronCommand(ctx bot.Context) {
 			ctx.ReplyEmbedPM("Cron", strings.Join(reply,"\n"))
 		}
 	}
-	ctx.MetricsCommand("cron")
 }

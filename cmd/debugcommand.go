@@ -9,6 +9,7 @@ import (
 
 // DebugCommand special bot commands handler
 func DebugCommand(ctx bot.Context) {
+	ctx.MetricsCommand("debug")
 	if ctx.GetRoles().ExistsName("bot.admin") {
 		if len(ctx.Args) == 0 {
 			return
@@ -26,5 +27,4 @@ func DebugCommand(ctx bot.Context) {
 	} else {
 		ctx.ReplyEmbedPM("Debug", "Not a Admin")
 	}
-	ctx.MetricsCommand("debug")
 }

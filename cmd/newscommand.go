@@ -7,6 +7,6 @@ import (
 
 // NewsCommand News handler
 func NewsCommand(ctx bot.Context) {
-	ctx.ReplyEmbed(ctx.Loc("news"), news.GetNews(&ctx))
 	ctx.MetricsCommand("news")
+	ctx.ReplyEmbed(ctx.Loc("news"), news.GetNews(&ctx))
 }

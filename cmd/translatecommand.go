@@ -9,6 +9,7 @@ import (
 
 // TranslateCommand Translate handler
 func TranslateCommand(ctx bot.Context) {
+	ctx.MetricsCommand("translate")
 	resp, err := translate.GetTranslation(&ctx)
 	if err != nil {
 		bot.NewEmbed("").
@@ -19,5 +20,4 @@ func TranslateCommand(ctx bot.Context) {
 	} else {
 		ctx.ReplyEmbed(fmt.Sprintf("%v: ", ctx.Loc("translate")), resp)
 	}
-	ctx.MetricsCommand("translate")
 }

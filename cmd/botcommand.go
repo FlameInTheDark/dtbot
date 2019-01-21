@@ -21,6 +21,7 @@ func showLogs(ctx *bot.Context, count int) {
 // TODO: I should make it more tasty and remove all "switch/case"!
 // BotCommand special bot commands handler
 func BotCommand(ctx bot.Context) {
+	ctx.MetricsCommand("bot")
 	if ctx.GetRoles().ExistsName("bot.admin") {
 		if len(ctx.Args) == 0 {
 			return
@@ -112,5 +113,4 @@ func BotCommand(ctx bot.Context) {
 
 		}
 	}
-	ctx.MetricsCommand("bot")
 }

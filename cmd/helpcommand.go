@@ -6,6 +6,7 @@ import (
 
 // HelpCommand shows help
 func HelpCommand(ctx bot.Context) {
+	ctx.MetricsCommand("help_command")
 	if len(ctx.Args) == 0 {
 		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_reply"))
 		return
@@ -30,5 +31,4 @@ func HelpCommand(ctx bot.Context) {
 	case "!p":
 		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!p"))
 	}
-	ctx.MetricsCommand("help_command")
 }

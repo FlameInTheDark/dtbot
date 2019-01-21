@@ -8,6 +8,7 @@ import (
 
 // PlayerCommand Player handler
 func PlayerCommand(ctx bot.Context) {
+	ctx.MetricsCommand("player")
 	sess := ctx.Sessions.GetByGuild(ctx.Guild.ID)
 	if len(ctx.Args) == 0 {
 		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_no_args"))
@@ -26,5 +27,4 @@ func PlayerCommand(ctx bot.Context) {
 	case "stop":
 		sess.Stop()
 	}
-	ctx.MetricsCommand("player")
 }

@@ -10,6 +10,7 @@ import (
 
 // YoutubeCommand youtube handler
 func YoutubeCommand(ctx bot.Context) {
+	ctx.MetricsCommand("youtube_command")
 	sess := ctx.Sessions.GetByGuild(ctx.Guild.ID)
 	if len(ctx.Args) == 0 {
 		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("youtube_no_args"))
@@ -161,7 +162,6 @@ func YoutubeCommand(ctx bot.Context) {
 		sess.Queue.Clear()
 		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("youtube_queue_cleared"))
 	}
-	ctx.MetricsCommand("youtube_command")
 }
 
 func shortPlay(ctx *bot.Context, sess *bot.Session, msg *discordgo.Message) (isPlaying bool) {
@@ -189,6 +189,7 @@ func shortPlay(ctx *bot.Context, sess *bot.Session, msg *discordgo.Message) (isP
 
 // YoutubeShortCommand handle short command for playing song from youtube
 func YoutubeShortCommand(ctx bot.Context) {
+	ctx.MetricsCommand("youtube_command")
 	sess := ctx.Sessions.GetByGuild(ctx.Guild.ID)
 	newargs := ctx.Args
 	if len(newargs) == 0 {
@@ -280,5 +281,4 @@ func YoutubeShortCommand(ctx bot.Context) {
 			}
 		}
 	}
-	ctx.MetricsCommand("youtube_command")
 }

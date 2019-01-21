@@ -10,6 +10,7 @@ import (
 
 // DiceCommand handle dice
 func DiceCommand(ctx bot.Context) {
+	ctx.MetricsCommand("dice")
 	if len(ctx.Args) > 0 {
 		val, err := strconv.Atoi(ctx.Args[0])
 		if err != nil {
@@ -22,5 +23,4 @@ func DiceCommand(ctx bot.Context) {
 	} else {
 		ctx.Reply(fmt.Sprintf("Dice: %v", rand.Intn(6)+1))
 	}
-	ctx.MetricsCommand("dice")
 }

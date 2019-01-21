@@ -10,6 +10,7 @@ import (
 
 // PollCommand handle polls commands
 func PollCommand(ctx bot.Context) {
+	ctx.MetricsCommand("poll")
 	if len(ctx.Args) == 0 {
 		return
 	}
@@ -48,5 +49,4 @@ func PollCommand(ctx bot.Context) {
 		}
 		ctx.ReplyEmbed(ctx.Loc("polls"), fmt.Sprintf("%v:\n%v", ctx.Loc("polls_ends"), strings.Join(newResults, "\n")))
 	}
-	ctx.MetricsCommand("poll")
 }
