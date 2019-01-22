@@ -113,11 +113,14 @@ func BotCommand(ctx bot.Context) {
 				}
 			}
 		case "guild":
-			if len(ctx.Args) < 3 && !ctx.IsAdmin() {
+			if len(ctx.Args) < 2 && !ctx.IsAdmin() {
 				return
 			}
 			switch ctx.Args[1] {
 			case "leave":
+				if len(ctx.Args) < 3 {
+					return
+				}
 				err := ctx.Discord.GuildLeave(ctx.Args[2])
 				if err != nil {
 					ctx.Log("Guild", ctx.Guild.ID, fmt.Sprintf("error leaving from guild [%v]: %v", ctx.Args[2], err.Error()))
