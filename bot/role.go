@@ -11,6 +11,13 @@ type UserRoles struct {
 	Roles []*discordgo.Role
 }
 
+func (ctx *Context) IsAdmin() bool {
+	if ctx.User.ID == ctx.Conf.General.AdminID {
+		return true
+	}
+	return false
+}
+
 // GetRole returns UserRoles struct pointer
 func (ctx *Context) GetRoles() *UserRoles {
 	var userRoles = new(UserRoles)

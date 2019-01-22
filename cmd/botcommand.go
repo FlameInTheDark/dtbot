@@ -40,15 +40,17 @@ func BotCommand(ctx bot.Context) {
 		case "help":
 			ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_reply"))
 		case "logs":
-			if len(ctx.Args) < 2 {
-				showLogs(&ctx, 10)
-			} else {
-				count, err := strconv.Atoi(ctx.Args[1])
-				if err != nil {
-					fmt.Println(err)
-					return
+			if ctx.IsAdmin() {
+				if len(ctx.Args) < 2 {
+					showLogs(&ctx, 10)
+				} else {
+					count, err := strconv.Atoi(ctx.Args[1])
+					if err != nil {
+						fmt.Println(err)
+						return
+					}
+					showLogs(&ctx, count)
 				}
-				showLogs(&ctx, count)
 			}
 		case "setconf":
 			if len(ctx.Args) > 2 {
@@ -110,7 +112,34 @@ func BotCommand(ctx bot.Context) {
 					}
 				}
 			}
-
+		case "guild":
+			if len(ctx.Args) < 3 && !ctx.IsAdmin() {
+				return
+			}
+			switch ctx.Args[1] {
+			case "leave":
+				err := ctx.Discord.GuildLeave(ctx.Args[2])
+				if err != nil {
+					ctx.Log("Guild", ctx.Guild.ID, fmt.Sprintf("error leaving from guild [%v]: %v", ctx.Args[2], err.Error()))
+					ctx.ReplyEmbedPM("Guild", fmt.Sprintf("Error leaving from guild [%v]: %v", ctx.Args[2], err.Error()))
+					return
+				}
+				ctx.ReplyEmbedPM("Guild", fmt.Sprintf("Leave from guild: %v", ctx.Args[2]))
+			case "list":
+				var list string
+				guilds := ctx.Discord.State.Guilds
+				for i, g := range guilds {
+					list += fmt.Sprintf("[%v] - %v | U: %v", i, g.Name, len(g.Members))
+				}
+				ctx.ReplyEmbed("Guilds", list)
+			case "idlist":
+				var list string
+				guilds := ctx.Discord.State.Guilds
+				for _, g := range guilds {
+					list += fmt.Sprintf("[%v] - %v", g.ID, g.Name)
+				}
+				ctx.ReplyEmbed("Guilds", list)
+			}
 		}
 	}
 }
