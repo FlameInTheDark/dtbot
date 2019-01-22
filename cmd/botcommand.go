@@ -132,14 +132,26 @@ func BotCommand(ctx bot.Context) {
 				var list string
 				guilds := ctx.Discord.State.Guilds
 				for i, g := range guilds {
-					list += fmt.Sprintf("[%v] - %v | U: %v", i, g.Name, len(g.Members))
+					var gName string
+					if len(g.Name) > 20 {
+						gName = fmt.Sprintf("%v...", g.Name[:20])
+					} else {
+						gName = g.Name
+					}
+					list += fmt.Sprintf("[%v] - %v | U: %v\n", i, gName, len(g.Members))
 				}
 				ctx.ReplyEmbed("Guilds", list)
 			case "idlist":
 				var list string
 				guilds := ctx.Discord.State.Guilds
 				for _, g := range guilds {
-					list += fmt.Sprintf("[%v] - %v", g.ID, g.Name)
+					var gName string
+					if len(g.Name) > 20 {
+						gName = fmt.Sprintf("%v...", g.Name[:20])
+					} else {
+						gName = g.Name
+					}
+					list += fmt.Sprintf("[%v] - %v\n", g.ID, gName)
 				}
 				ctx.ReplyEmbed("Guilds", list)
 			}
