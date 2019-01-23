@@ -138,7 +138,7 @@ func BotCommand(ctx bot.Context) {
 				}
 				guilds := ctx.Discord.State.Guilds
 				pages := int(len(guilds)/20) + 1
-				if len(ctx.Args) > 2 {
+				if len(ctx.Args) > 3 {
 					index := 0
 					page, err := strconv.Atoi(selected)
 					if err != nil {
@@ -161,7 +161,7 @@ func BotCommand(ctx bot.Context) {
 					if indexEnd > len(guilds) {
 						indexEnd = len(guilds)
 					}
-					if ctx.Args[2] == "id" {
+					if len(ctx.Args) > 2 && ctx.Args[2] == "id" {
 						ctx.ReplyEmbed("Guilds", guildsListID(guilds[index:indexEnd], page, pages))
 					} else {
 						ctx.ReplyEmbed("Guilds", guildsListName(guilds[index:indexEnd], page, pages))
@@ -172,7 +172,7 @@ func BotCommand(ctx bot.Context) {
 					if indexEnd > len(guilds) {
 						indexEnd = len(guilds)
 					}
-					if ctx.Args[2] == "id" {
+					if len(ctx.Args) > 2 && ctx.Args[2] == "id" {
 						ctx.ReplyEmbed("Guilds", guildsListID(guilds[:indexEnd], 1, 1))
 					} else {
 						ctx.ReplyEmbed("Guilds", guildsListName(guilds[:indexEnd], 1, 1))
