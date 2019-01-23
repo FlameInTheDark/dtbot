@@ -132,7 +132,11 @@ func BotCommand(ctx bot.Context) {
 			case "list":
 				var selected string
 				if len(ctx.Args) > 2 && ctx.Args[2] == "id" {
-					selected = ctx.Args[3]
+					if len(ctx.Guilds) > 3 {
+						selected = ctx.Args[3]
+					} else {
+						selected = "1"
+					}
 				} else {
 					selected = ctx.Args[2]
 				}
