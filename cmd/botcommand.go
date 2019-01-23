@@ -159,7 +159,7 @@ func BotCommand(ctx bot.Context) {
 							index = 0
 						}
 						if index > len(guilds) {
-							index = len(guilds) - 1
+							index = len(guilds)
 							if index < 0 {
 								index = 0
 							}
