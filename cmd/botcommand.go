@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/bwmarrin/discordgo"
 	"github.com/globalsign/mgo/bson"
 	"strconv"
 	"strings"
@@ -129,32 +130,86 @@ func BotCommand(ctx bot.Context) {
 				}
 				ctx.ReplyEmbedPM("Guild", fmt.Sprintf("Leave from guild: %v", ctx.Args[2]))
 			case "list":
-				var list string
-				guilds := ctx.Discord.State.Guilds
-				for i, g := range guilds {
-					var gName string
-					if len(g.Name) > 20 {
-						gName = fmt.Sprintf("%v...", g.Name[:20])
-					} else {
-						gName = g.Name
-					}
-					list += fmt.Sprintf("[%v] - %v | U: %v\n", i, gName, len(g.Members))
+				var selected string
+				if ctx.Args[2] == "id" {
+					selected = ctx.Args[3]
+				} else {
+					selected = ctx.Args[2]
 				}
-				ctx.ReplyEmbed("Guilds", list)
-			case "idlist":
-				var list string
 				guilds := ctx.Discord.State.Guilds
-				for _, g := range guilds {
-					var gName string
-					if len(g.Name) > 20 {
-						gName = fmt.Sprintf("%v...", g.Name[:20])
+				pages := int(len(guilds)/20) + 1
+				if len(ctx.Args) > 2 {
+					index := 0
+					page, err := strconv.Atoi(selected)
+					if err != nil {
+						index = 0
 					} else {
-						gName = g.Name
+						index = page
+						if index > 1 {
+							index = index * 20
+						} else {
+							index = 0
+						}
+						if index > len(guilds) {
+							index = len(guilds) - 1
+							if index < 0 {
+								index = 0
+							}
+						}
 					}
-					list += fmt.Sprintf("[%v] - %v\n", g.ID, gName)
+					var indexEnd = index + 20
+					if indexEnd > len(guilds) {
+						indexEnd = len(guilds)
+					}
+					if ctx.Args[2] == "id" {
+						ctx.ReplyEmbed("Guilds", guildsListID(guilds[index:indexEnd], page, pages))
+					} else {
+						ctx.ReplyEmbed("Guilds", guildsListName(guilds[index:indexEnd], page, pages))
+					}
+
+				} else {
+					var indexEnd = 20
+					if indexEnd > len(guilds) {
+						indexEnd = len(guilds)
+					}
+					if ctx.Args[2] == "id" {
+						ctx.ReplyEmbed("Guilds", guildsListID(guilds[:indexEnd], 1, 1))
+					} else {
+						ctx.ReplyEmbed("Guilds", guildsListName(guilds[:indexEnd], 1, 1))
+					}
+
 				}
-				ctx.ReplyEmbed("Guilds", list)
 			}
 		}
 	}
+}
+
+func guildsListID(guilds []*discordgo.Guild, current, pages int) string {
+	var list string
+	for _, g := range guilds {
+		var gName string
+		if len(g.Name) > 20 {
+			gName = fmt.Sprintf("%v...", g.Name[:20])
+		} else {
+			gName = g.Name
+		}
+		list += fmt.Sprintf("[%v] - %v\n", g.ID, gName)
+	}
+	list += fmt.Sprintf("Pages: %v | Current: %v", pages, current)
+	return list
+}
+
+func guildsListName(guilds []*discordgo.Guild, current, pages int) string {
+	var list string
+	for i, g := range guilds {
+		var gName string
+		if len(g.Name) > 20 {
+			gName = fmt.Sprintf("%v...", g.Name[:20])
+		} else {
+			gName = g.Name
+		}
+		list += fmt.Sprintf("[%v] - %v | U: %v\n", i, gName, len(g.Members))
+	}
+	list += fmt.Sprintf("Pages: %v | Current: %v", pages, current)
+	return list
 }
