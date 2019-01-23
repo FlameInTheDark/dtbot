@@ -149,20 +149,15 @@ func BotCommand(ctx bot.Context) {
 				if len(ctx.Args) > 3 {
 					index := 0
 					page, err := strconv.Atoi(selected)
-					if err != nil {
-						index = 0
-					} else {
+					if err == nil {
 						index = page
-						if index > 1 {
+						if index > 0 {
 							index = index * 20
 						} else {
 							index = 0
 						}
 						if index > len(guilds) {
 							index = len(guilds)
-							if index < 0 {
-								index = 0
-							}
 						}
 					}
 					var indexEnd = index + 20
@@ -203,7 +198,7 @@ func guildsListID(guilds []*discordgo.Guild, current, pages int) string {
 		}
 		list += fmt.Sprintf("[%v] - %v\n", g.ID, gName)
 	}
-	list += fmt.Sprintf("Pages: %v | Current: %v", pages, current)
+	list += fmt.Sprintf("Page: %v | %v", current, pages)
 	return list
 }
 
@@ -218,6 +213,6 @@ func guildsListName(guilds []*discordgo.Guild, current, pages int) string {
 		}
 		list += fmt.Sprintf("[%v] - %v | U: %v\n", i, gName, len(g.Members))
 	}
-	list += fmt.Sprintf("Pages: %v | Current: %v", pages, current)
+	list += fmt.Sprintf("Page: %v | %v", current, pages)
 	return list
 }
