@@ -139,6 +139,7 @@ func BotCommand(ctx bot.Context) {
 					}
 				} else {
 					if len(ctx.Guilds) > 3 {
+						fmt.Println(len(ctx.Guilds))
 						selected = ctx.Args[2]
 					} else {
 						selected = "1"
