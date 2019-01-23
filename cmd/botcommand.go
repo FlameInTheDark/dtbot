@@ -138,7 +138,11 @@ func BotCommand(ctx bot.Context) {
 						selected = "1"
 					}
 				} else {
-					selected = ctx.Args[2]
+					if len(ctx.Guilds) > 2 {
+						selected = ctx.Args[2]
+					} else {
+						selected = "1"
+					}
 				}
 				guilds := ctx.Discord.State.Guilds
 				pages := int(len(guilds)/20) + 1
