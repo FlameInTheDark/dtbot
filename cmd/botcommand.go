@@ -131,7 +131,7 @@ func BotCommand(ctx bot.Context) {
 				ctx.ReplyEmbedPM("Guild", fmt.Sprintf("Leave from guild: %v", ctx.Args[2]))
 			case "list":
 				var selected string
-				if ctx.Args[2] == "id" {
+				if len(ctx.Args) > 2 && ctx.Args[2] == "id" {
 					selected = ctx.Args[3]
 				} else {
 					selected = ctx.Args[2]
@@ -162,9 +162,9 @@ func BotCommand(ctx bot.Context) {
 						indexEnd = len(guilds)
 					}
 					if ctx.Args[2] == "id" {
-						ctx.ReplyEmbed("Guilds", guildsListID(guilds[index:indexEnd-1], page, pages))
+						ctx.ReplyEmbed("Guilds", guildsListID(guilds[index:indexEnd], page, pages))
 					} else {
-						ctx.ReplyEmbed("Guilds", guildsListName(guilds[index:indexEnd-1], page, pages))
+						ctx.ReplyEmbed("Guilds", guildsListName(guilds[index:indexEnd], page, pages))
 					}
 
 				} else {
@@ -173,9 +173,9 @@ func BotCommand(ctx bot.Context) {
 						indexEnd = len(guilds)
 					}
 					if ctx.Args[2] == "id" {
-						ctx.ReplyEmbed("Guilds", guildsListID(guilds[:indexEnd-1], 1, 1))
+						ctx.ReplyEmbed("Guilds", guildsListID(guilds[:indexEnd], 1, 1))
 					} else {
-						ctx.ReplyEmbed("Guilds", guildsListName(guilds[:indexEnd-1], 1, 1))
+						ctx.ReplyEmbed("Guilds", guildsListName(guilds[:indexEnd], 1, 1))
 					}
 
 				}
