@@ -131,22 +131,25 @@ func BotCommand(ctx bot.Context) {
 				ctx.ReplyEmbedPM("Guild", fmt.Sprintf("Leave from guild: %v", ctx.Args[2]))
 			case "list":
 				var selected string
+				var paged = false
 				if len(ctx.Args) > 2 && ctx.Args[2] == "id" {
 					if len(ctx.Args) > 3 {
 						selected = ctx.Args[3]
+						paged = true
 					} else {
 						selected = "1"
 					}
 				} else {
 					if len(ctx.Args) > 2 {
 						selected = ctx.Args[2]
+						paged = true
 					} else {
 						selected = "1"
 					}
 				}
 				guilds := ctx.Discord.State.Guilds
 				pages := int(len(guilds)/20) + 1
-				if len(ctx.Args) > 3 {
+				if paged {
 					index := 0
 					page, err := strconv.Atoi(selected)
 					if err == nil {
