@@ -38,8 +38,6 @@ func BotCommand(ctx bot.Context) {
 				return
 			}
 			ctx.BotMsg.Clear(&ctx, from)
-		case "help":
-			ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_reply"))
 		case "logs":
 			if ctx.IsAdmin() {
 				if len(ctx.Args) < 2 {
@@ -53,6 +51,9 @@ func BotCommand(ctx bot.Context) {
 					showLogs(&ctx, count)
 				}
 			}
+		case "conflist":
+			ctx.ReplyEmbedPM("Config", ctx.Loc(""))
+
 		case "setconf":
 			if len(ctx.Args) > 2 {
 				target := strings.Split(ctx.Args[1], ".")
