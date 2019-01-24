@@ -52,8 +52,7 @@ func BotCommand(ctx bot.Context) {
 				}
 			}
 		case "conflist":
-			ctx.ReplyEmbedPM("Config", ctx.Loc(""))
-
+			ctx.ReplyEmbed("Config", ctx.Loc("conf_list"))
 		case "setconf":
 			if len(ctx.Args) > 2 {
 				target := strings.Split(ctx.Args[1], ".")
