@@ -135,7 +135,7 @@ func (ctx *Context) ReplyEmbed(name, content string) *discordgo.Message {
 func (ctx *Context) ReplyEmbedPM(name, content string) *discordgo.Message {
 	return NewEmbed("").
 		Field(name, content, false).
-		Footer(ctx.Loc("requested_by") + ": " + ctx.User.Username).
+		Footer(ctx.Loc("requested_from") + ": " + ctx.Guild.Name).
 		Color(ctx.GetGuild().EmbedColor).
 		SendPM(ctx)
 }
