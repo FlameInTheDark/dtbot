@@ -63,12 +63,12 @@ func (db *DBWorker) InitGuilds(sess *discordgo.Session, conf *Config) GuildsMap 
 				Timezone:    conf.General.Timezone,
 				EmbedColor:  conf.General.EmbedColor,
 			}
-			db.DBSession.DB(db.DBName).C("guilds").Insert(newData)
+			_ = db.DBSession.DB(db.DBName).C("guilds").Insert(newData)
 			data[guild.ID] = newData
 			initialized++
 		} else {
 			var newData = &GuildData{}
-			db.DBSession.DB(db.DBName).C("guilds").Find(bson.M{"id": guild.ID}).One(newData)
+			_ = db.DBSession.DB(db.DBName).C("guilds").Find(bson.M{"id": guild.ID}).One(newData)
 			if err != nil {
 				fmt.Println("Mongo: ", err)
 				continue
@@ -83,13 +83,13 @@ func (db *DBWorker) InitGuilds(sess *discordgo.Session, conf *Config) GuildsMap 
 
 // Log saves log in database
 func (db *DBWorker) Log(module, guildID, text string) {
-	db.DBSession.DB(db.DBName).C("logs").Insert(dbLog{Date: time.Now(), Text: text, Module: module, Guild: guildID})
+	_ = db.DBSession.DB(db.DBName).C("logs").Insert(dbLog{Date: time.Now(), Text: text, Module: module, Guild: guildID})
 }
 
 // LogGet returns last N log rows
 func (db *DBWorker) LogGet(count int) []dbLog {
 	var log = make([]dbLog, count)
-	db.DBSession.DB(db.DBName).C("logs").Find(nil).Sort("-$natural").Limit(count).All(&log)
+	_ = db.DBSession.DB(db.DBName).C("logs").Find(nil).Sort("-$natural").Limit(count).All(&log)
 	return log
 }
 

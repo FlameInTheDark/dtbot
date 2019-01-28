@@ -113,13 +113,16 @@ func (ctx *Context) ReplyFile(name string, r io.Reader) *discordgo.Message {
 	return msg
 }
 
-// EditEmbed edits embed by id
+// EditEmbed edits embed message by id
 func (ctx *Context) EditEmbed(ID, name, value string, inline bool) {
-	ctx.Discord.ChannelMessageEditEmbed(ctx.TextChannel.ID, ID, NewEmbed("").
+	_, err := ctx.Discord.ChannelMessageEditEmbed(ctx.TextChannel.ID, ID, NewEmbed("").
 		Color(ctx.GetGuild().EmbedColor).
 		Footer(fmt.Sprintf("%v %v", ctx.Loc("requested_by"), ctx.User.Username)).
 		Field(name, value, inline).
 		GetEmbed())
+	if err != nil {
+		ctx.Log("Message", ctx.Guild.ID, err.Error())
+	}
 }
 
 // ReplyEmbed reply on message with embed message

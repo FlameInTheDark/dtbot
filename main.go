@@ -3,13 +3,14 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"gopkg.in/robfig/cron.v2"
 	"net/http"
 	"os"
 	"os/signal"
 	"strings"
 	"syscall"
 	"time"
+
+	"gopkg.in/robfig/cron.v2"
 
 	"github.com/FlameInTheDark/dtbot/bot"
 	"github.com/FlameInTheDark/dtbot/cmd"
@@ -169,6 +170,7 @@ func registerCommands() {
 	CmdHandler.Register("!cron", cmd.CronCommand)
 }
 
+// MetricsSender sends metrics to InfluxDB
 func MetricsSender() {
 	for {
 		query := []byte(fmt.Sprintf("messages count=%v", messagesCounter))
