@@ -168,12 +168,12 @@ func BotCommand(ctx bot.Context) {
 					}
 					var indexEnd = index + 20
 					if indexEnd > len(guilds) {
-						indexEnd = len(guilds)
+						indexEnd = len(guilds)-1
 					}
 					if len(ctx.Args) > 2 && ctx.Args[2] == "id" {
-						ctx.ReplyEmbed("Guilds", guildsListID(guilds[index:indexEnd], page, pages))
+						ctx.ReplyEmbed("Guilds", guildsListID(guilds[index:indexEnd], page, pages)+fmt.Sprintf("\nFrom: %v\nTo: %v", index, indexEnd))
 					} else {
-						ctx.ReplyEmbed("Guilds", guildsListName(guilds[index:indexEnd], page, pages))
+						ctx.ReplyEmbed("Guilds", guildsListName(guilds[index:indexEnd], page, pages)+fmt.Sprintf("\nFrom: %v\nTo: %v", index, indexEnd))
 					}
 
 				} else {
@@ -182,9 +182,9 @@ func BotCommand(ctx bot.Context) {
 						indexEnd = len(guilds)
 					}
 					if len(ctx.Args) > 2 && ctx.Args[2] == "id" {
-						ctx.ReplyEmbed("Guilds", guildsListID(guilds[:indexEnd], 1, 1))
+						ctx.ReplyEmbed("Guilds", guildsListID(guilds[:indexEnd], 1, 1)+fmt.Sprintf("\nTo: %v", indexEnd))
 					} else {
-						ctx.ReplyEmbed("Guilds", guildsListName(guilds[:indexEnd], 1, 1))
+						ctx.ReplyEmbed("Guilds", guildsListName(guilds[:indexEnd], 1, 1)+fmt.Sprintf("\nTo: %v", indexEnd))
 					}
 
 				}
@@ -208,6 +208,8 @@ func BotCommand(ctx bot.Context) {
 						} else {
 							offline++
 						}
+					} else {
+						offline++
 					}
 				}
 			}
