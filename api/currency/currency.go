@@ -71,7 +71,7 @@ func GetCurrency(ctx *bot.Context) (response string) {
 	}
 
 	// Converting currencies
-	if len(args) > 3 && args[0] == "conv" {
+	if len(args) > 2 && args[0] == "conv" {
 		count, err := strconv.ParseFloat(args[2], 64)
 		if err != nil {
 			response = fmt.Sprintf("$v: %v", ctx.Loc("error"), ctx.Loc("nan"))
