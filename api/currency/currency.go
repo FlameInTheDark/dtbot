@@ -80,7 +80,7 @@ func GetCurrency(ctx *bot.Context) (response string) {
 		if newData.Currencies[args[1]].Value > 0 {
 
 			converted := (newData.Currencies[args[1]].Value / float32(newData.Currencies[args[1]].Nominal)) * float32(count)
-			response = fmt.Sprintf("`%v RUB = %v %0.2f`\n", args[2], args[1], converted)
+			response = fmt.Sprintf("`%v %v = RUB %0.2f`\n",args[1], args[2], converted)
 		}
 		return
 	}
