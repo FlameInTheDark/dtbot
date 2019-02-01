@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 
 	"github.com/FlameInTheDark/dtbot/bot"
 )
@@ -65,6 +66,21 @@ func GetCurrency(ctx *bot.Context) (response string) {
 		response = fmt.Sprintf("%v: ", ctx.Loc("available_currencies"))
 		for key := range newData.Currencies {
 			response = fmt.Sprintf("%v %v", response, key)
+		}
+		return
+	}
+
+	// Converting currencies
+	if len(args) > 3 && args[0] == "conv" {
+		count, err := strconv.ParseFloat(args[2], 64)
+		if err != nil {
+			response = fmt.Sprintf("$v: %v", ctx.Loc("error"), ctx.Loc("nan"))
+			return
+		}
+		if newData.Currencies[args[1]].Value > 0 {
+
+			converted := (newData.Currencies[args[1]].Value / float32(newData.Currencies[args[1]].Nominal)) * float32(count)
+			response = fmt.Sprintf("%v RUB = %v %0.2v`\n", args[2], args[1], converted)
 		}
 		return
 	}
