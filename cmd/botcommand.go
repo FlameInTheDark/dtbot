@@ -189,6 +189,29 @@ func BotCommand(ctx bot.Context) {
 
 				}
 			}
+		case "stats":
+			if !ctx.IsAdmin() {
+				return
+			}
+			var users, bots, online, offline int
+			for _, g := range ctx.Discord.State.Guilds {
+				for _, u := range g.Members {
+					if u.User.Bot {
+						bots++
+					} else {
+						users++
+					}
+					p, pErr := ctx.Discord.State.Presence(g.ID, u.User.ID)
+					if pErr == nil {
+						if p.Status != discordgo.StatusOffline {
+							online++
+						} else {
+							offline++
+						}
+					}
+				}
+			}
+			ctx.ReplyEmbed("Stats", fmt.Sprintf(ctx.Loc("stats_command"), len(ctx.Discord.State.Guilds), users, bots, online, offline))
 		}
 	}
 }
