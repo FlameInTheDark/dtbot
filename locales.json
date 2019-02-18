@@ -65,7 +65,9 @@
         "polls_ends": "Poll end",
         "polls_already_exists": "Poll already exists",
         "polls_not_exists": "Poll not exists",
-        "polls_already_voted": "You already voted in this poll"
+        "polls_already_voted": "You already voted in this poll",
+        "geoip_format_string": "IP [%v]\nCity: %v\nRegion: %v\nCountry: %v",
+        "geoip_no_data": "Нет данных о IP"
     },
     "ru": {
         "help": "Помощь по командам бота",
@@ -133,6 +135,8 @@
         "polls_ends": "Опрос окончен",
         "polls_already_exists": "Опрос уже существует",
         "polls_not_exists": "Опрос не существует",
-        "polls_already_voted": "Вы уже проголосовали в этом опросе"
+        "polls_already_voted": "Вы уже проголосовали в этом опросе",
+        "geoip_format_string": "IP [%v]\nГород: %v\nРегион: %v\nСтрана: %v",
+        "geoip_no_data": "Нет данных о IP"
     }
 }

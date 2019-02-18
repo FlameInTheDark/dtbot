@@ -78,11 +78,11 @@ func GetGeoIP(ctx *bot.Context) string {
 		return ctx.Loc("error")
 	}
 
-	if result.City.NameRU == "" || result.Region.NameRU == "" || result.Country.NameRU == "" {
+	if result.City.NameEN == "" || result.Region.NameEN == "" || result.Country.NameEN == "" {
 		return ctx.Loc("geoip_no_data")
 	}
 
-	return fmt.Sprintf("IP [%v]\nCity: %v\nRegion: %v\nCountry: %v",
+	return fmt.Sprintf(ctx.Loc("geoip_format_string"),
 		result.IP, result.City.NameRU, result.Region.NameRU, result.Country.NameRU)
 
 }
