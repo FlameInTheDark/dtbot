@@ -168,6 +168,7 @@ func registerCommands() {
 	CmdHandler.Register("!dice", cmd.DiceCommand)
 	CmdHandler.Register("!help", cmd.HelpCommand)
 	CmdHandler.Register("!cron", cmd.CronCommand)
+	CmdHandler.Register("!geoip", cmd.GeoIPCommand)
 }
 
 // MetricsSender sends metrics to InfluxDB
