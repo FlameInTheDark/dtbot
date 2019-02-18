@@ -14,6 +14,7 @@
 * cbr-xml-daily.ru
 * youtube-dl
 * owfont
+* Sypex Geo
 
 ## Bot's features
 
@@ -61,6 +62,7 @@ Command | Description
 `!cron add [cron_time] [command]` | Creates cron job for command `!cron add 0 0 12 * * * !w Chelyabinsk` - everyday in 12:00 UTC 0 use command `!w`
 `!cron list` | Shows cron jobs
 `!cron remove [id]` | Removes cron job by ID `!cron remove 1`
+`!geoip [some_ip_address]` | Shows geographic information about IP
 
 ## Set config parameters
 
