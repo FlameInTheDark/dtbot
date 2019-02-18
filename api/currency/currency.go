@@ -19,6 +19,19 @@ type Data struct {
 	Currencies   map[string]Currency `json:"Valute"`
 }
 
+// CurrencyCheck returns true if currency is real
+func (d *Data) CurrencyCheck(currency string) bool {
+	if currency == "RUB" {
+		return true
+	}
+
+	if d.Currencies[currency].Value > 0 {
+		return true
+	}
+
+	return false
+}
+
 // Currency structure
 type Currency struct {
 	ID       string
@@ -59,6 +72,8 @@ func GetCurrency(ctx *bot.Context) (response string) {
 		return
 	}
 
+	newData.Currencies["RUB"] = Currency{"R00000", "000", "RUB", 1, "Российский Рубль", 1, 1}
+
 	response = ""
 
 	// List of currencies
@@ -71,14 +86,13 @@ func GetCurrency(ctx *bot.Context) (response string) {
 	}
 
 	// Converting currencies
-	if len(args) > 2 && args[0] == "conv" {
+	if len(args) > 3 && args[0] == "conv" {
 		count, err := strconv.ParseFloat(args[2], 64)
 		if err != nil {
 			response = fmt.Sprintf("$v: %v", ctx.Loc("error"), ctx.Loc("nan"))
 			return
 		}
-		if newData.Currencies[args[1]].Value > 0 {
-
+		if newData.Currencies[args[1]].Value > 0 && newData.Currencies[args[2]].Value > 0 {
 			converted := (newData.Currencies[args[1]].Value / float32(newData.Currencies[args[1]].Nominal)) * float32(count)
 			response = fmt.Sprintf("`%v %v = %0.2f RUB`\n", args[2], args[1], converted)
 		}
@@ -94,7 +108,14 @@ func GetCurrency(ctx *bot.Context) (response string) {
 			} else {
 				arrow = "▼"
 			}
-			response = fmt.Sprintf("%v%v\n`%v %v = %v RUB %v  %0.2v`\n", response, newData.Currencies[arg].Name, newData.Currencies[arg].Nominal, newData.Currencies[arg].CharCode, newData.Currencies[arg].Value, arrow, newData.Currencies[arg].Value-newData.Currencies[arg].Previous)
+			response = fmt.Sprintf("%v%v\n`%v %v = %v RUB %v  %0.2v`\n",
+				response,
+				newData.Currencies[arg].Name,
+				newData.Currencies[arg].Nominal,
+				newData.Currencies[arg].CharCode,
+				newData.Currencies[arg].Value,
+				arrow,
+				newData.Currencies[arg].Value-newData.Currencies[arg].Previous)
 		}
 	}
 	return
