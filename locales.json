@@ -1,7 +1,7 @@
 {
     "en": {
         "help": "Bot commands help",
-        "help_reply": "`!help [command]` | Detail description of command `!help !y`\n`!play [youtube_url]` | Add bot in channel and start playing from URL\n`!v` | Manage bot voice channel\n`!b` | Bot functions\n`!y` | Manage Youtube player\n`!r` | Manage radio\n`!w` | Weather forecast\n`!t` | Translator\n`!c` | Currency\n`!p` | Polls",
+        "help_reply": "`!help [command]` | Detail description of command `!help !y`\n`!play [youtube_url]` | Add bot in channel and start playing from URL\n`!v` | Manage bot voice channel\n`!b` | Bot functions\n`!y` | Manage Youtube player\n`!r` | Manage radio\n`!w` | Weather forecast\n`!t` | Translator\n`!c` | Currency\n`!p` | Polls\n`!geoip` | GeoIP",
         "help_command_!v": "`!v join` | Add bot into you voice channel\n`!v leave` | Remove bot from voice channel",
         "help_command_!b": "`!b clear [from_num]` | Remove bot's messages `!b clear` or `!b clear 3` removes all messages from 3rd message\n`!b setconf [parameter] [value]` | Set's configuration for current guild\n`!b conflist` | Shows list of configurations",
         "help_command_!b_admin": "`!b guild list [page_num]` | Shows a list of guilds that use the current bot\n`!b guild list id [page_num]` | Shows a list of guilds that use the current bot with guilds ID's\n`!b guild leave [id]` | Makes the bot to leave from guild with specified id\n`!b logs` | Shows last logs from database",
@@ -12,6 +12,7 @@
         "help_command_!t": "`!t [target_lang] [text]` | Translator `!t ru Hello world`",
         "help_command_!c": "`!c` | Shows currencies (default from config)\n`!c list` | Shows list of available currencies\n`!c [currency]` | Shows specified currency `!c USD EUR`",
         "help_command_!p": "`!p new [fields]` | Creates new poll `!p new field one|field two|field three`\n`!p vote [field_num]` | Votes in poll\n`!p end` | Ends poll and shows results",
+        "help_command_!geoip": "`!geoip [ip_address]` | Shows geographic information about IP address",
         "conf_list": "`general.language [string]` | Sets bot language\n`general.timezone [num]` | Sets bot timezone\n`general.nick [string]` | Sets bot nickname\n`embed.color [hex color like #007700]` | Sets bot embed color\n`news.country [string]` | Sets bot news country\n`weather.city [string]` | Sets default city for weather",
         "stats_command": "Guilds: %v\nUsers: %v\nBots: %v\nOnline: %v\nOffline: %v",
         "error": "An error occurred",
@@ -71,7 +72,7 @@
     },
     "ru": {
         "help": "Помощь по командам бота",
-        "help_reply": "`!help [command]` | Детальное описание команды `!help !y`\n`!play [youtube_url]` | Добавить бота в голосовой канал и начать проигрывать трек из ссылки\n`!v` | Управление голосовым каналом бота\n`!b` | Функции бота\n`!y` | Управление Youtube проигрывателем\n`!r` | Управление радио\n`!w` | Прогноз погоды\n`!t` | Переводчик\n`!c` | Курс валюты\n`!p` | Опросы",
+        "help_reply": "`!help [command]` | Детальное описание команды `!help !y`\n`!play [youtube_url]` | Добавить бота в голосовой канал и начать проигрывать трек из ссылки\n`!v` | Управление голосовым каналом бота\n`!b` | Функции бота\n`!y` | Управление Youtube проигрывателем\n`!r` | Управление радио\n`!w` | Прогноз погоды\n`!t` | Переводчик\n`!c` | Курс валюты\n`!p` | Опрос\n`!geoip` | GeoIP",
         "help_command_!v": "`!v join` | Добавить бота в голосовой канал\n`!v leave` | Удалить бота из голосового канала",
         "help_command_!b": "`!b clear [from_num]` | Удалить сообщения бота `!b clear` или `!b clear 3` Удалить все индексированные сообщения начиная с 3-его\n`!b setconf [parameter] [value]` | Устанавливает настройки для сервера\n`!b conflist` | Показывает список доступных настроек",
         "help_command_!b_admin": "`!b guild list [page_num]` | Показывает список гильдий с ботом\n`!b guild list id [page_num]` | Показывает список гильдий и их идентификаторы\n`!b guild leave [id]` | Заставляет бота выйти из гильдии по ее ID\n`!b logs` | Показывает последние логи из базы даных",
@@ -82,6 +83,7 @@
         "help_command_!t": "`!t [target_lang] [text]` | Переводчик `!t ru Hello world`",
         "help_command_!c": "`!c` | Показать курс валюты (default from config)\n`!c list` | Показать список доступных валют\n`!c [currency]` | Показать курс по указанной валюте `!c USD EUR`",
         "help_command_!p": "`!p new [fields]` | Создать новый опрос (в качестве разделителя символ `|`) `!p new field one|field two|field three`\n`!p vote [field_num]` | Голосовать в опросе\n`!p end` | Закончить опрос и показать результаты",
+        "help_command_!geoip": "`!geoip [ip_address]` | Показывает географическую информацию об IP-адресе",
         "conf_list": "`general.language [string]` | Устанавливает язык\n`general.timezone [num]` | Устанавливает часовой пояс\n`general.nick [string]` | Устанавливает имя бота\n`embed.color [hex color like #007700]` | Устанавливает цвет сообщений\n`news.country [string]` | Устанавливает страну новостей\n`weather.city [string]` | Устанавливает город для погоды",
         "stats_command": "Гильдии: %v\nПользователи: %v\nБоты: %v\nОнлайн: %v\nОфлайн: %v",
         "error": "Произошла ошибка",
