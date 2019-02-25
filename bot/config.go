@@ -44,6 +44,10 @@ type MetricsConfig struct {
 	Password string
 }
 
+type DBLConfig struct {
+	Token string
+}
+
 // TranslateConfig Yandex translate config struct
 type TranslateConfig struct {
 	APIKey string
@@ -70,6 +74,7 @@ type Config struct {
 	Currency     CurrencyConfig
 	WeatherCodes WeatherCodesMap
 	Metrics      MetricsConfig
+	DBL          DBLConfig
 }
 
 // GetLocale returns locale string by key

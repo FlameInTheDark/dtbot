@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"github.com/DiscordBotList/dblgo"
 	"net/http"
 	"os"
 	"os/signal"
@@ -55,7 +56,7 @@ func main() {
 	botId = usr.ID
 	discord.AddHandler(commandHandler)
 	discord.AddHandler(func(discord *discordgo.Session, ready *discordgo.Ready) {
-		discord.UpdateStatus(0, conf.General.Game)
+		_ = discord.UpdateStatus(0, conf.General.Game)
 		guilds := discord.State.Guilds
 		fmt.Println("Ready with", len(guilds), "guilds.")
 	})
@@ -73,7 +74,7 @@ func main() {
 	dbWorker = bot.NewDBSession(conf.General.DatabaseName)
 	guilds = dbWorker.InitGuilds(discord, conf)
 	botCron.Start()
-	go MetricsSender()
+	go MetricsSender(discord)
 	defer botCron.Stop()
 	defer dbWorker.DBSession.Close()
 	<-sc
@@ -169,13 +170,17 @@ func registerCommands() {
 }
 
 // MetricsSender sends metrics to InfluxDB
-func MetricsSender() {
+func MetricsSender(d *discordgo.Session) {
 	for {
 		query := []byte(fmt.Sprintf("messages count=%v", messagesCounter))
 		addr := fmt.Sprintf("%v/write?db=%v&u=%v&p=%v",
 			conf.Metrics.Address, conf.Metrics.Database, conf.Metrics.User, conf.Metrics.Password)
 		r := bytes.NewReader(query)
 		_, _ = http.Post(addr, "", r)
+		if conf.DBL.Token != "" {
+			s := dblgo.NewDBL(conf.DBL.Token, d.State.User.ID)
+			_ = s.PostStats(len(d.State.Guilds))
+		}
 		messagesCounter = 0
 		time.Sleep(time.Minute)
 	}
