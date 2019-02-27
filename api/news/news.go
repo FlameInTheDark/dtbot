@@ -43,11 +43,13 @@ func GetNews(ctx *bot.Context) string {
 	}
 	resp, err := http.Get(fmt.Sprintf("https://newsapi.org/v2/top-headlines?country=%v&category=%v&apiKey=%v", ctx.Conf.News.Country, category, ctx.Conf.News.APIKey))
 	if err != nil {
+		ctx.Log("news", ctx.Guild.ID, fmt.Sprintf("Get news error: %v", err))
 		return fmt.Sprintf("Get news error: %v", err)
 	}
 
 	err = json.NewDecoder(resp.Body).Decode(&result)
 	if err != nil {
+		ctx.Log("news", ctx.Guild.ID, fmt.Sprintf("Parse news error: %v", err))
 		return fmt.Sprintf("Parse news error: %v", err)
 	}
 
