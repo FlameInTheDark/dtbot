@@ -167,6 +167,9 @@ func BotCommand(ctx bot.Context) {
 						} else {
 							ctx.ReplyEmbed("Guilds", guildsListName(guilds[indexFrom:indexTo], page, pages)+fmt.Sprintf("\nFrom: %v\nTo: %v", indexFrom, indexTo))
 						}
+
+					} else {
+						ctx.ReplyEmbed("Guilds", fmt.Sprintf("Selected: %v\nError: %v", selected, err.Error()))
 					}
 
 				} else {
