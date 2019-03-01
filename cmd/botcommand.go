@@ -162,12 +162,13 @@ func BotCommand(ctx bot.Context) {
 						if indexTo > len(guilds) {
 							indexTo = len(guilds) - 1
 						}
+						if len(ctx.Args) > 2 && ctx.Args[2] == "id" {
+							ctx.ReplyEmbed("Guilds", guildsListID(guilds[indexFrom:indexTo], page, pages)+fmt.Sprintf("\nFrom: %v\nTo: %v", indexFrom, indexTo))
+						} else {
+							ctx.ReplyEmbed("Guilds", guildsListName(guilds[indexFrom:indexTo], page, pages)+fmt.Sprintf("\nFrom: %v\nTo: %v", indexFrom, indexTo))
+						}
 					}
-					if len(ctx.Args) > 2 && ctx.Args[2] == "id" {
-						ctx.ReplyEmbed("Guilds", guildsListID(guilds[indexFrom:indexTo], page, pages)+fmt.Sprintf("\nFrom: %v\nTo: %v", indexFrom, indexTo))
-					} else {
-						ctx.ReplyEmbed("Guilds", guildsListName(guilds[indexFrom:indexTo], page, pages)+fmt.Sprintf("\nFrom: %v\nTo: %v", indexFrom, indexTo))
-					}
+
 				} else {
 					indexTo := 20
 					if indexTo > len(guilds) {
