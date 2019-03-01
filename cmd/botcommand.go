@@ -147,6 +147,7 @@ func BotCommand(ctx bot.Context) {
 						selected = "1"
 					}
 				}
+				ctx.Reply(selected)
 				guilds := ctx.Discord.State.Guilds
 				pages := 1 + int(len(guilds)/20)
 				if paged {
