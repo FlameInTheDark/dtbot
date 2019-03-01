@@ -153,7 +153,7 @@ func BotCommand(ctx bot.Context) {
 				if paged {
 					var indexFrom, indexTo = 0,20
 					page, err := strconv.Atoi(selected)
-					ctx.Reply(string(page))
+					ctx.Reply(err.Error())
 					if err != nil {
 						indexTo = page * 20
 						indexFrom = indexTo - 20
