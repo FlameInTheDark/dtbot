@@ -148,45 +148,36 @@ func BotCommand(ctx bot.Context) {
 					}
 				}
 				guilds := ctx.Discord.State.Guilds
-				pages := int(len(guilds)/20)
-				if pages == 0 {
-					pages = 1
-				}
+				pages := 1 + int(len(guilds)/20)
 				if paged {
-					var index int
+					var indexFrom, indexTo int
 					page, err := strconv.Atoi(selected)
-					if err == nil {
-						index = (page - 1) * 20
-						if index > 0 {
-							index = index * 20
-						} else {
-							index = 0
+					if err != nil {
+						indexTo = page * 20
+						indexFrom = indexTo - 20
+
+						if indexFrom < 0 {
+							indexFrom = 0
 						}
-						if index > len(guilds) {
-							index = len(guilds)
+						if indexTo > len(guilds) {
+							indexTo = len(guilds) - 1
 						}
-					}
-					var indexEnd = index + 20
-					if indexEnd > len(guilds) {
-						indexEnd = len(guilds)-1
 					}
 					if len(ctx.Args) > 2 && ctx.Args[2] == "id" {
-						ctx.ReplyEmbed("Guilds", guildsListID(guilds[index:indexEnd], page, pages)+fmt.Sprintf("\nFrom: %v\nTo: %v", index, indexEnd))
+						ctx.ReplyEmbed("Guilds", guildsListID(guilds[indexFrom:indexTo], page, pages)+fmt.Sprintf("\nFrom: %v\nTo: %v", indexFrom, indexTo))
 					} else {
-						ctx.ReplyEmbed("Guilds", guildsListName(guilds[index:indexEnd], page, pages)+fmt.Sprintf("\nFrom: %v\nTo: %v", index, indexEnd))
+						ctx.ReplyEmbed("Guilds", guildsListName(guilds[indexFrom:indexTo], page, pages)+fmt.Sprintf("\nFrom: %v\nTo: %v", indexFrom, indexTo))
 					}
-
 				} else {
-					var indexEnd = 20
-					if indexEnd > len(guilds) {
-						indexEnd = len(guilds)
+					indexTo := 20
+					if indexTo > len(guilds) {
+						indexTo = len(guilds) - 1
 					}
 					if len(ctx.Args) > 2 && ctx.Args[2] == "id" {
-						ctx.ReplyEmbed("Guilds", guildsListID(guilds[:indexEnd], 1, 1)+fmt.Sprintf("\nTo: %v", indexEnd))
+						ctx.ReplyEmbed("Guilds", guildsListID(guilds[:indexTo], 1, 1)+fmt.Sprintf("\nTo: %v", indexTo))
 					} else {
-						ctx.ReplyEmbed("Guilds", guildsListName(guilds[:indexEnd], 1, 1)+fmt.Sprintf("\nTo: %v", indexEnd))
+						ctx.ReplyEmbed("Guilds", guildsListName(guilds[:indexTo], 1, 1)+fmt.Sprintf("\nTo: %v", indexTo))
 					}
-
 				}
 			}
 		case "stats":
