@@ -113,7 +113,6 @@ func (c *Config) LoadLocales() {
 	}
 
 	fmt.Printf("Loaded %v translations for '%v' language\n", len(c.Locales[c.General.Language]), c.General.Language)
-	return
 }
 
 // LoadWeatherCodes loads weather font codes from file 'codes.json' in map. Terminate program if error.
@@ -130,5 +129,4 @@ func (c *Config) LoadWeatherCodes() {
 	}
 
 	fmt.Printf("Loaded %v weather codes\n", len(c.WeatherCodes))
-	return
 }

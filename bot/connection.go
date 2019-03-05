@@ -26,5 +26,5 @@ func NewConnection(voiceConnection *discordgo.VoiceConnection) *Connection {
 
 // Disconnect remove from voice channel and connection
 func (c *Connection) Disconnect() {
-	c.voiceConnection.Disconnect()
+	_=c.voiceConnection.Disconnect()
 }

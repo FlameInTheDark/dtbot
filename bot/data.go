@@ -78,10 +78,8 @@ func (data *DataType) AddCronJob(ctx *Context,id cron.EntryID, cmd string) error
 		data.GuildSchedules[ctx.Guild.ID].CronJobs[id] = cmd
 		return nil
 	} else {
-		data.GuildSchedules[ctx.Guild.ID].CronJobs[id] = cmd
-		return nil
+		return errors.New("Error adding cron job")
 	}
-	return errors.New("Error adding cron job")
 }
 
 func (data *DataType) CronIsFull(ctx *Context) bool {

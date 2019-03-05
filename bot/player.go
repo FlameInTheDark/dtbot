@@ -10,7 +10,7 @@ func (player *RadioPlayer) Start(sess *Session, source string, callback func(str
 	player.Running = true
 	for player.Running {
 		callback("Now playing `" + source + "`.")
-		sess.Play(source)
+		_=sess.Play(source)
 		player.Running = false
 	}
 	if !player.Running {

@@ -24,10 +24,6 @@ const (
 	MAX_BYTES int = (FRAME_SIZE * 2) * 2
 )
 
-var (
-	speakers map[uint32]*gopus.Decoder
-)
-
 // Play start playback
 func (connection *Connection) Play(source string) error {
 	if connection.playing {
@@ -48,7 +44,7 @@ func (connection *Connection) Play(source string) error {
 	defer func() {
 		connection.playing = false
 	}()
-	connection.voiceConnection.Speaking(true)
+	_=connection.voiceConnection.Speaking(true)
 	defer connection.voiceConnection.Speaking(false)
 	if connection.send == nil {
 		connection.send = make(chan []int16, 2)
@@ -56,7 +52,7 @@ func (connection *Connection) Play(source string) error {
 	go connection.sendPCM(connection.voiceConnection, connection.send)
 	for {
 		if connection.stopRunning {
-			ffmpeg.Process.Kill()
+			_=ffmpeg.Process.Kill()
 			break
 		}
 		audioBuffer := make([]int16, FRAME_SIZE*CHANNELS)
@@ -105,48 +101,6 @@ func (connection *Connection) sendPCM(voice *discordgo.VoiceConnection, pcm <-ch
 			return
 		}
 		voice.OpusSend <- opus
-	}
-}
-
-// receivePCM receives PCM from discord voice channel
-func (connection *Connection) receivePCM(v *discordgo.VoiceConnection, c chan *discordgo.Packet) {
-	if c == nil {
-		return
-	}
-
-	var err error
-
-	for {
-		if v.Ready == false || v.OpusRecv == nil {
-			fmt.Printf("Discordgo not to receive opus packets. %+v : %+v", v.Ready, v.OpusSend)
-			return
-		}
-
-		p, ok := <-v.OpusRecv
-		if !ok {
-			return
-		}
-
-		if speakers == nil {
-			speakers = make(map[uint32]*gopus.Decoder)
-		}
-
-		_, ok = speakers[p.SSRC]
-		if !ok {
-			speakers[p.SSRC], err = gopus.NewDecoder(48000, 2)
-			if err != nil {
-				fmt.Printf("error creating opus decoder: %v", err)
-				continue
-			}
-		}
-
-		p.PCM, err = speakers[p.SSRC].Decode(p.Opus, 960, false)
-		if err != nil {
-			fmt.Printf("Error decoding opus data: %v", err)
-			continue
-		}
-
-		c <- p
 	}
 }
 
