@@ -151,13 +151,12 @@ func BotCommand(ctx bot.Context) {
 				guilds := ctx.Discord.State.Guilds
 				pages := 1 + int(len(guilds)/20)
 				// paginate
+				var indexTo = 20
 				if paged {
-					var indexFrom = 0
-					var indexTo = 20
 					page, err := strconv.Atoi(selected)
 					if err == nil {
 						indexTo = page * 20
-						indexFrom = indexTo - 20
+						indexFrom := indexTo - 20
 
 						if indexFrom < 0 {
 							indexFrom = 0
@@ -176,7 +175,6 @@ func BotCommand(ctx bot.Context) {
 					}
 
 				} else {
-					indexTo := 20
 					if indexTo > len(guilds) {
 						indexTo = len(guilds) - 1
 					}

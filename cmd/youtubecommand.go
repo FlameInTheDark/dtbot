@@ -175,7 +175,6 @@ func shortPlay(ctx *bot.Context, sess *bot.Session, msg *discordgo.Message) (isP
 		switch relp {
 		case "stop":
 			ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("youtube_stopped"), true)
-			break
 		case "finish":
 			ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("youtube_finished"), true)
 			break

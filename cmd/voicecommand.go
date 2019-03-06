@@ -30,7 +30,6 @@ func VoiceCommand(ctx bot.Context) {
 			return
 		}
 		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), fmt.Sprintf("%v <#%v>!", ctx.Loc("player_joined"), sess.ChannelID))
-		break
 	case "leave":
 		if sess == nil {
 			ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_must_be_in_voice"))
@@ -38,6 +37,5 @@ func VoiceCommand(ctx bot.Context) {
 		}
 		ctx.Sessions.Leave(ctx.Discord, *sess)
 		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), fmt.Sprintf("%v <#%v>!", ctx.Loc("player_left"), sess.ChannelID))
-		break
 	}
 }

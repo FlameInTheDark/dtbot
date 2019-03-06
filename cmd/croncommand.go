@@ -42,7 +42,7 @@ func CronCommand(ctx bot.Context) {
 									NewsCommand(ctx)
 								}
 							})
-							ctx.Data.AddCronJob(&ctx, id, cmd)
+							_=ctx.Data.AddCronJob(&ctx, id, cmd)
 							ctx.ReplyEmbedPM("Cron", fmt.Sprintf("Job added: [%v] [%v]", cmd, id))
 						} else {
 							ctx.ReplyEmbedPM("Cron", "Schedule is full")
