@@ -7,6 +7,7 @@ import (
 	"net/http"
 )
 
+// GeoIP main geoip structure. Contains geographic data about ip address
 type GeoIP struct {
 	IP        string       `json:"ip"`
 	City      GeoIPCity    `json:"city"`
@@ -18,6 +19,7 @@ type GeoIP struct {
 	TimeStamp int          `json:"timestamp"`
 }
 
+// GeoIPCity contains data about city
 type GeoIPCity struct {
 	Id         int     `json:"id"`
 	Latitude   float64 `json:"lat"`
@@ -31,6 +33,7 @@ type GeoIPCity struct {
 	PostalCode string  `json:"post"`
 }
 
+// GeoIPRegion contains data about region
 type GeoIPRegion struct {
 	Id        int     `json:"id"`
 	Latitude  float64 `json:"lat"`
@@ -45,6 +48,7 @@ type GeoIPRegion struct {
 	UTC       int     `json:"utc"`
 }
 
+// GeoIPCountry contains data about country
 type GeoIPCountry struct {
 	ID            int     `json:"id"`
 	Latitude      float64 `json:"lat"`
@@ -66,6 +70,7 @@ type GeoIPCountry struct {
 	UTC           int     `json:"utc"`
 }
 
+// GetGeoIP makes request to API and returns geoip data formatted to string
 func GetGeoIP(ctx *bot.Context) string {
 	resp, err := http.Get(fmt.Sprintf("http://api.sypexgeo.net/json/%v", ctx.Args[0]))
 	if err != nil {

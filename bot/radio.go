@@ -44,15 +44,15 @@ func (connection *Connection) Play(source string) error {
 	defer func() {
 		connection.playing = false
 	}()
-	_=connection.voiceConnection.Speaking(true)
-	defer func() {_=connection.voiceConnection.Speaking(false)}()
+	_ = connection.voiceConnection.Speaking(true)
+	defer func() { _ = connection.voiceConnection.Speaking(false) }()
 	if connection.send == nil {
 		connection.send = make(chan []int16, 2)
 	}
 	go connection.sendPCM(connection.voiceConnection, connection.send)
 	for {
 		if connection.stopRunning {
-			_=ffmpeg.Process.Kill()
+			_ = ffmpeg.Process.Kill()
 			break
 		}
 		audioBuffer := make([]int16, FRAME_SIZE*CHANNELS)
@@ -123,15 +123,15 @@ func (connection *Connection) PlayYoutube(ffmpeg *exec.Cmd) error {
 	defer func() {
 		connection.playing = false
 	}()
-	_=connection.voiceConnection.Speaking(true)
-	defer func() {_=connection.voiceConnection.Speaking(false)}()
+	_ = connection.voiceConnection.Speaking(true)
+	defer func() { _ = connection.voiceConnection.Speaking(false) }()
 	if connection.send == nil {
 		connection.send = make(chan []int16, 2)
 	}
 	go connection.sendPCM(connection.voiceConnection, connection.send)
 	for {
 		if connection.stopRunning {
-			_=ffmpeg.Process.Kill()
+			_ = ffmpeg.Process.Kill()
 			break
 		}
 		audioBuffer := make([]int16, FRAME_SIZE*CHANNELS)

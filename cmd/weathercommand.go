@@ -13,5 +13,5 @@ func WeatherCommand(ctx bot.Context) {
 		ctx.Log("Weather", ctx.Guild.ID, err.Error())
 		return
 	}
-	ctx.ReplyFile("weather.png",buf)
+	ctx.ReplyFile("weather.png", buf)
 }

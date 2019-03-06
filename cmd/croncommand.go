@@ -42,7 +42,7 @@ func CronCommand(ctx bot.Context) {
 									NewsCommand(ctx)
 								}
 							})
-							_=ctx.Data.AddCronJob(&ctx, id, cmd)
+							_ = ctx.Data.AddCronJob(&ctx, id, cmd)
 							ctx.ReplyEmbedPM("Cron", fmt.Sprintf("Job added: [%v] [%v]", cmd, id))
 						} else {
 							ctx.ReplyEmbedPM("Cron", "Schedule is full")
@@ -51,7 +51,7 @@ func CronCommand(ctx bot.Context) {
 				}
 			}
 		case "remove":
-			val,err := strconv.Atoi(ctx.Args[1])
+			val, err := strconv.Atoi(ctx.Args[1])
 			if err != nil {
 				ctx.ReplyEmbedPM("Cron", err.Error())
 				return
@@ -69,10 +69,10 @@ func CronCommand(ctx bot.Context) {
 				return
 			}
 			var reply = []string{"Jobs:"}
-			for key,val := range s.CronJobs {
+			for key, val := range s.CronJobs {
 				reply = append(reply, fmt.Sprintf("[%v] - [%v]", key, val))
 			}
-			ctx.ReplyEmbedPM("Cron", strings.Join(reply,"\n"))
+			ctx.ReplyEmbedPM("Cron", strings.Join(reply, "\n"))
 		}
 	}
 }

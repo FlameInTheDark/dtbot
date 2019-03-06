@@ -1,7 +1,6 @@
 package bot
 
 type (
-
 	// Command : Executable command function
 	Command func(Context)
 

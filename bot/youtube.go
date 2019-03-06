@@ -134,6 +134,6 @@ func (youtube Youtube) Search(query string) ([]YTSearchContent, error) {
 		return nil, err
 	}
 	var apiResp ytApiResponse
-	_=json.NewDecoder(resp.Body).Decode(&apiResp)
+	_ = json.NewDecoder(resp.Body).Decode(&apiResp)
 	return apiResp.Content, nil
 }

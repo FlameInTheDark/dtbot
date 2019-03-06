@@ -13,5 +13,5 @@ func YandexmapCommand(ctx bot.Context) {
 		ctx.Log("Map", ctx.Guild.ID, err.Error())
 		return
 	}
-	ctx.ReplyFile("map.png",buf)
+	ctx.ReplyFile("map.png", buf)
 }

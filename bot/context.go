@@ -108,7 +108,7 @@ func (ctx *Context) GetGuild() *GuildData {
 			Timezone:    ctx.Conf.General.Timezone,
 			EmbedColor:  ctx.Conf.General.EmbedColor,
 		}
-		_=ctx.DB.DBSession.DB(ctx.DB.DBName).C("guilds").Insert(newData)
+		_ = ctx.DB.DBSession.DB(ctx.DB.DBName).C("guilds").Insert(newData)
 		ctx.Guilds[ctx.Guild.ID] = newData
 		return ctx.Guilds[ctx.Guild.ID]
 	}

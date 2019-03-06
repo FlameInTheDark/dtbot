@@ -22,7 +22,7 @@ func (m *BotMessages) Add(ctx *Context, messageID string) {
 func (m *BotMessages) Clear(ctx *Context, from int) {
 	channelID := ctx.Message.ChannelID
 	if len(m.Messages[channelID][:(len(m.Messages[channelID])-1)-from]) > 0 {
-		err :=ctx.Discord.ChannelMessagesBulkDelete(ctx.Message.ChannelID, m.Messages[channelID][:(len(m.Messages[channelID])-1)-from])
+		err := ctx.Discord.ChannelMessagesBulkDelete(ctx.Message.ChannelID, m.Messages[channelID][:(len(m.Messages[channelID])-1)-from])
 		if err != nil {
 			ctx.Log("Message", ctx.Guild.ID, err.Error())
 		}

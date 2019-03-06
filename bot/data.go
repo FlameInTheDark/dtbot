@@ -7,7 +7,7 @@ import (
 
 // DataType contains some data
 type DataType struct {
-	Polls map[string]*PollType
+	Polls          map[string]*PollType
 	GuildSchedules map[string]*GuildSchedule
 }
 
@@ -72,9 +72,9 @@ func (data *DataType) EndPoll(ctx *Context) (results map[string]int, err error) 
 	return newResults, nil
 }
 
-func (data *DataType) AddCronJob(ctx *Context,id cron.EntryID, cmd string) error {
+func (data *DataType) AddCronJob(ctx *Context, id cron.EntryID, cmd string) error {
 	if _, ok := data.GuildSchedules[ctx.Guild.ID]; !ok {
-		data.GuildSchedules[ctx.Guild.ID] = &GuildSchedule{CronJobs:make(map[cron.EntryID]string)}
+		data.GuildSchedules[ctx.Guild.ID] = &GuildSchedule{CronJobs: make(map[cron.EntryID]string)}
 		data.GuildSchedules[ctx.Guild.ID].CronJobs[id] = cmd
 		return nil
 	} else {
@@ -83,7 +83,7 @@ func (data *DataType) AddCronJob(ctx *Context,id cron.EntryID, cmd string) error
 }
 
 func (data *DataType) CronIsFull(ctx *Context) bool {
-	if _,ok := data.GuildSchedules[ctx.Guild.ID]; ok {
+	if _, ok := data.GuildSchedules[ctx.Guild.ID]; ok {
 		if len(data.GuildSchedules[ctx.Guild.ID].CronJobs) >= 10 {
 			return true
 		}
@@ -92,8 +92,8 @@ func (data *DataType) CronIsFull(ctx *Context) bool {
 }
 
 func (data *DataType) CronRemove(ctx *Context, id cron.EntryID) error {
-	if _,ok := data.GuildSchedules[ctx.Guild.ID]; ok {
-		if _,ok :=data.GuildSchedules[ctx.Guild.ID].CronJobs[id]; ok {
+	if _, ok := data.GuildSchedules[ctx.Guild.ID]; ok {
+		if _, ok := data.GuildSchedules[ctx.Guild.ID].CronJobs[id]; ok {
 			ctx.Cron.Remove(id)
 			delete(data.GuildSchedules[ctx.Guild.ID].CronJobs, id)
 			return nil
@@ -103,7 +103,7 @@ func (data *DataType) CronRemove(ctx *Context, id cron.EntryID) error {
 }
 
 func (data *DataType) CronList(ctx *Context) (*GuildSchedule, error) {
-	if _,ok := data.GuildSchedules[ctx.Guild.ID]; ok {
+	if _, ok := data.GuildSchedules[ctx.Guild.ID]; ok {
 		if len(data.GuildSchedules[ctx.Guild.ID].CronJobs) > 0 {
 			return data.GuildSchedules[ctx.Guild.ID], nil
 		}

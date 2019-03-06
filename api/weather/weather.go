@@ -103,7 +103,7 @@ func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	}
 
 	gc := gg.NewContext(400, 650)
-	gc.SetRGBA(0,0,0,0)
+	gc.SetRGBA(0, 0, 0, 0)
 	gc.Clear()
 
 	// Template
@@ -118,7 +118,7 @@ func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	gc.Fill()
 
 	gc.SetLineWidth(2)
-	gc.SetRGBA(0, 0, 0,0.05)
+	gc.SetRGBA(0, 0, 0, 0.05)
 	gc.DrawLine(0, 250, 400, 250)
 	gc.DrawLine(0, 349, 400, 348)
 	gc.DrawLine(0, 450, 400, 450)
@@ -183,7 +183,7 @@ func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	gc.DrawStringAnchored(fmt.Sprintf("C:%v%%", int(forecast.Weather[3].Clouds.All)), 170, 515, 0, 0.5)
 	gc.DrawStringAnchored(fmt.Sprintf("C:%v%%", int(forecast.Weather[4].Clouds.All)), 170, 615, 0, 0.5)
 
-	gc.SetRGBA(1,1,1,1)
+	gc.SetRGBA(1, 1, 1, 1)
 	if err := gc.LoadFontFace("lato.ttf", 50); err != nil {
 		panic(err)
 	}

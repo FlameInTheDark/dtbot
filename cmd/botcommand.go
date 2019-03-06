@@ -61,7 +61,7 @@ func BotCommand(ctx bot.Context) {
 					switch target[1] {
 					case "language":
 						ctx.Guilds[ctx.Guild.ID].Language = ctx.Args[2]
-						_=ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"language": ctx.Args[2]}})
+						_ = ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"language": ctx.Args[2]}})
 						ctx.ReplyEmbedPM("Config", fmt.Sprintf("Language set to: %v", ctx.Args[2]))
 					case "timezone":
 						tz, err := strconv.Atoi(ctx.Args[1])
@@ -69,24 +69,24 @@ func BotCommand(ctx bot.Context) {
 							ctx.ReplyEmbedPM("Settings", "Not a number")
 						}
 						ctx.Guilds[ctx.Guild.ID].Timezone = tz
-						_=ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"timezone": tz}})
+						_ = ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"timezone": tz}})
 						ctx.ReplyEmbedPM("Config", fmt.Sprintf("Timezone set to: %v", ctx.Args[2]))
 					case "nick":
-						_=ctx.Discord.GuildMemberNickname(ctx.Guild.ID, "@me", ctx.Args[2])
+						_ = ctx.Discord.GuildMemberNickname(ctx.Guild.ID, "@me", ctx.Args[2])
 						ctx.ReplyEmbedPM("Config", fmt.Sprintf("Nickname changed to %v", ctx.Args[2]))
 					}
 				case "weather":
 					switch target[1] {
 					case "city":
 						ctx.Guilds[ctx.Guild.ID].WeatherCity = ctx.Args[2]
-						_=ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"weathercity": ctx.Args[2]}})
+						_ = ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"weathercity": ctx.Args[2]}})
 						ctx.ReplyEmbedPM("Config", fmt.Sprintf("Weather city set to: %v", ctx.Args[2]))
 					}
 				case "news":
 					switch target[1] {
 					case "country":
 						ctx.Guilds[ctx.Guild.ID].NewsCounty = ctx.Args[2]
-						_=ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"weathercountry": ctx.Args[2]}})
+						_ = ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"weathercountry": ctx.Args[2]}})
 						ctx.ReplyEmbedPM("Config", fmt.Sprintf("News country set to: %v", ctx.Args[2]))
 					}
 				case "embed":
@@ -108,7 +108,7 @@ func BotCommand(ctx bot.Context) {
 							}
 						}
 						ctx.Guilds[ctx.Guild.ID].EmbedColor = int(color)
-						_=ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"embedcolor": int(color)}})
+						_ = ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"embedcolor": int(color)}})
 						ctx.ReplyEmbedPM("Config", fmt.Sprintf("Embed color set to: %v", ctx.Args[2]))
 					}
 				}
