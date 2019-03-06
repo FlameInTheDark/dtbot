@@ -70,7 +70,7 @@ func main() {
 	fmt.Println("Bot is now running.")
 
 	sc := make(chan os.Signal, 1)
-	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
+	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 	dbWorker = bot.NewDBSession(conf.General.DatabaseName)
 	guilds = dbWorker.InitGuilds(discord, conf)
 	botCron.Start()
