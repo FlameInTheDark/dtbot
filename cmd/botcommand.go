@@ -23,7 +23,7 @@ func showLogs(ctx *bot.Context, count int) {
 // BotCommand special bot commands handler
 func BotCommand(ctx bot.Context) {
 	ctx.MetricsCommand("bot")
-	if ctx.GetRoles().ExistsName("bot.admin") {
+	if ctx.GetRoles().ExistsName("bot.admin") || ctx.IsAdmin() {
 		if len(ctx.Args) == 0 {
 			return
 		}
@@ -211,6 +211,8 @@ func BotCommand(ctx bot.Context) {
 			}
 			ctx.ReplyEmbed("Stats", fmt.Sprintf(ctx.Loc("stats_command"), len(ctx.Discord.State.Guilds), users, bots, online, offline))
 		}
+	} else {
+		ctx.ReplyEmbed("Bot", ctx.Loc("admin_require"))
 	}
 }
 

@@ -1,5 +1,6 @@
 {
     "en": {
+        "admin_require": "To use this command, you must have the role \"bot.admin\"",
         "help": "Bot commands help",
         "help_reply": "`!help [command]` | Detail description of command `!help !y`\n`!play [youtube_url]` | Add bot in channel and start playing from URL\n`!v` | Manage bot voice channel\n`!b` | Bot functions\n`!y` | Manage Youtube player\n`!r` | Manage radio\n`!w` | Weather forecast\n`!t` | Translator\n`!c` | Currency\n`!p` | Polls\n`!geoip` | GeoIP",
         "help_command_!v": "`!v join` | Add bot into you voice channel\n`!v leave` | Remove bot from voice channel",
@@ -71,6 +72,7 @@
         "geoip_no_data": "Нет данных о IP"
     },
     "ru": {
+        "admin_require": "Для использования данной команды вам необходимо иметь роль \"bot.admin\"",
         "help": "Помощь по командам бота",
         "help_reply": "`!help [command]` | Детальное описание команды `!help !y`\n`!play [youtube_url]` | Добавить бота в голосовой канал и начать проигрывать трек из ссылки\n`!v` | Управление голосовым каналом бота\n`!b` | Функции бота\n`!y` | Управление Youtube проигрывателем\n`!r` | Управление радио\n`!w` | Прогноз погоды\n`!t` | Переводчик\n`!c` | Курс валюты\n`!p` | Опрос\n`!geoip` | GeoIP",
         "help_command_!v": "`!v join` | Добавить бота в голосовой канал\n`!v leave` | Удалить бота из голосового канала",
