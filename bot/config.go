@@ -46,6 +46,8 @@ type MetricsConfig struct {
 
 type DBLConfig struct {
 	Token string
+	TokenDBL string
+	DBLID string
 }
 
 // TranslateConfig Yandex translate config struct

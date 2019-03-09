@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/DiscordBotList/dblgo"
 	"net/http"
+	"net/url"
 	"os"
 	"os/signal"
 	"strings"
@@ -180,6 +181,23 @@ func MetricsSender(d *discordgo.Session) {
 		if conf.DBL.Token != "" {
 			s := dblgo.NewDBL(conf.DBL.Token, d.State.User.ID)
 			_ = s.PostStats(len(d.State.Guilds))
+		}
+		if conf.DBL.TokenDBL != "" {
+			users := 0
+			for _, g := range d.State.Guilds {
+				users += len(g.Members)
+			}
+			data := url.Values{}
+			data.Set("guilds", string(len(d.State.Guilds)))
+			data.Set("users", string(users))
+			client := &http.Client{}
+			req, err := http.NewRequest("POST", fmt.Sprintf("https://discordbotlist.com/api/bots/%v/stats",conf.DBL.DBLID), bytes.NewBuffer([]byte(data.Encode())))
+			if err != nil {
+				fmt.Println(err.Error())
+			}
+			req.Header.Add("Authorization", fmt.Sprintf("Bot %v", conf.DBL.TokenDBL))
+			defer req.Body.Close()
+			_,_ = client.Do(req)
 		}
 		messagesCounter = 0
 		time.Sleep(time.Minute)
