@@ -197,7 +197,9 @@ func MetricsSender(d *discordgo.Session) {
 			}
 			req.Header.Add("Authorization", fmt.Sprintf("Bot %v", conf.DBL.TokenDBL))
 			defer req.Body.Close()
-			_,_ = client.Do(req)
+			res, _ := client.Do(req)
+			fmt.Println(res.Status)
+
 		}
 		messagesCounter = 0
 		time.Sleep(time.Minute)
