@@ -5,7 +5,7 @@
 [![Build Status](https://travis-ci.org/FlameInTheDark/dtbot.svg?branch=master)](https://travis-ci.org/FlameInTheDark/dtbot)
 [![Scrutinizer Quality Score](https://img.shields.io/scrutinizer/g/FlameInTheDark/dtbot/master.svg)](https://scrutinizer-ci.com/g/FlameInTheDark/dtbot/)
 
-[![Discord Bots](https://discordbots.org/api/widget/424221765321883658.svg)](https://discordbots.org/bot/424221765321883658)
+[![Musor stats on Discord Bot List](https://discordbotlist.com/bots/424221765321883658/widget)](https://discordbotlist.com/bots/424221765321883658)
 
 ## Used APIs
 
