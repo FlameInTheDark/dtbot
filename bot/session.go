@@ -95,3 +95,7 @@ func (manager *SessionManager) Leave(discord *discordgo.Session, session Session
 	session.connection.Disconnect()
 	delete(manager.sessions, session.ChannelID)
 }
+
+func (manager *SessionManager) Count() int {
+	return len(manager.sessions)
+}
