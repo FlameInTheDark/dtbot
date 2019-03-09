@@ -190,11 +190,11 @@ func MetricsSender(d *discordgo.Session) {
 			data := url.Values{}
 			data.Set("shard_id", "0")
 			data.Set("guilds", string(len(d.State.Guilds)))
-			fmt.Println("Guilds: ", string(len(d.State.Guilds)))
+			fmt.Println("Guilds: ", len(d.State.Guilds))
 			data.Set("users", string(users))
-			fmt.Println("Users: ", string(users))
+			fmt.Println("Users: ",users)
 			data.Set("voice_connections", string(Sessions.Count()))
-			fmt.Println("Voice connections: ", string(Sessions.Count()))
+			fmt.Println("Voice connections: ", Sessions.Count())
 			client := &http.Client{}
 			fmt.Println(data.Encode())
 			req, err := http.NewRequest("POST", fmt.Sprintf("https://discordbotlist.com/api/bots/%v/stats",conf.DBL.DBLID), bytes.NewBuffer([]byte(data.Encode())))
