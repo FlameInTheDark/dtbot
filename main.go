@@ -5,10 +5,8 @@ import (
 	"fmt"
 	"github.com/DiscordBotList/dblgo"
 	"net/http"
-	"net/url"
 	"os"
 	"os/signal"
-	"strconv"
 	"strings"
 	"syscall"
 	"time"
@@ -190,31 +188,6 @@ func MetricsSender(d *discordgo.Session) {
 		if conf.DBL.Token != "" {
 			s := dblgo.NewDBL(conf.DBL.Token, d.State.User.ID)
 			_ = s.PostStats(len(d.State.Guilds))
-		}
-		if conf.DBL.TokenDBL != "" {
-			users := 0
-			for _, g := range d.State.Guilds {
-				users += len(g.Members)
-			}
-			data := url.Values{}
-			data.Set("shard_id", "0")
-			data.Set("guilds", strconv.Itoa(len(d.State.Guilds)))
-			fmt.Println("Guilds: ", strconv.Itoa(len(d.State.Guilds)))
-			data.Set("users", strconv.Itoa(users))
-			fmt.Println("Users: ",strconv.Itoa(users))
-			data.Set("voice_connections", strconv.Itoa(Sessions.Count()))
-			fmt.Println("Voice connections: ", strconv.Itoa(Sessions.Count()))
-			client := &http.Client{}
-			fmt.Println(data.Encode())
-			req, err := http.NewRequest("POST", fmt.Sprintf("https://discordbotlist.com/api/bots/%v/stats",conf.DBL.DBLID), bytes.NewBuffer([]byte(data.Encode())))
-			if err != nil {
-				fmt.Println(err.Error())
-			} else {
-				req.Header.Add("Authorization", fmt.Sprintf("Bot %v", conf.DBL.TokenDBL))
-			}
-			defer req.Body.Close()
-			res, _ := client.Do(req)
-			fmt.Println(res.Status)
 		}
 		messagesCounter = 0
 		time.Sleep(time.Minute)
