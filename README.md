@@ -1,9 +1,10 @@
-![Discord Tools Bot](/logo.png?raw=true "Discord Tools Bot")
+![Discord Tools Bot](https://github.com/FlameIntheDark/dtbot/blob/master/logo.png?raw=true "Discord Tools Bot")
 # Discord Tools Bot
 
 [![Go report](http://goreportcard.com/badge/FlameInTheDark/dtbot)](http://goreportcard.com/report/FlameInTheDark/dtbot)
 [![Build Status](https://travis-ci.org/FlameInTheDark/dtbot.svg?branch=master)](https://travis-ci.org/FlameInTheDark/dtbot)
 [![Scrutinizer Quality Score](https://img.shields.io/scrutinizer/g/FlameInTheDark/dtbot/master.svg)](https://scrutinizer-ci.com/g/FlameInTheDark/dtbot/)
+[![Discord Bots](https://discordbots.org/api/widget/status/424221765321883658.svg)](https://discordbots.org/bot/424221765321883658)
 
 [![Musor stats on Discord Bot List](https://discordbotlist.com/bots/424221765321883658/widget)](https://discordbotlist.com/bots/424221765321883658)
 
