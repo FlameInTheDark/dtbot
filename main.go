@@ -179,19 +179,7 @@ func MetricsSender(d *discordgo.Session) {
 			usersCount += len(g.Members)
 		}
 
-		// Metrics
-		queryMsg := []byte(fmt.Sprintf("messages count=%v", messagesCounter))
-		addrMsg := fmt.Sprintf("%v/write?db=%v&u=%v&p=%v",
-			conf.Metrics.Address, conf.Metrics.Database, conf.Metrics.User, conf.Metrics.Password)
-		rMsg := bytes.NewReader(queryMsg)
-		_, _ = http.Post(addrMsg, "", rMsg)
-
-		queryGuilds := []byte(fmt.Sprintf("guilds count=%v", len(d.State.Guilds)))
-		addrGuilds := fmt.Sprintf("%v/write?db=%v&u=%v&p=%v",
-			conf.Metrics.Address, conf.Metrics.Database, conf.Metrics.User, conf.Metrics.Password)
-		rGuilds := bytes.NewReader(queryGuilds)
-		_, _ = http.Post(addrGuilds, "", rGuilds)
-
+		// Metrics counters
 		queryCounters := []byte(fmt.Sprintf("counters guilds=%v,messages=%v,users=%v", len(d.State.Guilds), messagesCounter, usersCount))
 		addrCounters := fmt.Sprintf("%v/write?db=%v&u=%v&p=%v",
 			conf.Metrics.Address, conf.Metrics.Database, conf.Metrics.User, conf.Metrics.Password)
