@@ -174,11 +174,20 @@ func registerCommands() {
 // MetricsSender sends metrics to InfluxDB
 func MetricsSender(d *discordgo.Session) {
 	for {
-		query := []byte(fmt.Sprintf("messages count=%v", messagesCounter))
-		addr := fmt.Sprintf("%v/write?db=%v&u=%v&p=%v",
+		// Metrics
+		queryMsg := []byte(fmt.Sprintf("messages count=%v", messagesCounter))
+		addrMsg := fmt.Sprintf("%v/write?db=%v&u=%v&p=%v",
 			conf.Metrics.Address, conf.Metrics.Database, conf.Metrics.User, conf.Metrics.Password)
-		r := bytes.NewReader(query)
-		_, _ = http.Post(addr, "", r)
+		rMsg := bytes.NewReader(queryMsg)
+		_, _ = http.Post(addrMsg, "", rMsg)
+
+		queryGuilds := []byte(fmt.Sprintf("guilds count=%v", len(d.State.Guilds)))
+		addrGuilds := fmt.Sprintf("%v/write?db=%v&u=%v&p=%v",
+			conf.Metrics.Address, conf.Metrics.Database, conf.Metrics.User, conf.Metrics.Password)
+		rGuilds := bytes.NewReader(queryGuilds)
+		_, _ = http.Post(addrGuilds, "", rGuilds)
+
+		// Bot lists
 		if conf.DBL.Token != "" {
 			s := dblgo.NewDBL(conf.DBL.Token, d.State.User.ID)
 			_ = s.PostStats(len(d.State.Guilds))
@@ -201,12 +210,12 @@ func MetricsSender(d *discordgo.Session) {
 			req, err := http.NewRequest("POST", fmt.Sprintf("https://discordbotlist.com/api/bots/%v/stats",conf.DBL.DBLID), bytes.NewBuffer([]byte(data.Encode())))
 			if err != nil {
 				fmt.Println(err.Error())
+			} else {
+				req.Header.Add("Authorization", fmt.Sprintf("Bot %v", conf.DBL.TokenDBL))
 			}
-			req.Header.Add("Authorization", fmt.Sprintf("Bot %v", conf.DBL.TokenDBL))
 			defer req.Body.Close()
 			res, _ := client.Do(req)
 			fmt.Println(res.Status)
-
 		}
 		messagesCounter = 0
 		time.Sleep(time.Minute)
