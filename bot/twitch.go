@@ -76,6 +76,7 @@ func TwitchInit(session *discordgo.Session, conf *Config, db *DBWorker) *Twitch 
 		}
 		guilds[g.ID] = &TwitchGuild{g.ID, guildStreams}
 	}
+	fmt.Printf("Loaded [%v] streamers", len(streams))
 	return &Twitch{streams, guilds, db, conf, session}
 }
 
@@ -101,9 +102,10 @@ func (t *Twitch) Update() {
 					s.IsOnline = true
 					imgUrl := strings.Replace(result.Data[0].ThumbnailURL, "{width}", "720", -1)
 					imgUrl = strings.Replace(imgUrl, "{height}", "480", -1)
-					emb := NewEmbed(fmt.Sprintf("Hey @here %v is now live on https://www.twitch.tv/%v", result.Data[0].UserName, s.Login)).
+					emb := NewEmbed(fmt.Sprintf("Hey %v is now live on https://www.twitch.tv/%v", result.Data[0].UserName, s.Login)).
 						Field("Stream", result.Data[0].Title, true).
-						AttachImgURL(imgUrl)
+						AttachImgURL(imgUrl).
+						Color(t.Conf.General.EmbedColor)
 					_, _ = t.Discord.ChannelMessageSendEmbed(s.Channel, emb.GetEmbed())
 				}
 			} else {
