@@ -165,7 +165,9 @@ func (t *Twitch) RemoveStreamer(login, guild string) error {
 	}
 	for i, s := range t.Streams {
 		if s.Guild == guild && s.Login == login {
-			t.Streams = append(t.Streams[:i], t.Streams[i+1:]...)
+			t.Streams[i] = t.Streams[len(t.Streams)-1]
+			t.Streams[:len(t.Streams)-1] = nil
+			t.Streams = t.Streams[:len(t.Streams)-1]
 			complete = true
 		}
 	}
