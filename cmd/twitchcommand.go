@@ -24,7 +24,7 @@ func TwitchCommand(ctx bot.Context) {
 			}
 		case "remove":
 			if len(ctx.Args) > 1 {
-				err := ctx.Twitch.RemoveStreamer(ctx.Guild.ID, ctx.Args[1])
+				err := ctx.Twitch.RemoveStreamer(ctx.Args[1], ctx.Guild.ID)
 				if err != nil {
 					ctx.ReplyEmbed("Twitch", ctx.Loc("twitch_remove_error"))
 				} else {
