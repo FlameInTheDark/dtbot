@@ -65,6 +65,7 @@ type TwitchUserData struct {
 	Views           int    `json:"view_count"`
 }
 
+// TwitchInit makes new instance of twitch api worker
 func TwitchInit(session *discordgo.Session, conf *Config, db *DBWorker) *Twitch {
 	guilds := make(map[string]*TwitchGuild)
 	var streams []*TwitchStream
@@ -78,6 +79,7 @@ func TwitchInit(session *discordgo.Session, conf *Config, db *DBWorker) *Twitch 
 	return &Twitch{streams, guilds, db, conf, session}
 }
 
+// Update updates status of streamers and notify
 func (t *Twitch) Update() {
 	for _, s := range t.Streams {
 		timeout := time.Duration(time.Duration(1) * time.Second)
@@ -114,7 +116,8 @@ func (t *Twitch) Update() {
 	}
 }
 
-func (t *Twitch) AddStream(guild, channel, login string) error {
+// AddStreamer adds new streamer to list
+func (t *Twitch) AddStreamer(guild, channel, login string) error {
 	timeout := time.Duration(time.Duration(1) * time.Second)
 	client := &http.Client{
 		Timeout: time.Duration(timeout),
@@ -135,9 +138,31 @@ func (t *Twitch) AddStream(guild, channel, login string) error {
 			stream.Guild = guild
 			t.Streams = append(t.Streams, &stream)
 			t.Guilds[guild].Streams = append(t.Guilds[guild].Streams, &stream)
+			t.DB.AddStream(&stream)
 		}
 	} else {
 		return errors.New("getting streamer error")
+	}
+	return nil
+}
+
+// RemoveStreamer removes streamer from list
+func (t *Twitch) RemoveStreamer(login, guild string) error {
+	complete := false
+	for i, s := range t.Guilds[guild].Streams {
+		if s.Guild == guild && s.Login == login {
+			t.Guilds[guild].Streams = append(t.Guilds[guild].Streams[:i], t.Guilds[guild].Streams[i+1:]...)
+			complete = true
+		}
+	}
+	for i, s := range t.Streams {
+		if s.Guild == guild && s.Login == login {
+			t.Streams = append(t.Streams[:i], t.Streams[i+1:]...)
+			complete = true
+		}
+	}
+	if !complete {
+		return errors.New("streamer not found")
 	}
 	return nil
 }

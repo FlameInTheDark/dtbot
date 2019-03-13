@@ -140,7 +140,8 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 			dataType,
 			dbWorker,
 			guilds,
-			botCron)
+			botCron,
+			twitch)
 		ctx.Args = args[1:]
 		c := *command
 		c(*ctx)
@@ -171,6 +172,7 @@ func registerCommands() {
 	CmdHandler.Register("!help", cmd.HelpCommand)
 	CmdHandler.Register("!cron", cmd.CronCommand)
 	CmdHandler.Register("!geoip", cmd.GeoIPCommand)
+	CmdHandler.Register("!twitch", cmd.TwitchCommand)
 }
 
 // MetricsSender sends metrics to InfluxDB and another services

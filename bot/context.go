@@ -28,12 +28,13 @@ type Context struct {
 	BotMsg     *BotMessages
 	Data       *DataType
 	Guilds     GuildsMap
+	Twitch     *Twitch
 }
 
 // NewContext create new context
 func NewContext(botID string, discord *discordgo.Session, guild *discordgo.Guild, textChannel *discordgo.Channel,
 	user *discordgo.User, message *discordgo.MessageCreate, conf *Config, cmdHandler *CommandHandler,
-	sessions *SessionManager, youtube *Youtube, botMsg *BotMessages, dataType *DataType, dbWorker *DBWorker, guilds GuildsMap, botCron *cron.Cron) *Context {
+	sessions *SessionManager, youtube *Youtube, botMsg *BotMessages, dataType *DataType, dbWorker *DBWorker, guilds GuildsMap, botCron *cron.Cron, twitch *Twitch) *Context {
 	ctx := new(Context)
 	ctx.BotID = botID
 	ctx.Discord = discord
@@ -50,6 +51,7 @@ func NewContext(botID string, discord *discordgo.Session, guild *discordgo.Guild
 	ctx.DB = dbWorker
 	ctx.Guilds = guilds
 	ctx.Cron = botCron
+	ctx.Twitch = twitch
 	return ctx
 }
 

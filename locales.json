@@ -69,7 +69,11 @@
         "polls_not_exists": "Poll not exists",
         "polls_already_voted": "You already voted in this poll",
         "geoip_format_string": "IP [%v]\nCity: %v\nRegion: %v\nCountry: %v",
-        "geoip_no_data": "Нет данных о IP"
+        "geoip_no_data": "No data about IP",
+        "twitch_add_error": "Error adding streamer",
+        "twitch_remove_error": "Error removing streamer",
+        "twitch_added": "Streamer added",
+        "twitch_removed": "Streamer removed"
     },
     "ru": {
         "admin_require": "Для использования данной команды вам необходимо иметь роль \"bot.admin\"",
@@ -141,6 +145,10 @@
         "polls_not_exists": "Опрос не существует",
         "polls_already_voted": "Вы уже проголосовали в этом опросе",
         "geoip_format_string": "IP [%v]\nГород: %v\nРегион: %v\nСтрана: %v",
-        "geoip_no_data": "Нет данных о IP"
+        "geoip_no_data": "Нет данных о IP",
+        "twitch_add_error": "Ошибка добавления стримера",
+        "twitch_remove_error": "Ошибка удаления стримера",
+        "twitch_added": "Стример добавлен",
+        "twitch_removed": "Стример удален"
     }
 }
