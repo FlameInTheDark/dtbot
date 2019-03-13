@@ -100,6 +100,7 @@ func (t *Twitch) Update() {
 			if len(result.Data) > 0 {
 				if s.IsOnline == false {
 					s.IsOnline = true
+					t.DB.UpdateStream(s)
 					imgUrl := strings.Replace(result.Data[0].ThumbnailURL, "{width}", "720", -1)
 					imgUrl = strings.Replace(imgUrl, "{height}", "480", -1)
 					emb := NewEmbed(fmt.Sprintf("Hey %v is now live on https://www.twitch.tv/%v", result.Data[0].UserName, s.Login)).
@@ -111,9 +112,10 @@ func (t *Twitch) Update() {
 			} else {
 				if s.IsOnline == true {
 					s.IsOnline = false
+					t.DB.UpdateStream(s)
 				}
 			}
-			t.DB.UpdateStream(s)
+
 		}
 	}
 }

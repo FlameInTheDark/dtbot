@@ -111,10 +111,13 @@ func (db *DBWorker) GetTwitchStreams(guildID string) []*TwitchStream {
 }
 
 func (db *DBWorker) UpdateStream(stream *TwitchStream) {
-	_ = db.DBSession.DB(db.DBName).C("streams").
+	err := db.DBSession.DB(db.DBName).C("streams").
 		Update(
 			bson.M{"guild": stream.Guild, "login": stream.Login},
 			bson.M{"$set": bson.M{"isonline": stream.IsOnline}})
+	if err != nil {
+		fmt.Println(err.Error())
+	}
 }
 
 func (db *DBWorker) AddStream(stream *TwitchStream) {
