@@ -31,8 +31,10 @@ func TwitchCommand(ctx bot.Context) {
 					ctx.ReplyEmbed("Twitch", ctx.Loc("twitch_removed"))
 				}
 			}
-		case "debug":
-			fmt.Println(ctx.Twitch.Guilds[ctx.Guild.ID].ID)
+		case "count":
+			if ctx.IsAdmin() {
+				ctx.ReplyEmbed("Twitch", fmt.Sprintf("Streamers: %v", len(ctx.Twitch.Streams)))
+			}
 		}
 	} else {
 		ctx.ReplyEmbed("Twitch", ctx.Loc("admin_require"))
