@@ -106,6 +106,7 @@ func (db *DBWorker) GetTwitchStreams(guildID string) []*TwitchStream {
 	var newArray []*TwitchStream
 	for _, s := range streams {
 		newArray = append(newArray, &s)
+		fmt.Printf("Loaded with status [isonline: %v]", s.IsOnline)
 	}
 	return newArray
 }
