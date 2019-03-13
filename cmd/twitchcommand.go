@@ -15,11 +15,11 @@ func TwitchCommand(ctx bot.Context) {
 		switch ctx.Args[0] {
 		case "add":
 			if len(ctx.Args) > 1 {
-				err := ctx.Twitch.AddStreamer(ctx.Guild.ID, ctx.Message.ChannelID, ctx.Args[1])
+				username, err := ctx.Twitch.AddStreamer(ctx.Guild.ID, ctx.Message.ChannelID, ctx.Args[1])
 				if err != nil {
 					ctx.ReplyEmbed("Twitch", ctx.Loc("twitch_add_error"))
 				} else {
-					ctx.ReplyEmbed("Twitch", ctx.Loc("twitch_added"))
+					ctx.ReplyEmbed("Twitch", fmt.Sprintf(ctx.Loc("twitch_added"), username))
 				}
 			}
 		case "remove":

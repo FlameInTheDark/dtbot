@@ -73,8 +73,9 @@
         "geoip_no_data": "No data about IP",
         "twitch_add_error": "Error adding streamer",
         "twitch_remove_error": "Error removing streamer",
-        "twitch_added": "Streamer added",
-        "twitch_removed": "Streamer removed"
+        "twitch_added": "Streamer %v added",
+        "twitch_removed": "Streamer removed",
+        "twitch_online": "Hey @here, %v is now live on https://www.twitch.tv/%v"
     },
     "ru": {
         "admin_require": "Для использования данной команды вам необходимо иметь роль \"bot.admin\"",
@@ -150,7 +151,8 @@
         "geoip_no_data": "Нет данных о IP",
         "twitch_add_error": "Ошибка добавления стримера",
         "twitch_remove_error": "Ошибка удаления стримера",
-        "twitch_added": "Стример добавлен",
-        "twitch_removed": "Стример удален"
+        "twitch_added": "Стример %v добавлен",
+        "twitch_removed": "Стример удален",
+        "twitch_online": "Хэй @here, %v сейчас ведет трансляцию на https://www.twitch.tv/%v"
     }
 }

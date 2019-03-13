@@ -29,7 +29,7 @@
 * Plays music from Youtube and Soundcloud
 * Plays music from online radiostations
 * Makes polls
-* Announcing is twitch stream is started
+* Announcing if twitch stream is started
 
 ## How to use
 
