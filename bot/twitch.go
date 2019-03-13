@@ -127,7 +127,7 @@ func (t *Twitch) Update() {
 						Field("Game", gameResult.Data[0].Name, true).
 						AttachImgURL(imgUrl).
 						Color(t.Conf.General.EmbedColor)
-					_, _ = t.Discord.ChannelMessageSend(s.Channel, fmt.Sprintf(t.Conf.GetLocale("twitch_online"), result.Data[0].UserName, s.Login))
+					_, _ = t.Discord.ChannelMessageSend(s.Channel, fmt.Sprintf(t.Conf.GetLocaleLang("twitch_online", result.Data[0].Language), result.Data[0].UserName, s.Login))
 					_, _ = t.Discord.ChannelMessageSendEmbed(s.Channel, emb.GetEmbed())
 				}
 			} else {

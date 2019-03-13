@@ -91,6 +91,13 @@ func (c *Config) GetLocale(key string) string {
 	return c.Locales[c.General.Language][key]
 }
 
+func (c *Config) GetLocaleLang(key, lang string) string {
+	if _, ok := c.Locales[lang]; ok {
+		return c.Locales[lang][key]
+	}
+	return c.Locales[c.General.Language][key]
+}
+
 // LoadConfig loads configs from file 'config.toml'. Terminate program if error.
 func LoadConfig() *Config {
 	var cfg Config
