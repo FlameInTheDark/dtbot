@@ -75,7 +75,9 @@
         "twitch_remove_error": "Error removing streamer",
         "twitch_added": "Streamer %v added",
         "twitch_removed": "Streamer removed",
-        "twitch_online": "Hey @here, %v is now live on <https://www.twitch.tv/%v> ! Go check it out! :hearts:"
+        "twitch_online": "Hey @here, %v is now live on <https://www.twitch.tv/%v> ! Go check it out! :hearts:",
+        "twitch_list": "List of streamers:\n%v",
+        "twitch_list_empty": "No streamers"
     },
     "ru": {
         "admin_require": "Для использования данной команды вам необходимо иметь роль \"bot.admin\"",
@@ -153,6 +155,8 @@
         "twitch_remove_error": "Ошибка удаления стримера",
         "twitch_added": "Стример %v добавлен",
         "twitch_removed": "Стример удален",
-        "twitch_online": "Хэй @here, %v сейчас ведет трансляцию на <https://www.twitch.tv/%v> ! Сходи посмотри! :hearts:"
+        "twitch_online": "Хэй @here, %v сейчас ведет трансляцию на <https://www.twitch.tv/%v> ! Сходи посмотри! :hearts:",
+        "twitch_list": "Список стримеров:\n%v",
+        "twitch_list_empty": "Нет стримеров"
     }
 }

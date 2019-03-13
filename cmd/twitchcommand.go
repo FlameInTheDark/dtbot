@@ -31,6 +31,20 @@ func TwitchCommand(ctx bot.Context) {
 					ctx.ReplyEmbed("Twitch", ctx.Loc("twitch_removed"))
 				}
 			}
+		case "list":
+			if g,ok := ctx.Twitch.Guilds[ctx.Guild.ID]; ok {
+				if len(g.Streams) > 0 {
+					list := ""
+					for i,s := range g.Streams {
+						list += fmt.Sprintf("%v. %v\n", i, s.Login)
+					}
+					ctx.ReplyEmbed("Twitch", fmt.Sprintf(ctx.Loc("twitch_list"), list))
+				} else {
+					ctx.ReplyEmbed("Twitch", ctx.Loc("twitch_list_empty"))
+				}
+			} else {
+				ctx.ReplyEmbed("Twitch", ctx.Loc("twitch_list_empty"))
+			}
 		case "count":
 			if ctx.IsAdmin() {
 				count := 0

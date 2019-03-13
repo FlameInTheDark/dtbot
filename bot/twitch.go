@@ -119,8 +119,8 @@ func (t *Twitch) Update() {
 					if s.IsOnline == false {
 						s.IsOnline = true
 						t.DB.UpdateStream(s)
-						imgUrl := strings.Replace(result.Data[0].ThumbnailURL, "{width}", "720", -1)
-						imgUrl = strings.Replace(imgUrl, "{height}", "480", -1)
+						imgUrl := strings.Replace(result.Data[0].ThumbnailURL, "{width}", "320", -1)
+						imgUrl = strings.Replace(imgUrl, "{height}", "180", -1)
 						emb := NewEmbed(result.Data[0].UserName).
 							Field("Title", result.Data[0].Title, false).
 							Field("Viewers", fmt.Sprintf("%v", result.Data[0].Viewers), true).
