@@ -31,6 +31,7 @@ var (
 	dbWorker        *bot.DBWorker
 	guilds          bot.GuildsMap
 	botCron         *cron.Cron
+	twitch          *bot.Twitch
 	messagesCounter int
 )
 
@@ -54,7 +55,6 @@ func main() {
 		return
 	}
 	botId = usr.ID
-	discord.AddHandler(commandHandler)
 	discord.AddHandler(func(discord *discordgo.Session, ready *discordgo.Ready) {
 		_ = discord.UpdateStatus(0, conf.General.Game)
 		guilds := discord.State.Guilds
@@ -74,9 +74,13 @@ func main() {
 	dbWorker = bot.NewDBSession(conf.General.DatabaseName)
 	guilds = dbWorker.InitGuilds(discord, conf)
 	botCron.Start()
-	go MetricsSender(discord)
 	defer botCron.Stop()
 	defer dbWorker.DBSession.Close()
+	twitch = bot.TwitchInit(discord, conf, dbWorker)
+	go MetricsSender(discord)
+	// Init command handler
+	discord.AddHandler(commandHandler)
+
 	<-sc
 }
 
@@ -169,11 +173,12 @@ func registerCommands() {
 	CmdHandler.Register("!geoip", cmd.GeoIPCommand)
 }
 
-// MetricsSender sends metrics to InfluxDB
+// MetricsSender sends metrics to InfluxDB and another services
 func MetricsSender(d *discordgo.Session) {
 	for {
+		// Calculating users count
 		usersCount := 0
-		for _,g := range d.State.Guilds {
+		for _, g := range d.State.Guilds {
 			usersCount += len(g.Members)
 		}
 

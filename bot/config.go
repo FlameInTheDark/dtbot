@@ -44,10 +44,16 @@ type MetricsConfig struct {
 	Password string
 }
 
+// DBLConfig contains bot list configs
 type DBLConfig struct {
-	Token string
+	Token    string
 	TokenDBL string
-	DBLID string
+	DBLID    string
+}
+
+// Twitch contains twitch api configs
+type TwitchConfig struct {
+	ClientID string
 }
 
 // TranslateConfig Yandex translate config struct
@@ -77,6 +83,7 @@ type Config struct {
 	WeatherCodes WeatherCodesMap
 	Metrics      MetricsConfig
 	DBL          DBLConfig
+	Twitch       TwitchConfig
 }
 
 // GetLocale returns locale string by key

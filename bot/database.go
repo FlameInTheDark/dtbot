@@ -96,3 +96,20 @@ func (db *DBWorker) LogGet(count int) []dbLog {
 func (db *DBWorker) Guilds() *mgo.Collection {
 	return db.DBSession.DB(db.DBName).C("guilds")
 }
+
+func (db *DBWorker) GetTwitchStreams(guildID string) []*TwitchStream {
+	streams := []TwitchStream{}
+	err := db.DBSession.DB(db.DBName).C("streams").Find(bson.M{"guild": guildID}).All(&streams)
+	if err != nil {
+		fmt.Println("Mongo: ", err)
+	}
+	var newArray []*TwitchStream
+	for _, s := range streams {
+		newArray = append(newArray, &s)
+	}
+	return newArray
+}
+
+func (db *DBWorker) UpdateStream(stream *TwitchStream) {
+	_ = db.DBSession.DB(db.DBName).C("guilds").Insert(stream)
+}
