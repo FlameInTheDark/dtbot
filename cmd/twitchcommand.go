@@ -33,7 +33,11 @@ func TwitchCommand(ctx bot.Context) {
 			}
 		case "count":
 			if ctx.IsAdmin() {
-				ctx.ReplyEmbed("Twitch", fmt.Sprintf("Streamers: %v", len(ctx.Twitch.Streams)))
+				count := 0
+				for _,g := range ctx.Twitch.Guilds {
+					count += len(g.Streams)
+				}
+				ctx.ReplyEmbed("Twitch", fmt.Sprintf("Streamers: %v", count))
 			}
 		}
 	} else {
