@@ -149,11 +149,15 @@ func (t *Twitch) AddStreamer(guild, channel, login string) error {
 // RemoveStreamer removes streamer from list
 func (t *Twitch) RemoveStreamer(login, guild string) error {
 	complete := false
-	for i, s := range t.Guilds[guild].Streams {
-		if s.Guild == guild && s.Login == login {
-			t.Guilds[guild].Streams = append(t.Guilds[guild].Streams[:i], t.Guilds[guild].Streams[i+1:]...)
-			complete = true
+	if _,ok := t.Guilds[guild]; ok {
+		for i, s := range t.Guilds[guild].Streams {
+			if s.Guild == guild && s.Login == login {
+				t.Guilds[guild].Streams = append(t.Guilds[guild].Streams[:i], t.Guilds[guild].Streams[i+1:]...)
+				complete = true
+			}
 		}
+	} else {
+		t.DB.Log("Twitch", guild,"Guild not found in array")
 	}
 	for i, s := range t.Streams {
 		if s.Guild == guild && s.Login == login {
