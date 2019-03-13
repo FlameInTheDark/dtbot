@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"github.com/FlameInTheDark/dtbot/bot"
 )
 
@@ -30,6 +31,8 @@ func TwitchCommand(ctx bot.Context) {
 					ctx.ReplyEmbed("Twitch", ctx.Loc("twitch_removed"))
 				}
 			}
+		case "debug":
+			fmt.Println(len(ctx.Twitch.Guilds))
 		}
 	} else {
 		ctx.ReplyEmbed("Twitch", ctx.Loc("admin_require"))
