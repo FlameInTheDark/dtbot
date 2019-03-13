@@ -178,6 +178,8 @@ func registerCommands() {
 // MetricsSender sends metrics to InfluxDB and another services
 func MetricsSender(d *discordgo.Session) {
 	for {
+		go twitch.Update()
+
 		// Calculating users count
 		usersCount := 0
 		for _, g := range d.State.Guilds {
