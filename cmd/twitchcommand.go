@@ -32,7 +32,7 @@ func TwitchCommand(ctx bot.Context) {
 				}
 			}
 		case "debug":
-			fmt.Println(len(ctx.Twitch.Guilds))
+			fmt.Println(ctx.Twitch.Guilds[ctx.Guild.ID].ID)
 		}
 	} else {
 		ctx.ReplyEmbed("Twitch", ctx.Loc("admin_require"))
