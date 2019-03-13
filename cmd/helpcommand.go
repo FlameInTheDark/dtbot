@@ -35,5 +35,7 @@ func HelpCommand(ctx bot.Context) {
 		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!p"))
 	case "!geoip":
 		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!geoip"))
+	case "!twitch":
+		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!twitch"))
 	}
 }
