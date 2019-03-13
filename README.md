@@ -18,6 +18,7 @@
 * youtube-dl
 * owfont
 * Sypex Geo
+* Twitch
 
 ## Bot's features
 
@@ -28,6 +29,7 @@
 * Plays music from Youtube and Soundcloud
 * Plays music from online radiostations
 * Makes polls
+* Announcing is twitch stream is started
 
 ## How to use
 
@@ -66,6 +68,8 @@ Command | Description
 `!cron list` | Shows cron jobs
 `!cron remove [id]` | Removes cron job by ID `!cron remove 1`
 `!geoip [some_ip_address]` | Shows geographic information about IP
+`!twitch add [twitch_login]` | Adds streamer in announcer
+`!twitch remove [twitch_login]` | Removes streamer from announcer
 
 ## Set config parameters
 
