@@ -122,6 +122,11 @@ func (t *Twitch) Update() {
 
 // AddStreamer adds new streamer to list
 func (t *Twitch) AddStreamer(guild, channel, login string) error {
+	for _,s := range t.Streams {
+		if s.Guild == guild && s.Login == login {
+			return errors.New("streamer already exists")
+		}
+	}
 	timeout := time.Duration(time.Duration(1) * time.Second)
 	client := &http.Client{
 		Timeout: time.Duration(timeout),
