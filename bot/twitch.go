@@ -85,7 +85,7 @@ func TwitchInit(session *discordgo.Session, conf *Config, db *DBWorker) *Twitch 
 		}
 		guilds[g.ID] = &TwitchGuild{g.ID, guildStreams}
 	}
-	fmt.Printf("Loaded [%v] streamers", len(streams))
+	fmt.Printf("Loaded [%v] streamers\n", len(streams))
 	return &Twitch{guilds, db, conf, session}
 }
 
