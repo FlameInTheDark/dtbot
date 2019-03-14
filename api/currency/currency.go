@@ -87,15 +87,21 @@ func GetCurrency(ctx *bot.Context) (response string) {
 
 	// TODO: i should complete currency converter
 	// Converting currencies
-	if len(args) > 3 && args[0] == "conv" {
-		count, err := strconv.ParseFloat(args[2], 64)
+	if len(args) > 4 && args[0] == "conv" {
+		count, err := strconv.ParseFloat(args[3], 64)
 		if err != nil {
 			response = fmt.Sprintf("%v: %v", ctx.Loc("error"), ctx.Loc("nan"))
 			return
 		}
-		if newData.Currencies[args[1]].Value > 0 && newData.Currencies[args[2]].Value > 0 {
-			converted := (newData.Currencies[args[1]].Value / float32(newData.Currencies[args[1]].Nominal)) * float32(count)
-			response = fmt.Sprintf("`%v %v = %0.2f RUB`\n", args[2], args[1], converted)
+		if c1,ok1 := newData.Currencies[args[1]]; ok1 {
+			if c2,ok2 := newData.Currencies[args[2]]; ok2 {
+				cur1 := c1.Value / float32(c1.Nominal)
+				cur2 := c2.Value / float32(c2.Nominal)
+				//cur1Delta := 1 / cur1
+				cur2Delta := 1 / cur2
+				res := cur2Delta * (cur1 * float32(count))
+				response = fmt.Sprintf("`%v %v = %0.2f %v`\n", args[3], args[1], res, args[2])
+			}
 		}
 		return
 	}

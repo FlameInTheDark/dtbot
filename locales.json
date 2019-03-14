@@ -94,7 +94,7 @@
         "help_command_!c": "`!c` | Показать курс валюты (default from config)\n`!c list` | Показать список доступных валют\n`!c [currency]` | Показать курс по указанной валюте `!c USD EUR`",
         "help_command_!p": "`!p new [fields]` | Создать новый опрос (в качестве разделителя символ `|`) `!p new field one|field two|field three`\n`!p vote [field_num]` | Голосовать в опросе\n`!p end` | Закончить опрос и показать результаты",
         "help_command_!geoip": "`!geoip [ip_address]` | Показывает географическую информацию об IP-адресе",
-        "help_command_!twitch": "`!twitch add [twitch_login]` | Добавить стримера в анонсер\n`!twitch remove [twitch_login]`, | Удалить стримера из анонсера\n`!twitch list` | Список стримеров",
+        "help_command_!twitch": "`!twitch add [twitch_login]` | Добавить стримера в анонсер\n`!twitch remove [twitch_login]` | Удалить стримера из анонсера\n`!twitch list` | Список стримеров",
         "conf_list": "`general.language [string]` | Устанавливает язык\n`general.timezone [num]` | Устанавливает часовой пояс\n`general.nick [string]` | Устанавливает имя бота\n`embed.color [hex color like #007700]` | Устанавливает цвет сообщений\n`news.country [string]` | Устанавливает страну новостей\n`weather.city [string]` | Устанавливает город для погоды",
         "stats_command": "Гильдии: %v\nПользователи: %v",
         "error": "Произошла ошибка",
