@@ -91,6 +91,9 @@ func TwitchInit(session *discordgo.Session, conf *Config, db *DBWorker) *Twitch 
 		guildStreams := db.GetTwitchStreams(g.ID)
 		counter += len(guildStreams)
 		guilds[g.ID] = &TwitchGuild{g.ID, guildStreams}
+		for _, gs := range guilds[g.ID].Streams {
+			fmt.Println(gs.Login, " : ", gs.Guild)
+		}
 	}
 	fmt.Printf("Loaded [%v] streamers\n", counter)
 	return &Twitch{guilds, db, conf, session}
@@ -124,7 +127,7 @@ func (t *Twitch) Update() {
 						t.DB.Log("Twitch", "", "Parsing Twitch API game error")
 					}
 					if s.IsOnline == false {
-						s.IsOnline = true
+						t.Guilds[s.Guild].Streams[s.Login].IsOnline = true
 						t.DB.UpdateStream(s)
 						imgUrl := strings.Replace(result.Data[0].ThumbnailURL, "{width}", "320", -1)
 						imgUrl = strings.Replace(imgUrl, "{height}", "180", -1)
@@ -139,7 +142,7 @@ func (t *Twitch) Update() {
 					}
 				} else {
 					if s.IsOnline == true {
-						s.IsOnline = false
+						t.Guilds[s.Guild].Streams[s.Login].IsOnline = false
 						t.DB.UpdateStream(s)
 					}
 				}
