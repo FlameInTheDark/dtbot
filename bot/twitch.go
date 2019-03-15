@@ -120,14 +120,14 @@ func (t *Twitch) Update() {
 					greq, _ := http.NewRequest("GET", fmt.Sprintf("https://api.twitch.tv/helix/games?id=%v", result.Data[0].GameID), nil)
 					greq.Header.Add("Client-ID", t.Conf.Twitch.ClientID)
 					gresp, gerr := client.Do(greq)
-					if gerr != nil {
-						t.DB.Log("Twitch", "", "Getting Twitch API game error")
+					if gerr == nil {
+						jerr := json.NewDecoder(gresp.Body).Decode(&gameResult)
+						if jerr != nil {
+							t.DB.Log("Twitch", "", "Parsing Twitch API game error")
+						}
+					} else {
+						t.DB.Log("Twitch", "", fmt.Sprintf("Getting Twitch API game error: %v", gerr.Error()))
 					}
-					jerr := json.NewDecoder(gresp.Body).Decode(&gameResult)
-					if jerr != nil {
-						t.DB.Log("Twitch", "", "Parsing Twitch API game error")
-					}
-
 					if s.IsOnline == false {
 						t.Guilds[s.Guild].Streams[s.Login].IsOnline = true
 						t.DB.UpdateStream(s)
