@@ -10,6 +10,7 @@ import (
 	"time"
 )
 
+// Twitch contains streams
 type Twitch struct {
 	Guilds  map[string]*TwitchGuild
 	DB      *DBWorker
@@ -17,11 +18,13 @@ type Twitch struct {
 	Discord *discordgo.Session
 }
 
+// TwitchGuild contains streams from specified guild
 type TwitchGuild struct {
 	ID      string
-	Streams []*TwitchStream
+	Streams map[string]*TwitchStream
 }
 
+// TwitchStream contains stream data
 type TwitchStream struct {
 	Login          string
 	Guild          string
@@ -32,10 +35,12 @@ type TwitchStream struct {
 	CustomImageURI string
 }
 
+// TwitchStreamResult contains response of Twitch API for streams
 type TwitchStreamResult struct {
 	Data []TwitchStreamData `json:"data"`
 }
 
+// TwitchStreamData Twitch API response struct
 type TwitchStreamData struct {
 	ID           string `json:"id"`
 	UserID       string `json:"user_id"`
@@ -48,10 +53,12 @@ type TwitchStreamData struct {
 	ThumbnailURL string `json:"thumbnail_url"`
 }
 
+// TwitchUserResult contains response of Twitch API for users
 type TwitchUserResult struct {
 	Data []TwitchUserData `json:"data"`
 }
 
+// TwitchUserData Twitch API response struct
 type TwitchUserData struct {
 	ID              string `json:"id"`
 	Login           string `json:"login"`
@@ -64,10 +71,12 @@ type TwitchUserData struct {
 	Views           int    `json:"view_count"`
 }
 
+// TwitchGameResult contains response of Twitch API for games
 type TwitchGameResult struct {
 	Data []TwitchGameData `json:"data"`
 }
 
+// TwitchUserData Twitch API response struct
 type TwitchGameData struct {
 	ID     string `json:"id"`
 	Name   string `json:"name"`
@@ -77,15 +86,17 @@ type TwitchGameData struct {
 // TwitchInit makes new instance of twitch api worker
 func TwitchInit(session *discordgo.Session, conf *Config, db *DBWorker) *Twitch {
 	guilds := make(map[string]*TwitchGuild)
-	var streams []*TwitchStream
+	var counter int
 	for _, g := range session.State.Guilds {
 		guildStreams := db.GetTwitchStreams(g.ID)
+		var streams = make(map[string]*TwitchStream)
 		for _, s := range guildStreams {
-			streams = append(streams, s)
+			streams[s.Login] = s
+			counter++
 		}
-		guilds[g.ID] = &TwitchGuild{g.ID, guildStreams}
+		guilds[g.ID] = &TwitchGuild{g.ID, streams}
 	}
-	fmt.Printf("Loaded [%v] streamers\n", len(streams))
+	fmt.Printf("Loaded [%v] streamers\n", counter)
 	return &Twitch{guilds, db, conf, session}
 }
 
@@ -145,6 +156,9 @@ func (t *Twitch) Update() {
 // AddStreamer adds new streamer to list
 func (t *Twitch) AddStreamer(guild, channel, login string) (string, error) {
 	if g, ok := t.Guilds[guild]; ok {
+		if g.Streams == nil {
+			t.Guilds[guild].Streams = make(map[string]*TwitchStream)
+		}
 		for _, s := range g.Streams {
 			if s.Guild == guild && s.Login == login {
 				return "", errors.New("streamer already exists")
@@ -168,7 +182,7 @@ func (t *Twitch) AddStreamer(guild, channel, login string) (string, error) {
 				stream.Login = login
 				stream.Channel = channel
 				stream.Guild = guild
-				t.Guilds[guild].Streams = append(t.Guilds[guild].Streams, &stream)
+				t.Guilds[guild].Streams[login] = &stream
 				t.DB.AddStream(&stream)
 			}
 		} else {
@@ -183,13 +197,13 @@ func (t *Twitch) AddStreamer(guild, channel, login string) (string, error) {
 func (t *Twitch) RemoveStreamer(login, guild string) error {
 	complete := false
 	if g, ok := t.Guilds[guild]; ok {
-		for i, s := range g.Streams {
-			if s.Guild == guild && s.Login == login {
-				t.DB.RemoveStream(s)
-				t.Guilds[guild].Streams[i] = t.Guilds[guild].Streams[len(t.Guilds[guild].Streams)-1]
-				t.Guilds[guild].Streams[len(t.Guilds[guild].Streams)-1] = nil
-				t.Guilds[guild].Streams = t.Guilds[guild].Streams[:len(t.Guilds[guild].Streams)-1]
-				complete = true
+		if g.Streams != nil {
+			if t.Guilds[guild].Streams[login] != nil {
+				if g.Streams[login].Login == login && g.Streams[login].Guild == guild {
+					t.DB.RemoveStream(g.Streams[login])
+					delete(t.Guilds[guild].Streams, login)
+					complete = true
+				}
 			}
 		}
 	} else {
