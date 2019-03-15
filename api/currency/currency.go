@@ -93,8 +93,8 @@ func GetCurrency(ctx *bot.Context) (response string) {
 			response = fmt.Sprintf("%v: %v", ctx.Loc("error"), ctx.Loc("nan"))
 			return
 		}
-		if c1,ok1 := newData.Currencies[args[1]]; ok1 {
-			if c2,ok2 := newData.Currencies[args[2]]; ok2 {
+		if c1, ok1 := newData.Currencies[args[1]]; ok1 {
+			if c2, ok2 := newData.Currencies[args[2]]; ok2 {
 				cur1 := c1.Value / float32(c1.Nominal)
 				cur2 := c2.Value / float32(c2.Nominal)
 				//cur1Delta := 1 / cur1

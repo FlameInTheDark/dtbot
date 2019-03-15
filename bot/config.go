@@ -51,7 +51,7 @@ type DBLConfig struct {
 	DBLID    string
 }
 
-// Twitch contains twitch api configs
+// TwitchConfig contains twitch api configs
 type TwitchConfig struct {
 	ClientID string
 }
@@ -91,6 +91,7 @@ func (c *Config) GetLocale(key string) string {
 	return c.Locales[c.General.Language][key]
 }
 
+// GetLocaleLang returns translation on specified language
 func (c *Config) GetLocaleLang(key, lang string) string {
 	if _, ok := c.Locales[lang]; ok {
 		return c.Locales[lang][key]

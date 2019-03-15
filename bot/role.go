@@ -16,7 +16,7 @@ func (ctx *Context) IsAdmin() bool {
 	return ctx.User.ID == ctx.Conf.General.AdminID
 }
 
-// GetRole returns UserRoles struct pointer
+// GetRoles returns UserRoles struct pointer
 func (ctx *Context) GetRoles() *UserRoles {
 	var userRoles = new(UserRoles)
 	memb, err := ctx.Discord.GuildMember(ctx.Guild.ID, ctx.User.ID)

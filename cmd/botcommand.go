@@ -19,7 +19,6 @@ func showLogs(ctx *bot.Context, count int) {
 	ctx.ReplyEmbedPM("Logs", strings.Join(logString, ""))
 }
 
-// TODO: I should make it more tasty and remove all "switch/case"!
 // BotCommand special bot commands handler
 func BotCommand(ctx bot.Context) {
 	ctx.MetricsCommand("bot")

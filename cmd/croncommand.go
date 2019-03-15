@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+// CronCommand manipulates cron functions
 func CronCommand(ctx bot.Context) {
 	ctx.MetricsCommand("cron")
 	if ctx.GetRoles().ExistsName("bot.admin") {

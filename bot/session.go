@@ -96,6 +96,7 @@ func (manager *SessionManager) Leave(discord *discordgo.Session, session Session
 	delete(manager.sessions, session.ChannelID)
 }
 
+// Count returns count of voice sessions
 func (manager *SessionManager) Count() int {
 	return len(manager.sessions)
 }

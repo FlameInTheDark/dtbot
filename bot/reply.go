@@ -71,7 +71,7 @@ func (emb *NewEmbedStruct) Send(ctx *Context) *discordgo.Message {
 	return msg
 }
 
-// Send send embed personal message to Discord
+// SendPM send embed personal message to Discord
 func (emb *NewEmbedStruct) SendPM(ctx *Context) *discordgo.Message {
 	ch, err := ctx.Discord.UserChannelCreate(ctx.User.ID)
 	if err != nil {

@@ -100,6 +100,7 @@ func (ctx *Context) GetVoiceChannel() *discordgo.Channel {
 	return nil
 }
 
+// GetGuild return data about current guild
 func (ctx *Context) GetGuild() *GuildData {
 	if _, ok := ctx.Guilds[ctx.Guild.ID]; !ok {
 		newData := &GuildData{
@@ -117,6 +118,7 @@ func (ctx *Context) GetGuild() *GuildData {
 	return ctx.Guilds[ctx.Guild.ID]
 }
 
+// Log saves log in database
 func (ctx *Context) Log(module, guildID, text string) {
 	ctx.DB.Log(module, guildID, text)
 	ctx.MetricsLog(module)

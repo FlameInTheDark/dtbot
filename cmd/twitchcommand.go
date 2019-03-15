@@ -32,12 +32,12 @@ func TwitchCommand(ctx bot.Context) {
 				}
 			}
 		case "list":
-			if g,ok := ctx.Twitch.Guilds[ctx.Guild.ID]; ok {
+			if g, ok := ctx.Twitch.Guilds[ctx.Guild.ID]; ok {
 				if len(g.Streams) > 0 {
 					list := ""
 					var counter int
 					if g.Streams != nil {
-						for _,s := range g.Streams {
+						for _, s := range g.Streams {
 							list += fmt.Sprintf("%v. %v\n", counter, s.Login)
 							counter++
 						}
@@ -55,7 +55,7 @@ func TwitchCommand(ctx bot.Context) {
 		case "count":
 			if ctx.IsAdmin() {
 				count := 0
-				for _,g := range ctx.Twitch.Guilds {
+				for _, g := range ctx.Twitch.Guilds {
 					count += len(g.Streams)
 				}
 				ctx.ReplyEmbed("Twitch", fmt.Sprintf("Streamers: %v", count))

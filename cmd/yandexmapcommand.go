@@ -5,7 +5,7 @@ import (
 	"github.com/FlameInTheDark/dtbot/bot"
 )
 
-// WeatherCommand weather handler
+// YandexmapCommand returns map image from Yandex API
 func YandexmapCommand(ctx bot.Context) {
 	ctx.MetricsCommand("yandexmap")
 	buf, err := yandexmap.GetMapImage(&ctx)

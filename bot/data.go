@@ -11,6 +11,7 @@ type DataType struct {
 	GuildSchedules map[string]*GuildSchedule
 }
 
+// GuildSchedule contains map with cron jobs
 type GuildSchedule struct {
 	CronJobs map[cron.EntryID]string
 }
@@ -72,6 +73,7 @@ func (data *DataType) EndPoll(ctx *Context) (results map[string]int, err error) 
 	return newResults, nil
 }
 
+// AddCronJob adds new cron job to guild
 func (data *DataType) AddCronJob(ctx *Context, id cron.EntryID, cmd string) error {
 	if _, ok := data.GuildSchedules[ctx.Guild.ID]; !ok {
 		data.GuildSchedules[ctx.Guild.ID] = &GuildSchedule{CronJobs: make(map[cron.EntryID]string)}
@@ -82,6 +84,7 @@ func (data *DataType) AddCronJob(ctx *Context, id cron.EntryID, cmd string) erro
 	}
 }
 
+// CronIsFull checks if cron jobs is maximum count
 func (data *DataType) CronIsFull(ctx *Context) bool {
 	if _, ok := data.GuildSchedules[ctx.Guild.ID]; ok {
 		if len(data.GuildSchedules[ctx.Guild.ID].CronJobs) >= 10 {
@@ -91,6 +94,7 @@ func (data *DataType) CronIsFull(ctx *Context) bool {
 	return false
 }
 
+// CronRemove removes job from guild
 func (data *DataType) CronRemove(ctx *Context, id cron.EntryID) error {
 	if _, ok := data.GuildSchedules[ctx.Guild.ID]; ok {
 		if _, ok := data.GuildSchedules[ctx.Guild.ID].CronJobs[id]; ok {
@@ -102,6 +106,7 @@ func (data *DataType) CronRemove(ctx *Context, id cron.EntryID) error {
 	return errors.New("Job not found")
 }
 
+// CronList shows cron jobs
 func (data *DataType) CronList(ctx *Context) (*GuildSchedule, error) {
 	if _, ok := data.GuildSchedules[ctx.Guild.ID]; ok {
 		if len(data.GuildSchedules[ctx.Guild.ID].CronJobs) > 0 {

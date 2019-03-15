@@ -76,7 +76,7 @@ type TwitchGameResult struct {
 	Data []TwitchGameData `json:"data"`
 }
 
-// TwitchUserData Twitch API response struct
+// TwitchGameData Twitch API response struct
 type TwitchGameData struct {
 	ID     string `json:"id"`
 	Name   string `json:"name"`
@@ -98,7 +98,7 @@ func TwitchInit(session *discordgo.Session, conf *Config, db *DBWorker) *Twitch 
 
 // Update updates status of streamers and notify
 func (t *Twitch) Update() {
-	for _,g := range t.Guilds {
+	for _, g := range t.Guilds {
 		for _, s := range g.Streams {
 			timeout := time.Duration(time.Duration(1) * time.Second)
 			client := &http.Client{

@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+// DBWorker MongoDB instance
 type DBWorker struct {
 	DBSession *mgo.Session
 	DBName    string
@@ -21,6 +22,7 @@ type dbLog struct {
 	Guild  string
 }
 
+// GuildData contains data about guild settings
 type GuildData struct {
 	ID          string
 	WeatherCity string
@@ -30,8 +32,10 @@ type GuildData struct {
 	EmbedColor  int
 }
 
+// GuildsMap contains guilds settings
 type GuildsMap map[string]*GuildData
 
+// NewDBSession creates new MongoDB instance
 func NewDBSession(dbname string) *DBWorker {
 	session, err := mgo.Dial(os.Getenv("MONGO_CONN"))
 	if err != nil {
@@ -93,10 +97,12 @@ func (db *DBWorker) LogGet(count int) []dbLog {
 	return log
 }
 
+// Guilds returns guilds collection from mongodb
 func (db *DBWorker) Guilds() *mgo.Collection {
 	return db.DBSession.DB(db.DBName).C("guilds")
 }
 
+// GetTwitchStreams returns twitch streams from mongodb
 func (db *DBWorker) GetTwitchStreams(guildID string) map[string]*TwitchStream {
 	streams := []TwitchStream{}
 	err := db.DBSession.DB(db.DBName).C("streams").Find(bson.M{"guild": guildID}).All(&streams)
@@ -110,6 +116,7 @@ func (db *DBWorker) GetTwitchStreams(guildID string) map[string]*TwitchStream {
 	return newMap
 }
 
+// UpdateStream updates stream in mongodb
 func (db *DBWorker) UpdateStream(stream *TwitchStream) {
 	err := db.DBSession.DB(db.DBName).C("streams").
 		Update(
@@ -120,10 +127,12 @@ func (db *DBWorker) UpdateStream(stream *TwitchStream) {
 	}
 }
 
+// AddStream adds stream in mongodb
 func (db *DBWorker) AddStream(stream *TwitchStream) {
 	_ = db.DBSession.DB(db.DBName).C("streams").Insert(stream)
 }
 
+// RemoveStream removes stream from mongodb
 func (db *DBWorker) RemoveStream(stream *TwitchStream) {
 	_ = db.DBSession.DB(db.DBName).C("streams").Remove(bson.M{"login": stream.Login, "guild": stream.Guild})
 }

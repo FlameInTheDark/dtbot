@@ -12,6 +12,7 @@ import (
 	"strings"
 )
 
+// GetMapImage returns map image from Yandex API
 func GetMapImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	var (
 		mapType = "map"
