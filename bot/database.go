@@ -111,8 +111,8 @@ func (db *DBWorker) GetTwitchStreams(guildID string) map[string]*TwitchStream {
 	}
 	var newMap = make(map[string]*TwitchStream)
 	fmt.Println("New map:")
-	for _, s := range streams {
-		newMap[s.Login] = &s
+	for i, s := range streams {
+		newMap[s.Login] = &streams[i]
 		fmt.Println(s.Login, " : ", newMap[s.Login].Login)
 	}
 	fmt.Println("Exported:")
