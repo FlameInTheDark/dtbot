@@ -91,7 +91,12 @@ func TwitchInit(session *discordgo.Session, conf *Config, db *DBWorker) *Twitch 
 		guildStreams := db.GetTwitchStreams(g.ID)
 		counter += len(guildStreams)
 		guilds[g.ID] = &TwitchGuild{g.ID, guildStreams}
+		fmt.Println("Bot:")
 		for _, gs := range guilds[g.ID].Streams {
+			fmt.Println(gs.Login, " : ", gs.Guild)
+		}
+		fmt.Println("Database:")
+		for _, gs := range guildStreams {
 			fmt.Println(gs.Login, " : ", gs.Guild)
 		}
 	}
