@@ -97,17 +97,17 @@ func (db *DBWorker) Guilds() *mgo.Collection {
 	return db.DBSession.DB(db.DBName).C("guilds")
 }
 
-func (db *DBWorker) GetTwitchStreams(guildID string) []*TwitchStream {
+func (db *DBWorker) GetTwitchStreams(guildID string) map[string]*TwitchStream {
 	streams := []TwitchStream{}
 	err := db.DBSession.DB(db.DBName).C("streams").Find(bson.M{"guild": guildID}).All(&streams)
 	if err != nil {
 		fmt.Println("Mongo: ", err)
 	}
-	var newArray []*TwitchStream
+	var newMap = make(map[string]*TwitchStream)
 	for _, s := range streams {
-		newArray = append(newArray, &s)
+		newMap[s.Login] = &s
 	}
-	return newArray
+	return newMap
 }
 
 func (db *DBWorker) UpdateStream(stream *TwitchStream) {

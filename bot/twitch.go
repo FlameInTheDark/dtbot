@@ -89,12 +89,8 @@ func TwitchInit(session *discordgo.Session, conf *Config, db *DBWorker) *Twitch 
 	var counter int
 	for _, g := range session.State.Guilds {
 		guildStreams := db.GetTwitchStreams(g.ID)
-		var streams = make(map[string]*TwitchStream)
-		for _, s := range guildStreams {
-			streams[s.Login] = s
-			counter++
-		}
-		guilds[g.ID] = &TwitchGuild{g.ID, streams}
+		counter += len(guildStreams)
+		guilds[g.ID] = &TwitchGuild{g.ID, guildStreams}
 	}
 	fmt.Printf("Loaded [%v] streamers\n", counter)
 	return &Twitch{guilds, db, conf, session}
