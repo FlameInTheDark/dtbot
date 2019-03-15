@@ -35,10 +35,17 @@ func TwitchCommand(ctx bot.Context) {
 			if g,ok := ctx.Twitch.Guilds[ctx.Guild.ID]; ok {
 				if len(g.Streams) > 0 {
 					list := ""
-					for i,s := range g.Streams {
-						list += fmt.Sprintf("%v. %v\n", i, s.Login)
+					var counter int
+					if g.Streams != nil {
+						for _,s := range g.Streams {
+							list += fmt.Sprintf("%v. %v\n", counter, s.Login)
+							counter++
+						}
+						ctx.ReplyEmbed("Twitch", fmt.Sprintf(ctx.Loc("twitch_list"), list))
+					} else {
+						ctx.ReplyEmbed("Twitch", ctx.Loc("twitch_list_empty"))
 					}
-					ctx.ReplyEmbed("Twitch", fmt.Sprintf(ctx.Loc("twitch_list"), list))
+
 				} else {
 					ctx.ReplyEmbed("Twitch", ctx.Loc("twitch_list_empty"))
 				}
