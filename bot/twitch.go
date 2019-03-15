@@ -180,6 +180,8 @@ func (t *Twitch) AddStreamer(guild, channel, login string) (string, error) {
 				stream.Guild = guild
 				t.Guilds[guild].Streams[login] = &stream
 				t.DB.AddStream(&stream)
+			} else {
+				return "", errors.New("streamer not found")
 			}
 		} else {
 			return "", errors.New("getting streamer error")
