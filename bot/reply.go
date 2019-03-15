@@ -23,9 +23,21 @@ func (emb *NewEmbedStruct) Field(name, value string, inline bool) *NewEmbedStruc
 	return emb
 }
 
+// Author adds author to embed
+func (emb *NewEmbedStruct) Author(name, url, iconURL string) *NewEmbedStruct {
+	emb.Embed.Author = &discordgo.MessageEmbedAuthor{URL:url, Name:name, IconURL:iconURL}
+	return emb
+}
+
 // Desc adds description to embed
 func (emb *NewEmbedStruct) Desc(desc string) *NewEmbedStruct {
 	emb.Embed.Description = desc
+	return emb
+}
+
+// URL adds url to embed description
+func (emb *NewEmbedStruct) URL(url string) *NewEmbedStruct {
+	emb.Embed.URL = url
 	return emb
 }
 

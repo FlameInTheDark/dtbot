@@ -133,8 +133,9 @@ func (t *Twitch) Update() {
 						t.DB.UpdateStream(s)
 						imgUrl := strings.Replace(result.Data[0].ThumbnailURL, "{width}", "320", -1)
 						imgUrl = strings.Replace(imgUrl, "{height}", "180", -1)
-						emb := NewEmbed(result.Data[0].UserName).
-							Field("Title", result.Data[0].Title, false).
+						emb := NewEmbed(result.Data[0].Title).
+							URL(fmt.Sprintf("http://www.twitch.tv/%v", s.Login)).
+							Author(result.Data[0].UserName, "", "").
 							Field("Viewers", fmt.Sprintf("%v", result.Data[0].Viewers), true).
 							Field("Game", gameResult.Data[0].Name, true).
 							AttachImgURL(imgUrl).
