@@ -103,6 +103,11 @@ func (db *DBWorker) GetTwitchStreams(guildID string) map[string]*TwitchStream {
 	if err != nil {
 		fmt.Println("Mongo: ", err)
 	}
+	if len(streams) > 0 {
+		for _,s := range streams {
+			fmt.Println(s.Login, " : ", s.Guild)
+		}
+	}
 	var newMap = make(map[string]*TwitchStream)
 	for _, s := range streams {
 		newMap[s.Login] = &s
