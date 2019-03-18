@@ -7,6 +7,6 @@ import (
 
 // GeoIPCommand handle dice
 func GeoIPCommand(ctx bot.Context) {
-	ctx.MetricsCommand("geoip")
+	ctx.MetricsCommand("geoip", "main")
 	ctx.ReplyEmbed("GeoIP", geoip.GetGeoIP(&ctx))
 }

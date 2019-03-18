@@ -7,13 +7,13 @@ import (
 
 // TwitchCommand manipulates twitch announcer
 func TwitchCommand(ctx bot.Context) {
-	ctx.MetricsCommand("twitch")
 	if ctx.GetRoles().ExistsName("bot.admin") || ctx.IsAdmin() {
 		if len(ctx.Args) == 0 {
 			return
 		}
 		switch ctx.Args[0] {
 		case "add":
+			ctx.MetricsCommand("twitch", "add")
 			if len(ctx.Args) > 1 {
 				username, err := ctx.Twitch.AddStreamer(ctx.Guild.ID, ctx.Message.ChannelID, ctx.Args[1])
 				if err != nil {
@@ -23,6 +23,7 @@ func TwitchCommand(ctx bot.Context) {
 				}
 			}
 		case "remove":
+			ctx.MetricsCommand("twitch", "remove")
 			if len(ctx.Args) > 1 {
 				err := ctx.Twitch.RemoveStreamer(ctx.Args[1], ctx.Guild.ID)
 				if err != nil {
@@ -32,6 +33,7 @@ func TwitchCommand(ctx bot.Context) {
 				}
 			}
 		case "list":
+			ctx.MetricsCommand("twitch", "list")
 			if g, ok := ctx.Twitch.Guilds[ctx.Guild.ID]; ok {
 				if len(g.Streams) > 0 {
 					list := ""
@@ -53,6 +55,7 @@ func TwitchCommand(ctx bot.Context) {
 				ctx.ReplyEmbed("Twitch", ctx.Loc("twitch_list_empty"))
 			}
 		case "count":
+			ctx.MetricsCommand("twitch", "count")
 			if ctx.IsAdmin() {
 				count := 0
 				for _, g := range ctx.Twitch.Guilds {
@@ -63,5 +66,6 @@ func TwitchCommand(ctx bot.Context) {
 		}
 	} else {
 		ctx.ReplyEmbed("Twitch", ctx.Loc("admin_require"))
+		ctx.MetricsCommand("twitch", "error")
 	}
 }

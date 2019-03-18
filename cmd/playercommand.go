@@ -8,7 +8,6 @@ import (
 
 // PlayerCommand Player handler
 func PlayerCommand(ctx bot.Context) {
-	ctx.MetricsCommand("player")
 	sess := ctx.Sessions.GetByGuild(ctx.Guild.ID)
 	if len(ctx.Args) == 0 {
 		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_no_args"))
@@ -16,6 +15,7 @@ func PlayerCommand(ctx bot.Context) {
 	}
 	switch ctx.Args[0] {
 	case "play":
+		ctx.MetricsCommand("player", "play")
 		if sess == nil {
 			ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_not_in_voice"))
 			return
@@ -25,6 +25,7 @@ func PlayerCommand(ctx bot.Context) {
 			ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), msg)
 		})
 	case "stop":
+		ctx.MetricsCommand("player", "stop")
 		sess.Stop()
 	}
 }

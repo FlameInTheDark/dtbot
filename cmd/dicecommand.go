@@ -10,7 +10,7 @@ import (
 
 // DiceCommand handle dice
 func DiceCommand(ctx bot.Context) {
-	ctx.MetricsCommand("dice")
+	ctx.MetricsCommand("dice", "main")
 	if len(ctx.Args) > 0 {
 		val, err := strconv.Atoi(ctx.Args[0])
 		if err != nil {

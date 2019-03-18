@@ -10,7 +10,6 @@ import (
 
 // YoutubeCommand youtube handler
 func YoutubeCommand(ctx bot.Context) {
-	ctx.MetricsCommand("youtube_command")
 	sess := ctx.Sessions.GetByGuild(ctx.Guild.ID)
 	if len(ctx.Args) == 0 {
 		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("youtube_no_args"))
@@ -18,6 +17,7 @@ func YoutubeCommand(ctx bot.Context) {
 	}
 	switch ctx.Args[0] {
 	case "play":
+		ctx.MetricsCommand("youtube_command", "play")
 		if sess == nil {
 			vc := ctx.GetVoiceChannel()
 			if vc == nil {
@@ -43,6 +43,7 @@ func YoutubeCommand(ctx bot.Context) {
 		msg := ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("youtube_starting"))
 		shortPlay(&ctx, sess, msg)
 	case "stop":
+		ctx.MetricsCommand("youtube_command", "stop")
 		if sess == nil {
 			ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("player_not_in_voice"))
 			return
@@ -53,6 +54,7 @@ func YoutubeCommand(ctx bot.Context) {
 		sess.Stop()
 		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("youtube_stopped"))
 	case "skip":
+		ctx.MetricsCommand("youtube_command", "skip")
 		if sess == nil {
 			ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("player_not_in_voice"))
 			return
@@ -60,6 +62,7 @@ func YoutubeCommand(ctx bot.Context) {
 		sess.Stop()
 		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("youtube_skipped"))
 	case "add":
+		ctx.MetricsCommand("youtube_command", "add")
 		newargs := ctx.Args[1:]
 		if len(newargs) == 0 {
 			ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("youtube_args_missing"))
@@ -127,6 +130,7 @@ func YoutubeCommand(ctx bot.Context) {
 			}
 		}
 	case "list":
+		ctx.MetricsCommand("youtube_command", "list")
 		if sess == nil {
 			ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("player_not_in_voice"))
 			return
@@ -151,6 +155,7 @@ func YoutubeCommand(ctx bot.Context) {
 		}
 		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("youtube")), fmt.Sprintf(ctx.Loc("youtube_list_format"), strings.Join(songsNames, "\n")))
 	case "clear":
+		ctx.MetricsCommand("youtube_command", "clear")
 		if sess == nil {
 			ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("player_not_in_voice"))
 			return
@@ -187,7 +192,7 @@ func shortPlay(ctx *bot.Context, sess *bot.Session, msg *discordgo.Message) (isP
 
 // YoutubeShortCommand handle short command for playing song from youtube
 func YoutubeShortCommand(ctx bot.Context) {
-	ctx.MetricsCommand("youtube_command")
+	ctx.MetricsCommand("youtube_command", "short")
 	sess := ctx.Sessions.GetByGuild(ctx.Guild.ID)
 	newargs := ctx.Args
 	if len(newargs) == 0 {

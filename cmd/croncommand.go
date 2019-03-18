@@ -10,11 +10,11 @@ import (
 
 // CronCommand manipulates cron functions
 func CronCommand(ctx bot.Context) {
-	ctx.MetricsCommand("cron")
 	if ctx.GetRoles().ExistsName("bot.admin") {
 		// !cron add 0 0 7 * * * !w Chelyabinsk
 		switch ctx.Args[0] {
 		case "add":
+			ctx.MetricsCommand("cron", "add")
 			if len(ctx.Args) > 7 {
 				if ctx.Args[0] != "*" && ctx.Args[1] != "*" && ctx.Args[2] != "*" {
 					if len(ctx.Args) > 7 {
@@ -52,6 +52,7 @@ func CronCommand(ctx bot.Context) {
 				}
 			}
 		case "remove":
+			ctx.MetricsCommand("cron", "remove")
 			val, err := strconv.Atoi(ctx.Args[1])
 			if err != nil {
 				ctx.ReplyEmbedPM("Cron", err.Error())
@@ -64,6 +65,7 @@ func CronCommand(ctx bot.Context) {
 			}
 			ctx.ReplyEmbedPM("Cron", "Job removed")
 		case "list":
+			ctx.MetricsCommand("cron", "list")
 			s, err := ctx.Data.CronList(&ctx)
 			if err != nil {
 				ctx.ReplyEmbedPM("Cron", err.Error())
@@ -75,5 +77,7 @@ func CronCommand(ctx bot.Context) {
 			}
 			ctx.ReplyEmbedPM("Cron", strings.Join(reply, "\n"))
 		}
+	} else {
+		ctx.MetricsCommand("cron", "error")
 	}
 }

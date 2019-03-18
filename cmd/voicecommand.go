@@ -8,10 +8,10 @@ import (
 
 // VoiceCommand voice handler
 func VoiceCommand(ctx bot.Context) {
-	ctx.MetricsCommand("voice")
 	sess := ctx.Sessions.GetByGuild(ctx.Guild.ID)
 	switch ctx.Args[0] {
 	case "join":
+		ctx.MetricsCommand("voice", "join")
 		if ctx.Sessions.GetByGuild(ctx.Guild.ID) != nil {
 			ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_connected"))
 			return
@@ -31,6 +31,7 @@ func VoiceCommand(ctx bot.Context) {
 		}
 		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), fmt.Sprintf("%v <#%v>!", ctx.Loc("player_joined"), sess.ChannelID))
 	case "leave":
+		ctx.MetricsCommand("voice", "leave")
 		if sess == nil {
 			ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_must_be_in_voice"))
 			return

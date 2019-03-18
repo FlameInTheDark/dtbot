@@ -78,6 +78,7 @@ func GetCurrency(ctx *bot.Context) (response string) {
 
 	// List of currencies
 	if args[0] == "list" {
+		ctx.MetricsCommand("currency", "list")
 		response = fmt.Sprintf("%v: ", ctx.Loc("available_currencies"))
 		for key := range newData.Currencies {
 			response = fmt.Sprintf("%v %v", response, key)
@@ -88,6 +89,7 @@ func GetCurrency(ctx *bot.Context) (response string) {
 	// TODO: i should complete currency converter
 	// Converting currencies
 	if len(args) > 3 && args[0] == "conv" {
+		ctx.MetricsCommand("currency", "conv")
 		count, err := strconv.ParseFloat(args[3], 64)
 		if err != nil {
 			response = fmt.Sprintf("%v: %v", ctx.Loc("error"), ctx.Loc("nan"))
@@ -105,7 +107,7 @@ func GetCurrency(ctx *bot.Context) (response string) {
 		}
 		return
 	}
-
+	ctx.MetricsCommand("currency", "main")
 	var arrow string
 	// Current currency
 	for _, arg := range args {

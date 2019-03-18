@@ -7,7 +7,7 @@ import (
 
 // WeatherCommand weather handler
 func WeatherCommand(ctx bot.Context) {
-	ctx.MetricsCommand("weather")
+	ctx.MetricsCommand("weather", "main")
 	buf, err := weather.GetWeatherImage(&ctx)
 	if err != nil {
 		ctx.Log("Weather", ctx.Guild.ID, err.Error())

@@ -21,13 +21,13 @@ func showLogs(ctx *bot.Context, count int) {
 
 // BotCommand special bot commands handler
 func BotCommand(ctx bot.Context) {
-	ctx.MetricsCommand("bot")
 	if ctx.GetRoles().ExistsName("bot.admin") || ctx.IsAdmin() {
 		if len(ctx.Args) == 0 {
 			return
 		}
 		switch ctx.Args[0] {
 		case "clear":
+			ctx.MetricsCommand("bot", "clear")
 			if len(ctx.Args) < 2 {
 				ctx.BotMsg.Clear(&ctx, 0)
 				return
@@ -38,6 +38,7 @@ func BotCommand(ctx bot.Context) {
 			}
 			ctx.BotMsg.Clear(&ctx, from)
 		case "logs":
+			ctx.MetricsCommand("bot", "logs")
 			if ctx.IsAdmin() {
 				if len(ctx.Args) < 2 {
 					showLogs(&ctx, 10)
@@ -51,8 +52,10 @@ func BotCommand(ctx bot.Context) {
 				}
 			}
 		case "conflist":
+			ctx.MetricsCommand("bot", "conflist")
 			ctx.ReplyEmbed("Config", ctx.Loc("conf_list"))
 		case "setconf":
+			ctx.MetricsCommand("bot", "setconf")
 			if len(ctx.Args) > 2 {
 				target := strings.Split(ctx.Args[1], ".")
 				switch target[0] {
@@ -113,6 +116,7 @@ func BotCommand(ctx bot.Context) {
 				}
 			}
 		case "guild":
+			ctx.MetricsCommand("bot", "guild")
 			if len(ctx.Args) < 2 && !ctx.IsAdmin() {
 				return
 			}
@@ -185,6 +189,7 @@ func BotCommand(ctx bot.Context) {
 				}
 			}
 		case "stats":
+			ctx.MetricsCommand("bot", "stats")
 			if !ctx.IsAdmin() {
 				return
 			}

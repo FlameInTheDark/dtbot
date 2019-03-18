@@ -10,12 +10,12 @@ import (
 
 // PollCommand handle polls commands
 func PollCommand(ctx bot.Context) {
-	ctx.MetricsCommand("poll")
 	if len(ctx.Args) == 0 {
 		return
 	}
 	switch ctx.Args[0] {
 	case "new":
+		ctx.MetricsCommand("poll", "new")
 		err := ctx.Data.CreatePoll(&ctx, strings.Split(strings.Join(ctx.Args[1:], " "), "|"))
 		if err != nil {
 			ctx.ReplyEmbed(ctx.Loc("polls"), err.Error())
@@ -27,6 +27,7 @@ func PollCommand(ctx bot.Context) {
 		}
 		ctx.ReplyEmbed(ctx.Loc("polls"), fmt.Sprintf("%v:\n%v", ctx.Loc("polls_created"), strings.Join(fields, "\n")))
 	case "vote":
+		ctx.MetricsCommand("poll", "vote")
 		val, err := strconv.Atoi(ctx.Args[1])
 		if err != nil {
 			ctx.ReplyEmbed(ctx.Loc("polls"), ctx.Loc("polls_wrong_field"))
@@ -38,6 +39,7 @@ func PollCommand(ctx bot.Context) {
 			return
 		}
 	case "end":
+		ctx.MetricsCommand("poll", "end")
 		result, err := ctx.Data.EndPoll(&ctx)
 		if err != nil {
 			ctx.ReplyEmbed(ctx.Loc("polls"), err.Error())

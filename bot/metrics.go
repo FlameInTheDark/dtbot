@@ -7,8 +7,8 @@ import (
 )
 
 // MetricsCommand sends command metrics
-func (ctx *Context) MetricsCommand(command string) {
-	query := []byte(fmt.Sprintf("commands,server=%v,user=%v command=\"%v\"", ctx.Guild.ID, ctx.Message.Author.ID, command))
+func (ctx *Context) MetricsCommand(command, state string) {
+	query := []byte(fmt.Sprintf("commands,server=%v,user=%v command=\"%v\",state=\"%v\"", ctx.Guild.ID, ctx.Message.Author.ID, command, state))
 	addr := fmt.Sprintf("%v/write?db=%v&u=%v&p=%v",
 		ctx.Conf.Metrics.Address, ctx.Conf.Metrics.Database, ctx.Conf.Metrics.User, ctx.Conf.Metrics.Password)
 	r := bytes.NewReader(query)
