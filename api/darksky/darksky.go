@@ -181,7 +181,7 @@ func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 		panic(err)
 	}
 	gc.DrawStringAnchored(fmt.Sprintf("%.2v:00", forecast.Currently.TZTime(ctx.Conf.General.Timezone).Hour()), 50, 200, 0.5, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", forecast.Currently.Humidity), 200, 200, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", int(forecast.Currently.Humidity * 100)), 200, 200, 0.5, 0.5)
 	gc.DrawStringAnchored(fmt.Sprintf("C:%v%%", int(forecast.Currently.CloudCover)), 350, 200, 0.5, 0.5)
 
 	gc.SetRGBA(1, 1, 1, 1)
@@ -213,10 +213,10 @@ func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	}
 	gc.SetRGBA(1, 1, 1, 0.5)
 
-	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", forecast.Hourly.Data[1].Humidity), 100, 315, 0, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", forecast.Hourly.Data[2].Humidity), 100, 415, 0, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", forecast.Hourly.Data[3].Humidity), 100, 515, 0, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", forecast.Hourly.Data[4].Humidity), 100, 615, 0, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", int(forecast.Hourly.Data[1].Humidity * 100)), 100, 315, 0, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", int(forecast.Hourly.Data[2].Humidity * 100)), 100, 415, 0, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", int(forecast.Hourly.Data[3].Humidity * 100)), 100, 515, 0, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", int(forecast.Hourly.Data[4].Humidity * 100)), 100, 615, 0, 0.5)
 
 	gc.DrawStringAnchored(fmt.Sprintf("C:%v%%", int(forecast.Hourly.Data[1].CloudCover)), 170, 315, 0, 0.5)
 	gc.DrawStringAnchored(fmt.Sprintf("C:%v%%", int(forecast.Hourly.Data[2].CloudCover)), 170, 415, 0, 0.5)
