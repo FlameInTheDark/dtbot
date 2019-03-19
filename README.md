@@ -11,7 +11,7 @@
 
 ## Used APIs
 
-* OpenWeatherMap
+* Dark Sky
 * Yandex Translate
 * Newsapi.org
 * Geonames.org
