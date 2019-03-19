@@ -182,7 +182,7 @@ func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	}
 	gc.DrawStringAnchored(fmt.Sprintf("%.2v:00", forecast.Currently.TZTime(ctx.Conf.General.Timezone).Hour()), 50, 200, 0.5, 0.5)
 	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", int(forecast.Currently.Humidity * 100)), 200, 200, 0.5, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("C:%v%%", int(forecast.Currently.CloudCover)), 350, 200, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("C:%v%%", int(forecast.Currently.CloudCover * 100)), 350, 200, 0.5, 0.5)
 
 	gc.SetRGBA(1, 1, 1, 1)
 	if err := gc.LoadFontFace("lato.ttf", 90); err != nil {
