@@ -4,6 +4,7 @@
 [![Go report](http://goreportcard.com/badge/FlameInTheDark/dtbot)](http://goreportcard.com/report/FlameInTheDark/dtbot)
 [![Build Status](https://travis-ci.org/FlameInTheDark/dtbot.svg?branch=master)](https://travis-ci.org/FlameInTheDark/dtbot)
 [![Scrutinizer Quality Score](https://img.shields.io/scrutinizer/g/FlameInTheDark/dtbot/master.svg)](https://scrutinizer-ci.com/g/FlameInTheDark/dtbot/)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FFlameInTheDark%2Fdtbot.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FFlameInTheDark%2Fdtbot?ref=badge_shield)
 [![Discord Bots](https://discordbots.org/api/widget/status/424221765321883658.svg)](https://discordbots.org/bot/424221765321883658)
 
 [![Musor stats on Discord Bot List](https://discordbotlist.com/bots/424221765321883658/widget)](https://discordbotlist.com/bots/424221765321883658)

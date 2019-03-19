@@ -1,14 +1,14 @@
 package cmd
 
 import (
-	"github.com/FlameInTheDark/dtbot/api/weather"
+	"github.com/FlameInTheDark/dtbot/api/darksky"
 	"github.com/FlameInTheDark/dtbot/bot"
 )
 
 // WeatherCommand weather handler
 func WeatherCommand(ctx bot.Context) {
 	ctx.MetricsCommand("weather", "main")
-	buf, err := weather.GetWeatherImage(&ctx)
+	buf, err := darksky.GetWeatherImage(&ctx)
 	if err != nil {
 		ctx.Log("Weather", ctx.Guild.ID, err.Error())
 		return

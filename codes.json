@@ -71,5 +71,18 @@
     "959":"\uEE1F",
     "960":"\uEE20",
     "961":"\uEE21",
-    "962":"\uEE22"
+    "962":"\uEE22",
+    "clear-day": "\uEE17",
+    "clear-night": "\uF168",
+    "rain": "\uEC6A",
+    "snow": "\uECBA",
+    "sleet": "\uEC5F",
+    "wind": "\uEE1C",
+    "fog": "\uED1D",
+    "cloudy": "\uED83",
+    "partly-cloudy-day": "\uED81",
+    "partly-cloudy-night": "\uF169",
+    "hail": "\uEDEA",
+    "thunderstorm": "\uEB33",
+    "tornado": "\uEDE4"
 }

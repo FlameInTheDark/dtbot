@@ -72,6 +72,10 @@ type LocalesMap map[string]map[string]string
 // WeatherCodesMap symbols for font
 type WeatherCodesMap map[string]string
 
+type DarkSkyConfig struct {
+	Token string
+}
+
 // Config Main config struct. Contains all another config structs data.
 type Config struct {
 	Weather      WeatherConfig
@@ -84,6 +88,7 @@ type Config struct {
 	Metrics      MetricsConfig
 	DBL          DBLConfig
 	Twitch       TwitchConfig
+	DarkSky      DarkSkyConfig
 }
 
 // GetLocale returns locale string by key
