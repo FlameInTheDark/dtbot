@@ -13,6 +13,7 @@ import (
 	"time"
 )
 
+// DarkSkyResponse contains main structures of API response
 type DarkSkyResponse struct {
 	Latitude  float32       `json:"latitude"`
 	Longitude float32       `json:"longitude"`
@@ -21,15 +22,16 @@ type DarkSkyResponse struct {
 	Hourly    DarkSkyHourly `json:"hourly"`
 	Daily     DarkSkyDaily  `json:"daily"`
 	Flags     DarkSkyFlags  `json:"flags"`
-	Offset    int64           `json:"offset"`
+	Offset    int64         `json:"offset"`
 }
 
+// DarkSkyData contains main hourly weather data
 type DarkSkyData struct {
-	Time                int64     `json:"time"`
+	Time                int64   `json:"time"`
 	Summary             string  `json:"summary"`
 	Icon                string  `json:"icon"`
-	PrecipIntensity     int64     `json:"precipIntensity"`
-	PrecipProbability   int64     `json:"precipProbability"`
+	PrecipIntensity     float32 `json:"precipIntensity"`
+	PrecipProbability   int64   `json:"precipProbability"`
 	Temperature         float32 `json:"temperature"`
 	ApparentTemperature float32 `json:"apparentTemperature"`
 	DewPoint            float32 `json:"dewPoint"`
@@ -37,78 +39,84 @@ type DarkSkyData struct {
 	Pressure            float32 `json:"pressure"`
 	WindSpeed           float32 `json:"windSpeed"`
 	WindGust            float32 `json:"windGust"`
-	WindBearing         int64     `json:"windBearing"`
+	WindBearing         int64   `json:"windBearing"`
 	CloudCover          float32 `json:"cloudCover"`
-	UVIndex             int64     `json:"uvIndex"`
+	UVIndex             int64   `json:"uvIndex"`
 	Visibility          float32 `json:"visibility"`
 	Ozone               float32 `json:"ozone"`
 }
 
+// DarkSkyHourly contains hourly weather data array
 type DarkSkyHourly struct {
 	Summary string        `json:"summary"`
 	Icon    string        `json:"icon"`
 	Data    []DarkSkyData `json:"data"`
 }
 
+// DarkSkyDaily contains daily weather data array
 type DarkSkyDaily struct {
 	Summary string           `json:"summary"`
 	Icon    string           `json:"icon"`
 	Data    []DarkSkyDayData `json:"data"`
 }
 
+// DarkSkyDayData contains main daily weather data
 type DarkSkyDayData struct {
-	Time                        int64     `json:"time"`
+	Time                        int64   `json:"time"`
 	Summary                     string  `json:"summary"`
 	Icon                        string  `json:"icon"`
-	SunriseTime                 int64     `json:"sunriseTime"`
-	SunsetTime                  int64     `json:"sunsetTime"`
+	SunriseTime                 int64   `json:"sunriseTime"`
+	SunsetTime                  int64   `json:"sunsetTime"`
 	MoonPhase                   float32 `json:"moonPhase"`
 	PrecipIntensity             float32 `json:"precipIntensity"`
 	PrecipIntensityMax          float32 `json:"precipIntensityMax"`
-	PrecipIntensityMaxTime      int64     `json:"precipIntensityMaxTime"`
+	PrecipIntensityMaxTime      int64   `json:"precipIntensityMaxTime"`
 	PrecipProbability           float32 `json:"precipProbability"`
 	PrecipAccumulation          float32 `json:"precipAccumulation"`
 	PrecipType                  string  `json:"precipType"`
 	TemperatureHigh             float32 `json:"temperatureHigh"`
-	TemperatureHighTime         int64     `json:"temperatureHighTime"`
+	TemperatureHighTime         int64   `json:"temperatureHighTime"`
 	TemperatureLow              float32 `json:"temperatureLow"`
-	TemperatureLowTime          int64     `json:"temperatureLowTime"`
+	TemperatureLowTime          int64   `json:"temperatureLowTime"`
 	ApparentTemperatureHigh     float32 `json:"apparentTemperatureHigh"`
-	ApparentTemperatureHighTime int64     `json:"apparentTemperatureHighTime"`
+	ApparentTemperatureHighTime int64   `json:"apparentTemperatureHighTime"`
 	ApparentTemperatureLow      float32 `json:"apparentTemperatureLow"`
-	ApparentTemperatureLowTime  int64     `json:"apparentTemperatureLowTime"`
+	ApparentTemperatureLowTime  int64   `json:"apparentTemperatureLowTime"`
 	DewPoint                    float32 `json:"dewPoint"`
 	Humidity                    float32 `json:"humidity"`
 	Pressure                    float32 `json:"pressure"`
 	WindSpeed                   float32 `json:"windSpeed"`
 	WindGust                    float32 `json:"windGust"`
-	WindGustTime                int64     `json:"windGustTime"`
-	WindBearing                 int64     `json:"windBearing"`
+	WindGustTime                int64   `json:"windGustTime"`
+	WindBearing                 int64   `json:"windBearing"`
 	CloudCover                  float32 `json:"cloudCover"`
-	UVIndex                     int64     `json:"uvIndex"`
-	UVIndexTime                 int64     `json:"uvIndexTime"`
+	UVIndex                     int64   `json:"uvIndex"`
+	UVIndexTime                 int64   `json:"uvIndexTime"`
 	Visibility                  float32 `json:"visibility"`
 	Ozone                       float32 `json:"ozone"`
 	TemperatureMin              float32 `json:"temperatureMin"`
-	TemperatureMinTime          int64     `json:"temperatureMinTime"`
+	TemperatureMinTime          int64   `json:"temperatureMinTime"`
 	TemperatureMax              float32 `json:"temperatureMax"`
-	TemperatureMaxTime          int64     `json:"temperatureMaxTime"`
+	TemperatureMaxTime          int64   `json:"temperatureMaxTime"`
 	ApparentTemperatureMin      float32 `json:"apparentTemperatureMin"`
-	ApparentTemperatureMinTime  int64     `json:"apparentTemperatureMinTime"`
+	ApparentTemperatureMinTime  int64   `json:"apparentTemperatureMinTime"`
 	ApparentTemperatureMax      float32 `json:"apparentTemperatureMax"`
-	ApparentTemperatureMaxTime  int64     `json:"apparentTemperatureMaxTime"`
+	ApparentTemperatureMaxTime  int64   `json:"apparentTemperatureMaxTime"`
 }
 
+// DarkSkyFlags contains response flags
 type DarkSkyFlags struct {
 	Sources        []string `json:"sources"`
 	NearestStation float32  `json:"nearest-station"`
 	Units          string   `json:"units"`
 }
 
+// TZTime converts epoch date to normal with timezone
 func (d DarkSkyData) TZTime(tz int) time.Time {
 	return time.Unix(d.Time, 0).UTC().Add(time.Hour * time.Duration(tz))
 }
 
+// GetWeatherImage returns weather image widget
 func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	var (
 		forecast DarkSkyResponse
@@ -181,8 +189,8 @@ func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 		panic(err)
 	}
 	gc.DrawStringAnchored(fmt.Sprintf("%.2v:00", forecast.Currently.TZTime(ctx.Conf.General.Timezone).Hour()), 50, 200, 0.5, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", int(forecast.Currently.Humidity * 100)), 200, 200, 0.5, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("C:%v%%", int(forecast.Currently.CloudCover * 100)), 350, 200, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", int(forecast.Currently.Humidity*100)), 200, 200, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("C:%v%%", int(forecast.Currently.CloudCover*100)), 350, 200, 0.5, 0.5)
 
 	gc.SetRGBA(1, 1, 1, 1)
 	if err := gc.LoadFontFace("lato.ttf", 90); err != nil {
@@ -213,15 +221,15 @@ func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	}
 	gc.SetRGBA(1, 1, 1, 0.5)
 
-	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", int(forecast.Hourly.Data[1].Humidity * 100)), 100, 315, 0, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", int(forecast.Hourly.Data[2].Humidity * 100)), 100, 415, 0, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", int(forecast.Hourly.Data[3].Humidity * 100)), 100, 515, 0, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", int(forecast.Hourly.Data[4].Humidity * 100)), 100, 615, 0, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", int(forecast.Hourly.Data[1].Humidity*100)), 100, 315, 0, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", int(forecast.Hourly.Data[2].Humidity*100)), 100, 415, 0, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", int(forecast.Hourly.Data[3].Humidity*100)), 100, 515, 0, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", int(forecast.Hourly.Data[4].Humidity*100)), 100, 615, 0, 0.5)
 
-	gc.DrawStringAnchored(fmt.Sprintf("C:%v%%", int(forecast.Hourly.Data[1].CloudCover * 100)), 170, 315, 0, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("C:%v%%", int(forecast.Hourly.Data[2].CloudCover * 100)), 170, 415, 0, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("C:%v%%", int(forecast.Hourly.Data[3].CloudCover * 100)), 170, 515, 0, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("C:%v%%", int(forecast.Hourly.Data[4].CloudCover * 100)), 170, 615, 0, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("C:%v%%", int(forecast.Hourly.Data[1].CloudCover*100)), 170, 315, 0, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("C:%v%%", int(forecast.Hourly.Data[2].CloudCover*100)), 170, 415, 0, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("C:%v%%", int(forecast.Hourly.Data[3].CloudCover*100)), 170, 515, 0, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("C:%v%%", int(forecast.Hourly.Data[4].CloudCover*100)), 170, 615, 0, 0.5)
 
 	gc.SetRGBA(1, 1, 1, 1)
 	if err := gc.LoadFontFace("lato.ttf", 50); err != nil {
