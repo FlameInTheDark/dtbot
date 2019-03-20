@@ -177,11 +177,12 @@ func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	if err := gc.LoadFontFace("lato.ttf", 20); err != nil {
 		panic(err)
 	}
-	// Header
+
+	// Header (place and date)
 	gc.SetRGBA(1, 1, 1, 0.7)
 	gc.DrawStringAnchored(cityName, 10, 15, 0, 0.5)
 	gc.SetRGBA(1, 1, 1, 0.4)
-	gc.DrawStringAnchored(time.Now().Format("Jan 2, 2006"), 280, 15, 0, 0.5)
+	gc.DrawStringAnchored(time.Now().Format("Jan 2, 2006"), 270, 15, 0, 0.5)
 
 	// First weather data
 	gc.SetRGBA(1, 1, 1, 0.5)
