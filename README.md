@@ -11,15 +11,15 @@
 
 ## Used APIs
 
-* Dark Sky
-* Yandex Translate
-* Newsapi.org
-* Geonames.org
-* cbr-xml-daily.ru
-* youtube-dl
-* owfont
-* Sypex Geo
-* Twitch
+* [Dark Sky](https://darksky.net/poweredby/)
+* [Yandex Translate](https://tech.yandex.ru/translate/)
+* [News API](https://newsapi.org)
+* [Geonames](https://www.geonames.org)
+* [cbr-xml-daily.ru](https://www.cbr-xml-daily.ru)
+* [youtube-dl](https://ytdl-org.github.io/youtube-dl/index.html)
+* [Weather Icons](https://erikflowers.github.io/weather-icons/)
+* [Sypex Geo](http://sypexgeo.net)
+* [Twitch API](https://dev.twitch.tv)
 
 ## Bot's features
 
