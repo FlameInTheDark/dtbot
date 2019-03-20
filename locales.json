@@ -1,6 +1,7 @@
 {
     "en": {
-        "admin_require": "To use this command, you must have the role \"bot.admin\"",
+        "admin_require": "To use this command, you must have the role \"bot.admin\". For help use `!help bot.admin`",
+        "admin_help": "For create a role, go to `Server stings->Roles` and create role named `bot.admin`.\nAll user, who have that role, can use additional bot functions, like configuration and adding streamer to Twitch announcer",
         "help": "Bot commands help",
         "help_reply": "`!help [command]` | Detail description of command `!help !y`\n`!play [youtube_url]` | Add bot in channel and start playing from URL\n`!v` | Manage bot voice channel\n`!b` | Bot functions\n`!y` | Manage Youtube player\n`!r` | Manage radio\n`!w` | Weather forecast\n`!t` | Translator\n`!c` | Currency\n`!p` | Polls\n`!geoip` | GeoIP\n`!twitch` | Twitch stream announcer",
         "help_command_!v": "`!v join` | Add bot into you voice channel\n`!v leave` | Remove bot from voice channel",
@@ -80,7 +81,8 @@
         "twitch_list_empty": "No streamers"
     },
     "ru": {
-        "admin_require": "Для использования данной команды вам необходимо иметь роль \"bot.admin\"",
+        "admin_require": "Для использования данной команды вам необходимо иметь роль \"bot.admin\". Для помощи используйте `!help bot.admin`",
+        "admin_help": "Чтобы создать роль перейдите в `Настройки сервера->Роли` и создайте роль с названием `bot.admin`.\nВсем пользователям имеющим эту роль будут доступны дополнительные функции такие как настройки бота и добавление стримера в анонсер Twitch",
         "help": "Помощь по командам бота",
         "help_reply": "`!help [command]` | Детальное описание команды `!help !y`\n`!play [youtube_url]` | Добавить бота в голосовой канал и начать проигрывать трек из ссылки\n`!v` | Управление голосовым каналом бота\n`!b` | Функции бота\n`!y` | Управление Youtube проигрывателем\n`!r` | Управление радио\n`!w` | Прогноз погоды\n`!t` | Переводчик\n`!c` | Курс валюты\n`!p` | Опрос\n`!geoip` | GeoIP\n`!twitch` | Анонсер начала стрима на Twitch",
         "help_command_!v": "`!v join` | Добавить бота в голосовой канал\n`!v leave` | Удалить бота из голосового канала",

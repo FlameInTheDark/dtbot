@@ -18,7 +18,7 @@
 * [cbr-xml-daily.ru](https://www.cbr-xml-daily.ru)
 * [youtube-dl](https://ytdl-org.github.io/youtube-dl/index.html)
 * [Weather Icons](https://erikflowers.github.io/weather-icons/)
-* [Sypex Geo](http://sypexgeo.net)
+* [Sypex Geo](https://sypexgeo.net/)
 * [Twitch API](https://dev.twitch.tv)
 
 ## Bot's features
@@ -100,6 +100,7 @@ Create `config.toml` file from sample `sample.config.toml`
 
 ```toml
 [weather]
+# Old weather API token (deprecated and unused now)
 WeatherToken = "OpenWeatherMap API Token"
 # Default forecast city
 City = "Moscow"
@@ -134,6 +135,15 @@ Address = "http://some_server.com:8086"
 Database = "dtbot"
 User = "user"
 Password = "password"
+# Discord Bot List
+[dbl]
+Token = "discordbots.org_bot_token"
+# Twitch announcer
+[twitch]
+ClientID = "twitch_application_client_id"
+# Weather API
+[darksky]
+Token = "darksky_api_token"
 ```
 
 Make (or use my) Dockerfile:

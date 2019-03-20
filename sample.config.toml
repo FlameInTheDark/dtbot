@@ -33,3 +33,12 @@ Address = "http://some_server.com:8086"
 Database = "dtbot"
 User = "user"
 Password = "password"
+# Discord Bot List
+[dbl]
+Token = "discordbots.org_bot_token"
+# Twitch announcer
+[twitch]
+ClientID = "twitch_application_client_id"
+# Weather API
+[darksky]
+Token = "darksky_api_token"
