@@ -1,0 +1,15 @@
+{
+    "clear-day": "\uF00D",
+    "clear-night": "\uF02E",
+    "rain": "\uF036",
+    "snow": "\uF038",
+    "sleet": "\uF034",
+    "wind": "\uF050",
+    "fog": "\uF063",
+    "cloudy": "\uF013",
+    "partly-cloudy-day": "\uF002",
+    "partly-cloudy-night": "\uF086",
+    "hail": "\uF01A",
+    "thunderstorm": "\uF016",
+    "tornado": "\uF056"
+}

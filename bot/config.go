@@ -139,7 +139,7 @@ func (c *Config) LoadLocales() {
 
 // LoadWeatherCodes loads weather font codes from file 'codes.json' in map. Terminate program if error.
 func (c *Config) LoadWeatherCodes() {
-	file, e := ioutil.ReadFile("./codes.json")
+	file, e := ioutil.ReadFile("./weathercodes.json")
 	if e != nil {
 		fmt.Printf("Codes file error: %v\n", e)
 		os.Exit(1)
