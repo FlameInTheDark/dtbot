@@ -31,7 +31,7 @@ type DarkSkyData struct {
 	Summary             string  `json:"summary"`
 	Icon                string  `json:"icon"`
 	PrecipIntensity     float32 `json:"precipIntensity"`
-	PrecipProbability   int64   `json:"precipProbability"`
+	PrecipProbability   float32 `json:"precipProbability"`
 	Temperature         float32 `json:"temperature"`
 	ApparentTemperature float32 `json:"apparentTemperature"`
 	DewPoint            float32 `json:"dewPoint"`
