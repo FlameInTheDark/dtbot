@@ -195,7 +195,7 @@ func MetricsSender(d *discordgo.Session) {
 
 		// Bot lists
 		if conf.DBL.Token != "" {
-			sendDBL(d.State.User.ID, conf.DBL.Token, len(d.State.Guilds))
+			sendDBL(conf.DBL.BotID, conf.DBL.Token, len(d.State.Guilds))
 		}
 		messagesCounter = 0
 		time.Sleep(time.Minute)

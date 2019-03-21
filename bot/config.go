@@ -46,9 +46,8 @@ type MetricsConfig struct {
 
 // DBLConfig contains bot list configs
 type DBLConfig struct {
-	Token    string
-	TokenDBL string
-	DBLID    string
+	Token string
+	BotID string
 }
 
 // TwitchConfig contains twitch api configs
