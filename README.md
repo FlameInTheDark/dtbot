@@ -9,7 +9,7 @@
 
 [![Musor stats on Discord Bot List](https://discordbotlist.com/bots/424221765321883658/widget)](https://discordbotlist.com/bots/424221765321883658)
 
-## Used APIs
+## Used APIs and external software
 
 * [Dark Sky](https://darksky.net/poweredby/)
 * [Yandex Translate](https://tech.yandex.ru/translate/)
@@ -17,6 +17,7 @@
 * [Geonames](https://www.geonames.org)
 * [cbr-xml-daily.ru](https://www.cbr-xml-daily.ru)
 * [youtube-dl](https://ytdl-org.github.io/youtube-dl/index.html)
+* [FFmpeg](https://ffmpeg.org)
 * [Weather Icons](https://erikflowers.github.io/weather-icons/)
 * [Sypex Geo](https://sypexgeo.net/)
 * [Twitch API](https://dev.twitch.tv)
@@ -27,10 +28,10 @@
 * Translate words
 * Shows news
 * Shows currency
-* Plays music from Youtube and Soundcloud
-* Plays music from online radiostations
 * Makes polls
-* Announcing if twitch stream is started
+* Plays music from Youtube and Soundcloud
+* Plays music from online radio stations
+* Announcing if Twitch stream is started
 
 ## How to use
 
@@ -46,6 +47,7 @@ Command | Description
 `!b setconf [parameter] [value]` | Sets the bot configuration for your channel.
 `!help` | Shows help
 `!help [command]` | Detail help `!help !y`
+`!help bot.admin` | Shows help how get `bot.admin` role
 `!play [youtube_url]` | Adds track (or playlist) in queue and start playing
 `!y add [song]` | Adds song from youtube or soundcloud
 `!y clear` | Removes all songs from queue
