@@ -153,6 +153,7 @@ func (t *Twitch) Update() {
 	fmt.Println("Streams: ", len(streams))
 	for _,g := range t.Guilds {
 		for _,s := range g.Streams {
+			fmt.Println(streams)
 			if stream,ok := streams[s.Login]; ok {
 				fmt.Println("Streamer [",s.Login,"] is exists")
 				if !s.IsOnline {
