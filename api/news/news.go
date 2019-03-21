@@ -58,7 +58,7 @@ func GetNews(ctx *bot.Context) error{
 			for i := 0; i < ctx.Conf.News.Articles; i++ {
 				emb.Field(result.Articles[i].Title, result.Articles[i].Description + "\n" + result.Articles[i].URL, false)
 			}
-			emb.Desc(fmt.Sprintf("%v %v",ctx.Loc("requested_by"), ctx.Message.Author.Username))
+			emb.Footer(fmt.Sprintf("%v %v",ctx.Loc("requested_by"), ctx.Message.Author.Username))
 			_,_=ctx.Discord.ChannelMessageSendEmbed(ctx.Message.ChannelID, emb.GetEmbed())
 			return nil
 		} else {
