@@ -3,6 +3,7 @@ package news
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/pkg/errors"
 	"net/http"
 	"strings"
 
@@ -33,7 +34,7 @@ type NewsArticeleSourceData struct {
 }
 
 // GetNews returns news string
-func GetNews(ctx *bot.Context) string {
+func GetNews(ctx *bot.Context) error{
 	var (
 		result   NewsResponseData
 		category string
@@ -44,27 +45,28 @@ func GetNews(ctx *bot.Context) string {
 	resp, err := http.Get(fmt.Sprintf("https://newsapi.org/v2/top-headlines?country=%v&category=%v&apiKey=%v", ctx.Conf.News.Country, category, ctx.Conf.News.APIKey))
 	if err != nil {
 		ctx.Log("news", ctx.Guild.ID, fmt.Sprintf("Get news error: %v", err))
-		return fmt.Sprintf("Get news error: %v", err)
+		return errors.New(fmt.Sprintf("Get news error: %v", err))
 	}
 
 	err = json.NewDecoder(resp.Body).Decode(&result)
 	if err != nil {
 		ctx.Log("news", ctx.Guild.ID, fmt.Sprintf("Parse news error: %v", err))
-		return fmt.Sprintf("Parse news error: %v", err)
+		return errors.New(fmt.Sprintf("Parse news error: %v", err))
 	}
 
 	if result.Status == "ok" {
 		if len(result.Articles) > 0 {
 			var news []string
+			emb := bot.NewEmbed(ctx.Loc("news"))
 			for i := 0; i < ctx.Conf.News.Articles; i++ {
-				news = append(news, fmt.Sprintf("```%v\n\n%v\nLink: %v```", result.Articles[i].Title, result.Articles[i].Description, result.Articles[i].URL))
+				emb.Field(result.Articles[i].Title, result.Articles[i].Description + "\n" + result.Articles[i].URL, false)
 			}
-
-			return strings.Join(news, "\n")
+			_,_=ctx.Discord.ChannelMessageSendEmbed(ctx.Message.ChannelID, emb.GetEmbed())
+			return nil
 		} else {
-			return ctx.Loc("news_404")
+			return errors.New(ctx.Loc("news_404"))
 		}
 	} else {
-		return ctx.Loc("news_api_error")
+		return errors.New(ctx.Loc("news_api_error"))
 	}
 }
