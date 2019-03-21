@@ -151,10 +151,8 @@ func (t *Twitch) Update() {
 		games[g.ID] = &gameResult.Data[i]
 	}
 
-	fmt.Println("Streams: ", len(streams))
 	for _, g := range t.Guilds {
 		for _, s := range g.Streams {
-			fmt.Println(streams)
 			if stream, ok := streams[s.UserID]; ok {
 				if !s.IsOnline {
 					t.Guilds[s.Guild].Streams[s.Login].IsOnline = true
@@ -179,62 +177,6 @@ func (t *Twitch) Update() {
 			}
 		}
 	}
-
-	//for _, g := range t.Guilds {
-	//	for _, s := range g.Streams {
-	//		timeout := time.Duration(time.Duration(1) * time.Second)
-	//		client := &http.Client{
-	//			Timeout: time.Duration(timeout),
-	//		}
-	//		req, _ := http.NewRequest("GET", fmt.Sprintf("https://api.twitch.tv/helix/streams?user_login=%v", s.Login), nil)
-	//		req.Header.Add("Client-ID", t.Conf.Twitch.ClientID)
-	//		resp, err := client.Do(req)
-	//		var result TwitchStreamResult
-	//
-	//		if err == nil {
-	//			err = json.NewDecoder(resp.Body).Decode(&result)
-	//			if err != nil {
-	//				t.DB.Log("Twitch", "", "Parsing Twitch API stream error")
-	//				continue
-	//			}
-	//			if len(result.Data) > 0 {
-	//				var gameResult TwitchGameResult
-	//				greq, _ := http.NewRequest("GET", fmt.Sprintf("https://api.twitch.tv/helix/games?id=%v", result.Data[0].GameID), nil)
-	//				greq.Header.Add("Client-ID", t.Conf.Twitch.ClientID)
-	//				gresp, gerr := client.Do(greq)
-	//				if gerr == nil {
-	//					jerr := json.NewDecoder(gresp.Body).Decode(&gameResult)
-	//					if jerr != nil {
-	//						t.DB.Log("Twitch", "", "Parsing Twitch API game error")
-	//					}
-	//				} else {
-	//					t.DB.Log("Twitch", "", fmt.Sprintf("Getting Twitch API game error: %v", gerr.Error()))
-	//				}
-	//				if s.IsOnline == false {
-	//					t.Guilds[s.Guild].Streams[s.Login].IsOnline = true
-	//					t.DB.UpdateStream(s)
-	//					imgUrl := strings.Replace(result.Data[0].ThumbnailURL, "{width}", "320", -1)
-	//					imgUrl = strings.Replace(imgUrl, "{height}", "180", -1)
-	//					emb := NewEmbed(result.Data[0].Title).
-	//						URL(fmt.Sprintf("http://www.twitch.tv/%v", s.Login)).
-	//						Author(result.Data[0].UserName, "", "").
-	//						Field("Viewers", fmt.Sprintf("%v", result.Data[0].Viewers), true).
-	//						Field("Game", gameResult.Data[0].Name, true).
-	//						AttachImgURL(imgUrl).
-	//						Color(t.Conf.General.EmbedColor)
-	//					_, _ = t.Discord.ChannelMessageSend(s.Channel, fmt.Sprintf(t.Conf.GetLocaleLang("twitch_online", result.Data[0].Language), result.Data[0].UserName, s.Login))
-	//					_, _ = t.Discord.ChannelMessageSendEmbed(s.Channel, emb.GetEmbed())
-	//				}
-	//			} else {
-	//				if s.IsOnline == true {
-	//					t.Guilds[s.Guild].Streams[s.Login].IsOnline = false
-	//					t.DB.UpdateStream(s)
-	//				}
-	//			}
-	//
-	//		}
-	//	}
-	//}
 }
 
 // AddStreamer adds new streamer to list
