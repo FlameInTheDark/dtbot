@@ -195,21 +195,23 @@ func MetricsSender(d *discordgo.Session) {
 
 		// Bot lists
 		if conf.DBL.Token != "" {
-			timeout := time.Duration(time.Duration(1) * time.Second)
-			client := &http.Client{
-				Timeout: time.Duration(timeout),
-			}
-			query := url.Values{}
-			query.Add("server_count", fmt.Sprintf("%v", len(d.State.Guilds)))
-			req, _ := http.NewRequest("POST",
-				fmt.Sprintf("https://discordbots.org/api/bots/%v/stats",
-				d.State.User.ID), strings.NewReader(query.Encode()))
-			req.Header.Add("Authorization", conf.DBL.Token)
-			_,_ = client.Do(req)
-			//s := dblgo.NewDBL(conf.DBL.Token, d.State.User.ID)
-			//_ = s.PostStats(len(d.State.Guilds))
+			sendDBL(d.State.User.ID, conf.DBL.Token, len(d.State.Guilds))
 		}
 		messagesCounter = 0
 		time.Sleep(time.Minute)
 	}
+}
+
+func sendDBL(botID, token string, guilds int) {
+	timeout := time.Duration(time.Duration(1) * time.Second)
+	client := &http.Client{
+		Timeout: time.Duration(timeout),
+	}
+	query := url.Values{}
+	query.Add("server_count", fmt.Sprintf("%v", guilds))
+	req, _ := http.NewRequest("POST",
+		fmt.Sprintf("https://discordbots.org/api/bots/%v/stats",
+			botID), strings.NewReader(query.Encode()))
+	req.Header.Add("Authorization", token)
+	_,_ = client.Do(req)
 }
