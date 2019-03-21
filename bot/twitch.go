@@ -28,6 +28,7 @@ type TwitchGuild struct {
 // TwitchStream contains stream data
 type TwitchStream struct {
 	Login          string
+	UserID         string
 	Guild          string
 	Channel        string
 	IsOnline       bool
@@ -109,8 +110,8 @@ func (t *Twitch) Update() {
 	}
 	streamQuery := url.Values{}
 	gameQuery := url.Values{}
-	for _,g := range t.Guilds {
-		for _,s := range g.Streams {
+	for _, g := range t.Guilds {
+		for _, s := range g.Streams {
 			streamQuery.Add("user_login", s.Login)
 		}
 	}
@@ -151,11 +152,10 @@ func (t *Twitch) Update() {
 	}
 
 	fmt.Println("Streams: ", len(streams))
-	for _,g := range t.Guilds {
-		for _,s := range g.Streams {
+	for _, g := range t.Guilds {
+		for _, s := range g.Streams {
 			fmt.Println(streams)
-			if stream,ok := streams[s.Login]; ok {
-				fmt.Println("Streamer [",s.Login,"] is exists")
+			if stream, ok := streams[s.UserID]; ok {
 				if !s.IsOnline {
 					t.Guilds[s.Guild].Streams[s.Login].IsOnline = true
 					t.DB.UpdateStream(s)
@@ -266,6 +266,7 @@ func (t *Twitch) AddStreamer(guild, channel, login string) (string, error) {
 				stream.Login = login
 				stream.Channel = channel
 				stream.Guild = guild
+				stream.UserID = result.Data[0].ID
 				t.Guilds[guild].Streams[login] = &stream
 				t.DB.AddStream(&stream)
 			} else {
