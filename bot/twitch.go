@@ -150,9 +150,11 @@ func (t *Twitch) Update() {
 		games[g.ID] = &gameResult.Data[i]
 	}
 
+	fmt.Println("Streams: ", len(streams))
 	for _,g := range t.Guilds {
 		for _,s := range g.Streams {
 			if stream,ok := streams[s.Login]; ok {
+				fmt.Println("Streamer [",s.Login,"] is exists")
 				if !s.IsOnline {
 					t.Guilds[s.Guild].Streams[s.Login].IsOnline = true
 					t.DB.UpdateStream(s)
