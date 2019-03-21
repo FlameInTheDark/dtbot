@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/FlameInTheDark/dtbot/bot"
-	"github.com/pkg/errors"
+	"errors"
 	"net/http"
 )
 
