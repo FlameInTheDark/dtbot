@@ -44,12 +44,12 @@ func (sess *Session) GetConnection() *Connection {
 }
 
 // Play starts to play radio
-func (sess Session) Play(source string, volume float32) error {
+func (sess *Session) Play(source string, volume float32) error {
 	return sess.connection.Play(source, volume)
 }
 
 // PlayYoutube starts to play song from youtube
-func (sess Session) PlayYoutube(song Song) error {
+func (sess *Session) PlayYoutube(song Song) error {
 	return sess.connection.PlayYoutube(song.Ffmpeg(sess.Volume))
 }
 
@@ -74,7 +74,7 @@ func (manager *SessionManager) GetByGuild(guildID string) *Session {
 }
 
 // GetByChannel returns session by channel ID
-func (manager SessionManager) GetByChannel(channelID string) (*Session, bool) {
+func (manager *SessionManager) GetByChannel(channelID string) (*Session, bool) {
 	sess, found := manager.sessions[channelID]
 	return sess, found
 }
