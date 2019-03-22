@@ -168,7 +168,12 @@ func (t *Twitch) Update() {
 						Field("Game", games[stream.GameID].Name, true).
 						AttachImgURL(imgUrl).
 						Color(t.Conf.General.EmbedColor)
-					_, _ = t.Discord.ChannelMessageSend(s.Channel, fmt.Sprintf(t.Conf.GetLocaleLang("twitch_online", stream.Language), stream.UserName, s.Login))
+					if s.CustomMessage != "" {
+						_, _ = t.Discord.ChannelMessageSend(s.Channel, s.CustomMessage)
+					} else {
+						_, _ = t.Discord.ChannelMessageSend(s.Channel, fmt.Sprintf(t.Conf.GetLocaleLang("twitch_online", stream.Language), stream.UserName, s.Login))
+
+					}
 					_, _ = t.Discord.ChannelMessageSendEmbed(s.Channel, emb.GetEmbed())
 				}
 			} else {
@@ -182,7 +187,7 @@ func (t *Twitch) Update() {
 }
 
 // AddStreamer adds new streamer to list
-func (t *Twitch) AddStreamer(guild, channel, login string) (string, error) {
+func (t *Twitch) AddStreamer(guild, channel, login, message string) (string, error) {
 	if g, ok := t.Guilds[guild]; ok {
 		if g.Streams == nil {
 			t.Guilds[guild].Streams = make(map[string]*TwitchStream)
@@ -213,6 +218,7 @@ func (t *Twitch) AddStreamer(guild, channel, login string) (string, error) {
 				stream.UserID = result.Data[0].ID
 				stream.Name = result.Data[0].Name
 				stream.ProfileImageURL = result.Data[0].ProfileImgURL
+				stream.CustomMessage = message
 				t.Guilds[guild].Streams[login] = &stream
 				t.DB.AddStream(&stream)
 			} else {

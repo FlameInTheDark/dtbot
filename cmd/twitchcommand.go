@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/FlameInTheDark/dtbot/bot"
+	"strings"
 )
 
 // TwitchCommand manipulates twitch announcer
@@ -14,8 +15,15 @@ func TwitchCommand(ctx bot.Context) {
 		switch ctx.Args[0] {
 		case "add":
 			ctx.MetricsCommand("twitch", "add")
-			if len(ctx.Args) > 1 {
-				username, err := ctx.Twitch.AddStreamer(ctx.Guild.ID, ctx.Message.ChannelID, ctx.Args[1])
+			if len(ctx.Args) > 2 {
+				username, err := ctx.Twitch.AddStreamer(ctx.Guild.ID, ctx.Message.ChannelID, ctx.Args[1], strings.Join(ctx.Args[2:]," "))
+				if err != nil {
+					ctx.ReplyEmbed("Twitch", ctx.Loc("twitch_add_error"))
+				} else {
+					ctx.ReplyEmbed("Twitch", fmt.Sprintf(ctx.Loc("twitch_added"), username))
+				}
+			} else if len(ctx.Args) > 1 {
+				username, err := ctx.Twitch.AddStreamer(ctx.Guild.ID, ctx.Message.ChannelID, ctx.Args[1], "")
 				if err != nil {
 					ctx.ReplyEmbed("Twitch", ctx.Loc("twitch_add_error"))
 				} else {
