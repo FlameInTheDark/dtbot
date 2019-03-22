@@ -27,14 +27,16 @@ type TwitchGuild struct {
 
 // TwitchStream contains stream data
 type TwitchStream struct {
-	Login          string
-	UserID         string
-	Guild          string
-	Channel        string
-	IsOnline       bool
-	IsCustom       bool
-	CustomMessage  string
-	CustomImageURI string
+	Login           string
+	UserID          string
+	Name            string
+	Guild           string
+	Channel         string
+	ProfileImageURL string
+	IsOnline        bool
+	IsCustom        bool
+	CustomMessage   string
+	CustomImageURL  string
 }
 
 // TwitchStreamResult contains response of Twitch API for streams
@@ -161,7 +163,7 @@ func (t *Twitch) Update() {
 					imgUrl = strings.Replace(imgUrl, "{height}", "180", -1)
 					emb := NewEmbed(stream.Title).
 						URL(fmt.Sprintf("http://www.twitch.tv/%v", s.Login)).
-						Author(stream.UserName, "", "").
+						Author(s.Name, "", s.ProfileImageURL).
 						Field("Viewers", fmt.Sprintf("%v", stream.Viewers), true).
 						Field("Game", games[stream.GameID].Name, true).
 						AttachImgURL(imgUrl).
@@ -209,6 +211,8 @@ func (t *Twitch) AddStreamer(guild, channel, login string) (string, error) {
 				stream.Channel = channel
 				stream.Guild = guild
 				stream.UserID = result.Data[0].ID
+				stream.Name = result.Data[0].Name
+				stream.ProfileImageURL = result.Data[0].ProfileImgURL
 				t.Guilds[guild].Streams[login] = &stream
 				t.DB.AddStream(&stream)
 			} else {
