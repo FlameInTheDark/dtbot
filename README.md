@@ -72,7 +72,7 @@ Command | Description
 `!cron remove [id]` | Removes cron job by ID `!cron remove 1`
 `!geoip [some_ip_address]` | Shows geographic information about IP
 `!twitch add [twitch_login]` | Adds streamer in announcer
-`!twitch remove [twitch_login]` | Removes streamer from announcer
+`!twitch remove [twitch_login] [custom_announce_message]` | Removes streamer from announcer (custom message is optional)
 
 ## Set config parameters
 
