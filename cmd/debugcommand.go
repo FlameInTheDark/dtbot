@@ -30,6 +30,12 @@ func DebugCommand(ctx bot.Context) {
 			} else {
 				ctx.ReplyEmbed("Debug", "Session is nil")
 			}
+		case "voice":
+			var resp string
+			for i,c := range ctx.Discord.VoiceConnections {
+				resp += i + " | G: " + c.GuildID + " | C: " + c.ChannelID + "\n"
+			}
+			ctx.ReplyEmbed("Debug", resp)
 		}
 	} else {
 		ctx.ReplyEmbedPM("Debug", "Not a Admin")
