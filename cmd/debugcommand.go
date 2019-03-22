@@ -33,11 +33,20 @@ func DebugCommand(ctx bot.Context) {
 			}
 		case "voice":
 			var resp string
-			resp += fmt.Sprintf("Voice connections: %v", len(ctx.Discord.VoiceConnections))
+			resp += fmt.Sprintf("Voice connections: %v\n", len(ctx.Discord.VoiceConnections))
 			for i,c := range ctx.Discord.VoiceConnections {
 				resp += i + " | G: " + c.GuildID + " | C: " + c.ChannelID + "\n"
 			}
 			ctx.ReplyEmbed("Debug", resp)
+		case "leavevoice":
+			if v,ok := ctx.Discord.VoiceConnections[ctx.Args[1]];ok {
+				err := v.Disconnect()
+				if err != nil {
+					ctx.ReplyEmbed("Debug", "Voice: " + err.Error())
+				}
+			} else {
+				ctx.ReplyEmbed("Debug", "Voice connection not found")
+			}
 		}
 	} else {
 		ctx.ReplyEmbedPM("Debug", "Not a Admin")
