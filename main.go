@@ -213,5 +213,6 @@ func sendDBL(botID, token string, guilds int) {
 		fmt.Sprintf("https://discordbots.org/api/bots/%v/stats",
 			botID), strings.NewReader(query.Encode()))
 	req.Header.Add("Authorization", token)
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	_,_ = client.Do(req)
 }
