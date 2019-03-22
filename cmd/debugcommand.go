@@ -23,6 +23,13 @@ func DebugCommand(ctx bot.Context) {
 			ctx.ReplyEmbedPM("Debug", strings.Join(roles, ", "))
 		case "time":
 			ctx.ReplyEmbedPM("Debug", time.Now().String())
+		case "session":
+			sess := ctx.Sessions.GetByGuild(ctx.Guild.ID)
+			if sess != nil {
+				ctx.ReplyEmbed("Debug", sess.ChannelID)
+			} else {
+				ctx.ReplyEmbed("Debug", "Session is nil")
+			}
 		}
 	} else {
 		ctx.ReplyEmbedPM("Debug", "Not a Admin")
