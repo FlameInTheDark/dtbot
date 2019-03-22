@@ -80,7 +80,7 @@ func main() {
 	go MetricsSender(discord)
 	// Init command handler
 	discord.AddHandler(commandHandler)
-
+	onStart()
 	<-sc
 }
 
@@ -215,4 +215,12 @@ func sendDBL(botID, token string, guilds int) {
 	req.Header.Add("Authorization", token)
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	_,_ = client.Do(req)
+}
+
+func onStart() {
+	queryCounters := []byte(fmt.Sprintf("starts value=1"))
+	addrCounters := fmt.Sprintf("%v/write?db=%v&u=%v&p=%v",
+		conf.Metrics.Address, conf.Metrics.Database, conf.Metrics.User, conf.Metrics.Password)
+	rCounters := bytes.NewReader(queryCounters)
+	_, _ = http.Post(addrCounters, "", rCounters)
 }
