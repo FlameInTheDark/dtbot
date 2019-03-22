@@ -175,7 +175,6 @@ func shortPlay(ctx *bot.Context, sess *bot.Session, msg *discordgo.Message) (isP
 		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("youtube_queue_is_empty"))
 		return
 	}
-	//cmsg := ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("youtube_starting"))
 	go queue.Start(sess, func(relp string) {
 		switch relp {
 		case "stop":
@@ -222,15 +221,12 @@ func YoutubeShortCommand(ctx bot.Context) {
 		t, inp, err := ctx.Youtube.Get(arg)
 
 		if err != nil {
-			//ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("error"), true)
 			ctx.Log("Youtube", ctx.Guild.ID, fmt.Sprintf("error getting input: %v", err.Error()))
-			//fmt.Println("error getting input,", err)
 			return
 		}
 
 		switch t {
 		case bot.ERROR_TYPE:
-			//ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("error"), true)
 			ctx.Log("Youtube", ctx.Guild.ID, fmt.Sprintf("error type: %v", err.Error()))
 			fmt.Println("error type", t)
 			return
@@ -238,7 +234,6 @@ func YoutubeShortCommand(ctx bot.Context) {
 			{
 				video, err := ctx.Youtube.Video(*inp)
 				if err != nil {
-					//ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("error"), true)
 					ctx.Log("Youtube", ctx.Guild.ID, fmt.Sprintf("error getting video1: %v", err.Error()))
 					return
 				}
@@ -252,7 +247,6 @@ func YoutubeShortCommand(ctx bot.Context) {
 			{
 				videos, err := ctx.Youtube.Playlist(*inp)
 				if err != nil {
-					//ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("error"), true)
 					ctx.Log("Youtube", ctx.Guild.ID, fmt.Sprintf("error getting playlist: %v", err.Error()))
 					return
 				}
@@ -261,13 +255,11 @@ func YoutubeShortCommand(ctx bot.Context) {
 					id := v.Id
 					_, i, err := ctx.Youtube.Get(id)
 					if err != nil {
-						//ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("error"), true)
 						ctx.Log("Youtube", ctx.Guild.ID, fmt.Sprintf("error getting video2: %v", err.Error()))
 						continue
 					}
 					video, err := ctx.Youtube.Video(*i)
 					if err != nil {
-						//ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("error"), true)
 						ctx.Log("Youtube", ctx.Guild.ID, fmt.Sprintf("error getting video3: %v", err.Error()))
 						return
 					}

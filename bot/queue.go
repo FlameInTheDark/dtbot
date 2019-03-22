@@ -43,7 +43,7 @@ func (queue *SongQueue) Clear() {
 }
 
 // Start starts queue playing
-func (queue *SongQueue) Start(sess *Session, callback func(string)) {
+func (queue SongQueue) Start(sess *Session, callback func(string)) {
 	queue.Running = true
 	for queue.HasNext() && queue.Running {
 		song := queue.Next()
