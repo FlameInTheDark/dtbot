@@ -11,6 +11,7 @@ type (
 		Player             RadioPlayer
 		guildID, ChannelID string
 		connection         *Connection
+		Volume             float32
 	}
 
 	// SessionManager contains all sessions
@@ -26,12 +27,13 @@ type (
 )
 
 // Creates and returns new session
-func newSession(newGuildID, newChannelID string, conn *Connection) *Session {
+func newSession(newGuildID, newChannelID string, conn *Connection, volume float32) *Session {
 	session := &Session{
 		Queue:      newSongQueue(),
 		guildID:    newGuildID,
 		ChannelID:  newChannelID,
 		connection: conn,
+		Volume: volume,
 	}
 	return session
 }
@@ -42,13 +44,13 @@ func (sess *Session) GetConnection() *Connection {
 }
 
 // Play starts to play radio
-func (sess Session) Play(source string) error {
-	return sess.connection.Play(source)
+func (sess Session) Play(source string, volume float32) error {
+	return sess.connection.Play(source, volume)
 }
 
 // PlayYoutube starts to play song from youtube
 func (sess Session) PlayYoutube(song Song) error {
-	return sess.connection.PlayYoutube(song.Ffmpeg())
+	return sess.connection.PlayYoutube(song.Ffmpeg(sess.Volume))
 }
 
 // Stop stops radio
@@ -79,12 +81,12 @@ func (manager SessionManager) GetByChannel(channelID string) (*Session, bool) {
 
 // Join add bot to voice channel
 func (manager *SessionManager) Join(discord *discordgo.Session, guildID, channelID string,
-	properties JoinProperties) (*Session, error) {
+	properties JoinProperties, volume float32) (*Session, error) {
 	vc, err := discord.ChannelVoiceJoin(guildID, channelID, properties.Muted, properties.Deafened)
 	if err != nil {
 		return nil, err
 	}
-	sess := newSession(guildID, channelID, NewConnection(vc))
+	sess := newSession(guildID, channelID, NewConnection(vc), volume)
 	manager.sessions[channelID] = sess
 	return sess, nil
 }

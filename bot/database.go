@@ -30,6 +30,7 @@ type GuildData struct {
 	Language    string
 	Timezone    int
 	EmbedColor  int
+	VoiceVolume float32
 }
 
 // GuildsMap contains guilds settings
@@ -66,6 +67,7 @@ func (db *DBWorker) InitGuilds(sess *discordgo.Session, conf *Config) GuildsMap 
 				Language:    conf.General.Language,
 				Timezone:    conf.General.Timezone,
 				EmbedColor:  conf.General.EmbedColor,
+				VoiceVolume: conf.Voice.Volume,
 			}
 			_ = db.DBSession.DB(db.DBName).C("guilds").Insert(newData)
 			data[guild.ID] = newData

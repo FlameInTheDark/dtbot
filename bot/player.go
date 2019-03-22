@@ -6,11 +6,11 @@ type RadioPlayer struct {
 }
 
 // Start starts radio playback
-func (player *RadioPlayer) Start(sess *Session, source string, callback func(string)) {
+func (player *RadioPlayer) Start(sess *Session, source string, callback func(string), volume float32) {
 	player.Running = true
 	for player.Running {
 		callback("Now playing `" + source + "`.")
-		_ = sess.Play(source)
+		_ = sess.Play(source, volume)
 		player.Running = false
 	}
 	if !player.Running {

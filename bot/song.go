@@ -1,6 +1,7 @@
 package bot
 
 import (
+	"fmt"
 	"os/exec"
 	"strconv"
 )
@@ -14,9 +15,9 @@ type Song struct {
 }
 
 // Ffmpeg returns ffmpeg executable command
-func (song Song) Ffmpeg() *exec.Cmd {
+func (song Song) Ffmpeg(volume float32) *exec.Cmd {
 	return exec.Command("ffmpeg", "-i", song.Media, "-f", "s16le", "-ar", strconv.Itoa(FRAME_RATE), "-ac",
-		strconv.Itoa(CHANNELS), "pipe:1")
+		strconv.Itoa(CHANNELS), "pipe:1", "-filter:a", fmt.Sprintf("volume=%.2f", volume))
 }
 
 // NewSong creates and returns new song

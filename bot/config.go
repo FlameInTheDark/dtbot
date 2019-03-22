@@ -15,6 +15,10 @@ type WeatherConfig struct {
 	City         string
 }
 
+type VoiceConfig struct {
+	Volume float32
+}
+
 // GeneralConfig General config struct
 type GeneralConfig struct {
 	Language         string
@@ -88,6 +92,7 @@ type Config struct {
 	DBL          DBLConfig
 	Twitch       TwitchConfig
 	DarkSky      DarkSkyConfig
+	Voice        VoiceConfig
 }
 
 // GetLocale returns locale string by key

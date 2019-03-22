@@ -2,6 +2,8 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/globalsign/mgo/bson"
+	"strconv"
 
 	"github.com/FlameInTheDark/dtbot/bot"
 )
@@ -24,7 +26,7 @@ func VoiceCommand(ctx bot.Context) {
 		sess, err := ctx.Sessions.Join(ctx.Discord, ctx.Guild.ID, vc.ID, bot.JoinProperties{
 			Muted:    false,
 			Deafened: true,
-		})
+		}, ctx.Guilds[ctx.Guild.ID].VoiceVolume)
 		if err != nil {
 			ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_error"))
 			return
@@ -38,5 +40,16 @@ func VoiceCommand(ctx bot.Context) {
 		}
 		ctx.Sessions.Leave(ctx.Discord, *sess)
 		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), fmt.Sprintf("%v <#%v>!", ctx.Loc("player_left"), sess.ChannelID))
+	case "volume":
+		if len(ctx.Args) > 1 {
+			vol, err := strconv.ParseFloat(ctx.Args[1], 32)
+			if err != nil {
+				ctx.ReplyEmbed(ctx.Loc("player"), ctx.Loc("player_wrong_volume"))
+				return
+			} else {
+				ctx.Guilds[ctx.Guild.ID].VoiceVolume = float32(vol / 100)
+				_ = ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"voicevolume": float32(vol / 100)}})
+			}
+		}
 	}
 }
