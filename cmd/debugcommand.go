@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"strings"
 	"time"
 
@@ -32,6 +33,7 @@ func DebugCommand(ctx bot.Context) {
 			}
 		case "voice":
 			var resp string
+			resp += fmt.Sprintf("Voice connections: %v", len(ctx.Discord.VoiceConnections))
 			for i,c := range ctx.Discord.VoiceConnections {
 				resp += i + " | G: " + c.GuildID + " | C: " + c.ChannelID + "\n"
 			}
