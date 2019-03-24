@@ -11,6 +11,9 @@ import (
 // VoiceCommand voice handler
 func VoiceCommand(ctx bot.Context) {
 	sess := ctx.Sessions.GetByGuild(ctx.Guild.ID)
+	if len(ctx.Args) < 1 {
+		return
+	}
 	switch ctx.Args[0] {
 	case "join":
 		ctx.MetricsCommand("voice", "join")
