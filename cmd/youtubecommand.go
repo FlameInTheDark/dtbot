@@ -27,7 +27,7 @@ func YoutubeCommand(ctx bot.Context) {
 			nsess, serr := ctx.Sessions.Join(ctx.Discord, ctx.Guild.ID, vc.ID, bot.JoinProperties{
 				Muted:    false,
 				Deafened: true,
-			}, ctx.Guilds[ctx.Guild.ID].VoiceVolume)
+			}, ctx.Guilds.Guilds[ctx.Guild.ID].VoiceVolume)
 			if serr != nil {
 				//ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_error") + " : " + serr.Error())
 				ctx.Log("Youtube", ctx.Guild.ID, fmt.Sprintf("player error: %v", serr.Error()))
@@ -207,7 +207,7 @@ func YoutubeShortCommand(ctx bot.Context) {
 		nsess, serr := ctx.Sessions.Join(ctx.Discord, ctx.Guild.ID, vc.ID, bot.JoinProperties{
 			Muted:    false,
 			Deafened: true,
-		}, ctx.Guilds[ctx.Guild.ID].VoiceVolume)
+		}, ctx.Guilds.Guilds[ctx.Guild.ID].VoiceVolume)
 		sess = nsess
 		if serr != nil {
 			ctx.Log("Youtube", ctx.Guild.ID, fmt.Sprintf("session error: %v", serr.Error()))

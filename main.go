@@ -29,7 +29,7 @@ var (
 	botMsg          *bot.BotMessages
 	dataType        *bot.DataType
 	dbWorker        *bot.DBWorker
-	guilds          bot.GuildsMap
+	guilds          *bot.GuildsMap
 	botCron         *cron.Cron
 	twitch          *bot.Twitch
 	messagesCounter int
@@ -80,8 +80,13 @@ func main() {
 	go MetricsSender(discord)
 	// Init command handler
 	discord.AddHandler(commandHandler)
+	discord.AddHandler(joinHandler)
 	onStart()
 	<-sc
+}
+
+func joinHandler(disord *discordgo.Session, e *discordgo.GuildMemberAdd) {
+	bot.Greeting(disord, e, guilds.Guilds[e.GuildID], conf)
 }
 
 // Handle discord messages
@@ -214,7 +219,7 @@ func sendDBL(botID, token string, guilds int) {
 			botID), strings.NewReader(query.Encode()))
 	req.Header.Add("Authorization", token)
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-	_,_ = client.Do(req)
+	_, _ = client.Do(req)
 }
 
 func onStart() {

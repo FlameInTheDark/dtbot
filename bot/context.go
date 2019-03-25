@@ -27,14 +27,14 @@ type Context struct {
 	Youtube    *Youtube
 	BotMsg     *BotMessages
 	Data       *DataType
-	Guilds     GuildsMap
+	Guilds     *GuildsMap
 	Twitch     *Twitch
 }
 
 // NewContext create new context
 func NewContext(botID string, discord *discordgo.Session, guild *discordgo.Guild, textChannel *discordgo.Channel,
 	user *discordgo.User, message *discordgo.MessageCreate, conf *Config, cmdHandler *CommandHandler,
-	sessions *SessionManager, youtube *Youtube, botMsg *BotMessages, dataType *DataType, dbWorker *DBWorker, guilds GuildsMap, botCron *cron.Cron, twitch *Twitch) *Context {
+	sessions *SessionManager, youtube *Youtube, botMsg *BotMessages, dataType *DataType, dbWorker *DBWorker, guilds *GuildsMap, botCron *cron.Cron, twitch *Twitch) *Context {
 	ctx := new(Context)
 	ctx.BotID = botID
 	ctx.Discord = discord
@@ -102,7 +102,7 @@ func (ctx *Context) GetVoiceChannel() *discordgo.Channel {
 
 // GetGuild return data about current guild
 func (ctx *Context) GetGuild() *GuildData {
-	if _, ok := ctx.Guilds[ctx.Guild.ID]; !ok {
+	if _, ok := ctx.Guilds.Guilds[ctx.Guild.ID]; !ok {
 		newData := &GuildData{
 			ID:          ctx.Guild.ID,
 			WeatherCity: ctx.Conf.Weather.City,
@@ -112,10 +112,10 @@ func (ctx *Context) GetGuild() *GuildData {
 			EmbedColor:  ctx.Conf.General.EmbedColor,
 		}
 		_ = ctx.DB.DBSession.DB(ctx.DB.DBName).C("guilds").Insert(newData)
-		ctx.Guilds[ctx.Guild.ID] = newData
-		return ctx.Guilds[ctx.Guild.ID]
+		ctx.Guilds.Guilds[ctx.Guild.ID] = newData
+		return ctx.Guilds.Guilds[ctx.Guild.ID]
 	}
-	return ctx.Guilds[ctx.Guild.ID]
+	return ctx.Guilds.Guilds[ctx.Guild.ID]
 }
 
 // Log saves log in database

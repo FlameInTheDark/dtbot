@@ -31,10 +31,13 @@ type GuildData struct {
 	Timezone    int
 	EmbedColor  int
 	VoiceVolume float32
+	Greeting    string
 }
 
 // GuildsMap contains guilds settings
-type GuildsMap map[string]*GuildData
+type GuildsMap struct {
+	Guilds map[string]*GuildData
+}
 
 // NewDBSession creates new MongoDB instance
 func NewDBSession(dbname string) *DBWorker {
@@ -51,8 +54,8 @@ func NewDBSession(dbname string) *DBWorker {
 }
 
 // InitGuilds initialize guilds in database
-func (db *DBWorker) InitGuilds(sess *discordgo.Session, conf *Config) GuildsMap {
-	var data = make(GuildsMap)
+func (db *DBWorker) InitGuilds(sess *discordgo.Session, conf *Config) *GuildsMap {
+	var data = &GuildsMap{Guilds: make(map[string]*GuildData)}
 	var loaded, initialized = 0, 0
 	for _, guild := range sess.State.Guilds {
 		count, err := db.DBSession.DB(db.DBName).C("guilds").Find(bson.M{"id": guild.ID}).Count()
@@ -68,9 +71,10 @@ func (db *DBWorker) InitGuilds(sess *discordgo.Session, conf *Config) GuildsMap 
 				Timezone:    conf.General.Timezone,
 				EmbedColor:  conf.General.EmbedColor,
 				VoiceVolume: conf.Voice.Volume,
+				Greeting:    "",
 			}
 			_ = db.DBSession.DB(db.DBName).C("guilds").Insert(newData)
-			data[guild.ID] = newData
+			data.Guilds[guild.ID] = newData
 			initialized++
 		} else {
 			var newData = &GuildData{}
@@ -79,7 +83,7 @@ func (db *DBWorker) InitGuilds(sess *discordgo.Session, conf *Config) GuildsMap 
 				fmt.Println("Mongo: ", err)
 				continue
 			}
-			data[guild.ID] = newData
+			data.Guilds[guild.ID] = newData
 			loaded++
 		}
 	}

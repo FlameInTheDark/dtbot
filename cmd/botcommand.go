@@ -62,7 +62,7 @@ func BotCommand(ctx bot.Context) {
 				case "general":
 					switch target[1] {
 					case "language":
-						ctx.Guilds[ctx.Guild.ID].Language = ctx.Args[2]
+						ctx.Guilds.Guilds[ctx.Guild.ID].Language = ctx.Args[2]
 						_ = ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"language": ctx.Args[2]}})
 						ctx.ReplyEmbedPM("Config", fmt.Sprintf("Language set to: %v", ctx.Args[2]))
 					case "timezone":
@@ -70,7 +70,7 @@ func BotCommand(ctx bot.Context) {
 						if err != nil {
 							ctx.ReplyEmbedPM("Settings", "Not a number")
 						}
-						ctx.Guilds[ctx.Guild.ID].Timezone = tz
+						ctx.Guilds.Guilds[ctx.Guild.ID].Timezone = tz
 						_ = ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"timezone": tz}})
 						ctx.ReplyEmbedPM("Config", fmt.Sprintf("Timezone set to: %v", ctx.Args[2]))
 					case "nick":
@@ -80,14 +80,14 @@ func BotCommand(ctx bot.Context) {
 				case "weather":
 					switch target[1] {
 					case "city":
-						ctx.Guilds[ctx.Guild.ID].WeatherCity = ctx.Args[2]
+						ctx.Guilds.Guilds[ctx.Guild.ID].WeatherCity = ctx.Args[2]
 						_ = ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"weathercity": ctx.Args[2]}})
 						ctx.ReplyEmbedPM("Config", fmt.Sprintf("Weather city set to: %v", ctx.Args[2]))
 					}
 				case "news":
 					switch target[1] {
 					case "country":
-						ctx.Guilds[ctx.Guild.ID].NewsCounty = ctx.Args[2]
+						ctx.Guilds.Guilds[ctx.Guild.ID].NewsCounty = ctx.Args[2]
 						_ = ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"weathercountry": ctx.Args[2]}})
 						ctx.ReplyEmbedPM("Config", fmt.Sprintf("News country set to: %v", ctx.Args[2]))
 					}
@@ -109,7 +109,7 @@ func BotCommand(ctx bot.Context) {
 								return
 							}
 						}
-						ctx.Guilds[ctx.Guild.ID].EmbedColor = int(color)
+						ctx.Guilds.Guilds[ctx.Guild.ID].EmbedColor = int(color)
 						_ = ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"embedcolor": int(color)}})
 						ctx.ReplyEmbedPM("Config", fmt.Sprintf("Embed color set to: %v", ctx.Args[2]))
 					}

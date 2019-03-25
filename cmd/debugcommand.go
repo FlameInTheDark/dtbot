@@ -48,7 +48,7 @@ func DebugCommand(ctx bot.Context) {
 				ctx.ReplyEmbed("Debug", "Voice connection not found")
 			}
 		case "volume":
-			ctx.ReplyEmbed("Debug", fmt.Sprintf("Voice volume is %.2f", ctx.Guilds[ctx.Guild.ID].VoiceVolume))
+			ctx.ReplyEmbed("Debug", fmt.Sprintf("Voice volume is %.2f", ctx.Guilds.Guilds[ctx.Guild.ID].VoiceVolume))
 		}
 	} else {
 		ctx.ReplyEmbedPM("Debug", "Not a Admin")
