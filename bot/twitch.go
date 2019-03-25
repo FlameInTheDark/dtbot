@@ -169,12 +169,11 @@ func (t *Twitch) Update() {
 						AttachImgURL(imgUrl).
 						Color(t.Conf.General.EmbedColor)
 					if s.CustomMessage != "" {
-						_, _ = t.Discord.ChannelMessageSend(s.Channel, s.CustomMessage)
+						emb.Content = s.CustomMessage
 					} else {
-						_, _ = t.Discord.ChannelMessageSend(s.Channel, fmt.Sprintf(t.Conf.GetLocaleLang("twitch_online", stream.Language), stream.UserName, s.Login))
-
+						emb.Content = fmt.Sprintf(t.Conf.GetLocaleLang("twitch_online", stream.Language), stream.UserName, s.Login)
 					}
-					_, _ = t.Discord.ChannelMessageSendEmbed(s.Channel, emb.GetEmbed())
+					_, _ = t.Discord.ChannelMessageSendComplex(s.Channel, emb.MessageSend)
 				}
 			} else {
 				if s.IsOnline == true {
