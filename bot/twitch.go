@@ -216,7 +216,11 @@ func (t *Twitch) AddStreamer(guild, channel, login, message string) (string, err
 				stream.Channel = channel
 				stream.Guild = guild
 				stream.UserID = result.Data[0].ID
-				stream.Name = result.Data[0].Name
+				if result.Data[0].Name == "" {
+					stream.Name = login
+				} else {
+					stream.Name = result.Data[0].Name
+				}
 				stream.ProfileImageURL = result.Data[0].ProfileImgURL
 				stream.CustomMessage = message
 				t.Guilds[guild].Streams[login] = &stream
