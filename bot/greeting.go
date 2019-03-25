@@ -4,7 +4,6 @@ import "github.com/bwmarrin/discordgo"
 
 func Greeting(discord *discordgo.Session, event *discordgo.GuildMemberAdd, guild *GuildData, conf *Config) {
 	if guild.Greeting != "" {
-		NewEmbed(conf.GetLocaleLang("", guild.Language))
 		_, _ = discord.ChannelMessageSend(event.User.ID, guild.Greeting)
 	}
 }
