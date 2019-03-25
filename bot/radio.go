@@ -29,7 +29,7 @@ func (connection *Connection) Play(source string, volume float32) error {
 	if connection.playing {
 		return errors.New("song already playing")
 	}
-	ffmpeg := exec.Command("ffmpeg", "-i", source, "-f", "s16le", "-ar", strconv.Itoa(FRAME_RATE), "-ac", strconv.Itoa(CHANNELS), "pipe:1", /*"-filter:a", fmt.Sprintf("volume=%.2f", volume)*/)
+	ffmpeg := exec.Command("ffmpeg", "-i", source, "-f", "s16le", "-ar", strconv.Itoa(FRAME_RATE), "-ac", strconv.Itoa(CHANNELS), "pipe:1", fmt.Sprintf("-filter:a volume=%.2f", volume))
 	connection.stopRunning = false
 	out, err := ffmpeg.StdoutPipe()
 	if err != nil {
