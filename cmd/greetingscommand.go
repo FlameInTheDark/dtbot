@@ -26,6 +26,7 @@ func GreetingsCommand(ctx bot.Context) {
 				ctx.MetricsCommand("greetings", "test")
 				_ = ctx.ReplyPM(ctx.Guilds.Guilds[ctx.Guild.ID].Greeting)
 				fmt.Println(ctx.Guilds.Guilds[ctx.Guild.ID].Greeting)
+				_, _ = ctx.Discord.ChannelMessageSend(ctx.Message.Author.ID, ctx.Guilds.Guilds[ctx.Guild.ID].Greeting)
 			}
 		}
 	} else {
