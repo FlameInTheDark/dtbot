@@ -19,9 +19,10 @@ func GreetingsCommand(ctx bot.Context) {
 					ctx.ReplyEmbed(ctx.Loc("greetings"), ctx.Loc("greetings_no_text"))
 				}
 			case "remove":
-				ctx.MetricsCommand("greetings", ctx.Loc("greetings_removed"))
+				ctx.MetricsCommand("greetings", "remove")
 				ctx.RemoveGreetings()
 			case "test":
+				ctx.MetricsCommand("greetings", "test")
 				_ = ctx.ReplyPM(ctx.Guilds.Guilds[ctx.Guild.ID].Greeting)
 			}
 		}
