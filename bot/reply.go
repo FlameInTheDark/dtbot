@@ -158,7 +158,7 @@ func (ctx *Context) ReplyEmbedPM(name, content string) *discordgo.Message {
 func (ctx *Context) ReplyPM(content string) *discordgo.Message {
 	msg, err := ctx.Discord.ChannelMessageSend(ctx.Message.Author.ID, content)
 	if err != nil {
-		fmt.Printf("Replay PM error: ", err.Error())
+		ctx.Log("reply_pm", "", fmt.Sprintf("ReplyPM error: %v", err.Error()))
 	}
 	return msg
 }

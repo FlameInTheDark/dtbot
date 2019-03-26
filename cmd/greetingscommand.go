@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"github.com/FlameInTheDark/dtbot/bot"
 	"strings"
 )
@@ -24,6 +25,7 @@ func GreetingsCommand(ctx bot.Context) {
 			case "test":
 				ctx.MetricsCommand("greetings", "test")
 				_ = ctx.ReplyPM(ctx.Guilds.Guilds[ctx.Guild.ID].Greeting)
+				fmt.Println(ctx.Guilds.Guilds[ctx.Guild.ID].Greeting)
 			}
 		}
 	} else {
