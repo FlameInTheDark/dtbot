@@ -32,6 +32,7 @@
 * Plays music from Youtube and Soundcloud
 * Plays music from online radio stations
 * Announcing if Twitch stream is started
+* Greetings new users
 
 ## How to use
 
@@ -73,6 +74,9 @@ Command | Description
 `!geoip [some_ip_address]` | Shows geographic information about IP
 `!twitch add [twitch_login]` | Adds streamer in announcer
 `!twitch remove [twitch_login] [custom_announce_message]` | Removes streamer from announcer (custom message is optional)
+`!greetings add [text]` | Adds new greetings message with specified text
+`!greetings remove` | Removes greetings message
+`!greetings test` | Sends you a greetings message
 
 ## Set config parameters
 
