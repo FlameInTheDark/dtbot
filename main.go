@@ -99,7 +99,7 @@ func joinHandler(discord *discordgo.Session, e *discordgo.GuildMemberAdd) {
 			Greeting:    "",
 		}
 	} else {
-		bot.Greeting(discord, e, guilds.Guilds[e.GuildID], conf)
+		bot.Greetings(discord, e, guilds.Guilds[e.GuildID], conf)
 	}
 }
 
@@ -210,6 +210,7 @@ func registerCommands() {
 	CmdHandler.Register("!cron", cmd.CronCommand)
 	CmdHandler.Register("!geoip", cmd.GeoIPCommand)
 	CmdHandler.Register("!twitch", cmd.TwitchCommand)
+	CmdHandler.Register("!greetings", cmd.GreetingsCommand)
 }
 
 // MetricsSender sends metrics to InfluxDB and another services

@@ -12,31 +12,33 @@ func HelpCommand(ctx bot.Context) {
 		return
 	}
 	switch ctx.Args[0] {
-	case "!v":
+	case "v":
 		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!v"))
-	case "!b":
+	case "b":
 		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!b"))
 		if (ctx.IsAdmin()) {
 			ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!b_admin"))
 		}
 	case "!y":
 		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!y"))
-	case "!r":
+	case "r":
 		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!r"))
-	case "!w":
+	case "w":
 		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!w"))
-	case "!n":
+	case "n":
 		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!n"))
-	case "!t":
+	case "t":
 		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!t"))
-	case "!c":
+	case "c":
 		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!c"))
-	case "!p":
+	case "p":
 		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!p"))
-	case "!geoip":
+	case "geoip":
 		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!geoip"))
-	case "!twitch":
+	case "twitch":
 		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!twitch"))
+	case "greetings":
+		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!greetings"))
 	case "bot.admin":
 		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("admin_help"))
 	}
