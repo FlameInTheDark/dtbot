@@ -91,6 +91,7 @@ func (db *DBWorker) InitGuilds(sess *discordgo.Session, conf *Config) *GuildsMap
 	return data
 }
 
+// InitNewGuild creates new guild in database
 func (db *DBWorker) InitNewGuild(guildID string, conf *Config, data *GuildsMap) {
 	newData := &GuildData{
 		ID:          guildID,

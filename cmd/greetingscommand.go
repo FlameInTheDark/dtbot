@@ -5,6 +5,7 @@ import (
 	"strings"
 )
 
+// GreetingsCommand handle greetings command
 func GreetingsCommand(ctx bot.Context) {
 	if ctx.GetRoles().ExistsName("bot.admin") || ctx.IsAdmin() {
 		if len(ctx.Args) > 0 {

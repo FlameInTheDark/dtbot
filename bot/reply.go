@@ -155,6 +155,7 @@ func (ctx *Context) ReplyEmbedPM(name, content string) *discordgo.Message {
 		SendPM(ctx)
 }
 
+// ReplyPM sends reply message to user personal channel
 func (ctx *Context) ReplyPM(content string) *discordgo.Message {
 	ch, err := ctx.Discord.UserChannelCreate(ctx.User.ID)
 	if err != nil {

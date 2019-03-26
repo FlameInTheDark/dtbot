@@ -86,6 +86,7 @@ func main() {
 	<-sc
 }
 
+// Handle new users
 func joinHandler(discord *discordgo.Session, e *discordgo.GuildMemberAdd) {
 	if _, ok := guilds.Guilds[e.GuildID]; !ok {
 		dbWorker.InitNewGuild(e.GuildID, conf, guilds)
@@ -94,6 +95,7 @@ func joinHandler(discord *discordgo.Session, e *discordgo.GuildMemberAdd) {
 	}
 }
 
+// Handle new guilds
 func guildAddHandler(discord *discordgo.Session, e *discordgo.GuildCreate) {
 	if _, ok := guilds.Guilds[e.ID]; !ok {
 		dbWorker.InitNewGuild(e.ID, conf, guilds)
