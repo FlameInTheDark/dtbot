@@ -33,7 +33,7 @@ func newSession(newGuildID, newChannelID string, conn *Connection, volume float3
 		guildID:    newGuildID,
 		ChannelID:  newChannelID,
 		connection: conn,
-		Volume: volume,
+		Volume:     volume,
 	}
 	return session
 }

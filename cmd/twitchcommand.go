@@ -16,7 +16,7 @@ func TwitchCommand(ctx bot.Context) {
 		case "add":
 			ctx.MetricsCommand("twitch", "add")
 			if len(ctx.Args) > 2 {
-				username, err := ctx.Twitch.AddStreamer(ctx.Guild.ID, ctx.Message.ChannelID, ctx.Args[1], strings.Join(ctx.Args[2:]," "))
+				username, err := ctx.Twitch.AddStreamer(ctx.Guild.ID, ctx.Message.ChannelID, ctx.Args[1], strings.Join(ctx.Args[2:], " "))
 				if err != nil {
 					ctx.ReplyEmbed("Twitch", ctx.Loc("twitch_add_error"))
 				} else {

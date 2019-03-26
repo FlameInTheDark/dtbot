@@ -8,5 +8,5 @@ import (
 // NewsCommand News handler
 func NewsCommand(ctx bot.Context) {
 	ctx.MetricsCommand("news", "main")
-	_= news.GetNews(&ctx)
+	_ = news.GetNews(&ctx)
 }

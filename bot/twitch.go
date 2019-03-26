@@ -159,14 +159,14 @@ func (t *Twitch) Update() {
 				if !s.IsOnline {
 					t.Guilds[s.Guild].Streams[s.Login].IsOnline = true
 					t.DB.UpdateStream(s)
-					imgUrl := strings.Replace(stream.ThumbnailURL, "{width}", "320", -1)
-					imgUrl = strings.Replace(imgUrl, "{height}", "180", -1)
+					imgURL := strings.Replace(stream.ThumbnailURL, "{width}", "320", -1)
+					imgURL = strings.Replace(imgURL, "{height}", "180", -1)
 					emb := NewEmbed(stream.Title).
 						URL(fmt.Sprintf("http://www.twitch.tv/%v", s.Login)).
 						Author(s.Name, "", s.ProfileImageURL).
 						Field("Viewers", fmt.Sprintf("%v", stream.Viewers), true).
 						Field("Game", games[stream.GameID].Name, true).
-						AttachImgURL(imgUrl).
+						AttachImgURL(imgURL).
 						Color(t.Conf.General.EmbedColor)
 					if s.CustomMessage != "" {
 						emb.Content = s.CustomMessage

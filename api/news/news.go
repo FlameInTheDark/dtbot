@@ -2,9 +2,9 @@ package news
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/FlameInTheDark/dtbot/bot"
-	"errors"
 	"net/http"
 )
 
@@ -32,7 +32,7 @@ type NewsArticeleSourceData struct {
 }
 
 // GetNews returns news string
-func GetNews(ctx *bot.Context) error{
+func GetNews(ctx *bot.Context) error {
 	var (
 		result   NewsResponseData
 		category string
@@ -56,11 +56,11 @@ func GetNews(ctx *bot.Context) error{
 		if len(result.Articles) > 0 {
 			emb := bot.NewEmbed(ctx.Loc("news"))
 			for i := 0; i < ctx.Conf.News.Articles; i++ {
-				emb.Field(result.Articles[i].Title, result.Articles[i].Description + "\n" + result.Articles[i].URL, false)
+				emb.Field(result.Articles[i].Title, result.Articles[i].Description+"\n"+result.Articles[i].URL, false)
 			}
-			emb.Footer(fmt.Sprintf("%v %v",ctx.Loc("requested_by"), ctx.Message.Author.Username))
+			emb.Footer(fmt.Sprintf("%v %v", ctx.Loc("requested_by"), ctx.Message.Author.Username))
 			emb.Color(ctx.Conf.General.EmbedColor)
-			_,_=ctx.Discord.ChannelMessageSendEmbed(ctx.Message.ChannelID, emb.GetEmbed())
+			_, _ = ctx.Discord.ChannelMessageSendEmbed(ctx.Message.ChannelID, emb.GetEmbed())
 			return nil
 		} else {
 			return errors.New(ctx.Loc("news_404"))
