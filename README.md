@@ -47,7 +47,7 @@ Command | Description
 `!b clear [from_num]` | Remove bot's messages `!b clear` or `!b clear 3` removes all messages from 3rd message
 `!b setconf [parameter] [value]` | Sets the bot configuration for your channel.
 `!help` | Shows help
-`!help [command]` | Detail help `!help !y`
+`!help [command]` | Detail help `!help y`
 `!help bot.admin` | Shows help how get `bot.admin` role
 `!play [youtube_url]` | Adds track (or playlist) in queue and start playing
 `!y add [song]` | Adds song from youtube or soundcloud
