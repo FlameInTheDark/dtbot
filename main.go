@@ -88,16 +88,7 @@ func main() {
 
 func joinHandler(discord *discordgo.Session, e *discordgo.GuildMemberAdd) {
 	if _, ok := guilds.Guilds[e.GuildID]; !ok {
-		guilds.Guilds[e.GuildID] = &bot.GuildData{
-			ID:          e.GuildID,
-			WeatherCity: conf.Weather.City,
-			NewsCounty:  conf.News.Country,
-			Language:    conf.General.Language,
-			Timezone:    conf.General.Timezone,
-			EmbedColor:  conf.General.EmbedColor,
-			VoiceVolume: conf.Voice.Volume,
-			Greeting:    "",
-		}
+		dbWorker.InitNewGuild(e.GuildID, conf, guilds)
 	} else {
 		bot.Greetings(discord, e, guilds.Guilds[e.GuildID])
 	}
@@ -105,16 +96,7 @@ func joinHandler(discord *discordgo.Session, e *discordgo.GuildMemberAdd) {
 
 func guildAddHandler(discord *discordgo.Session, e *discordgo.GuildCreate) {
 	if _, ok := guilds.Guilds[e.ID]; !ok {
-		guilds.Guilds[e.ID] = &bot.GuildData{
-			ID:          e.ID,
-			WeatherCity: conf.Weather.City,
-			NewsCounty:  conf.News.Country,
-			Language:    conf.General.Language,
-			Timezone:    conf.General.Timezone,
-			EmbedColor:  conf.General.EmbedColor,
-			VoiceVolume: conf.Voice.Volume,
-			Greeting:    "",
-		}
+		dbWorker.InitNewGuild(e.ID, conf, guilds)
 	}
 	emb := bot.NewEmbed("").
 		Field(conf.GetLocaleLang("bot_joined_title", guilds.Guilds[e.ID].Language), conf.GetLocaleLang("bot_joined_text", guilds.Guilds[e.ID].Language), false)

@@ -91,6 +91,21 @@ func (db *DBWorker) InitGuilds(sess *discordgo.Session, conf *Config) *GuildsMap
 	return data
 }
 
+func (db *DBWorker) InitNewGuild(guildID string, conf *Config, data *GuildsMap) {
+	newData := &GuildData{
+		ID:          guildID,
+		WeatherCity: conf.Weather.City,
+		NewsCounty:  conf.News.Country,
+		Language:    conf.General.Language,
+		Timezone:    conf.General.Timezone,
+		EmbedColor:  conf.General.EmbedColor,
+		VoiceVolume: conf.Voice.Volume,
+		Greeting:    "",
+	}
+	_ = db.DBSession.DB(db.DBName).C("guilds").Insert(newData)
+	data.Guilds[guildID] = newData
+}
+
 // Log saves log in database
 func (db *DBWorker) Log(module, guildID, text string) {
 	_ = db.DBSession.DB(db.DBName).C("logs").Insert(dbLog{Date: time.Now(), Text: text, Module: module, Guild: guildID})
