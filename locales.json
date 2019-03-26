@@ -83,7 +83,11 @@
         "twitch_removed": "Streamer removed",
         "twitch_online": "Hey @here, %v is now live on <https://www.twitch.tv/%v> ! Go check it out! :hearts:",
         "twitch_list": "List of streamers:\n%v",
-        "twitch_list_empty": "No streamers"
+        "twitch_list_empty": "No streamers",
+        "greetings": "Greetings",
+        "greetings_add": "Added new greetings!",
+        "greetings_no_text": "You need to add text! `!greetings add Some text of greetings`",
+        "greetings_removed": "Greetings removed!"
     },
     "ru": {
         "admin_require": "Для использования данной команды вам необходимо иметь роль \"bot.admin\". Для помощи используйте `!help bot.admin`",
@@ -166,6 +170,10 @@
         "twitch_removed": "Стример удален",
         "twitch_online": "Хэй @here, %v сейчас ведет трансляцию на <https://www.twitch.tv/%v> ! Сходи посмотри! :hearts:",
         "twitch_list": "Список стримеров:\n%v",
-        "twitch_list_empty": "Нет стримеров"
+        "twitch_list_empty": "Нет стримеров",
+        "greetings": "Приветствие",
+        "greetings_add": "Добавлено новое приветствие!",
+        "greetings_no_text": "Вам нужно добавить текст! `!greetings add Some text of greetings`",
+        "greetings_removed": "Приветствие удалено!"
     }
 }
