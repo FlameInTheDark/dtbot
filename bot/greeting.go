@@ -5,9 +5,16 @@ import (
 	"github.com/globalsign/mgo/bson"
 )
 
-func Greetings(discord *discordgo.Session, event *discordgo.GuildMemberAdd, guild *GuildData, conf *Config) {
+func Greetings(discord *discordgo.Session, event *discordgo.GuildMemberAdd, guild *GuildData) {
 	if guild.Greeting != "" {
-		_, _ = discord.ChannelMessageSend(event.User.ID, guild.Greeting)
+		ch, cErr := discord.UserChannelCreate(event.User.ID)
+		if cErr != nil {
+			return
+		}
+		_, mErr := discord.ChannelMessageSend(ch.ID, guild.Greeting)
+		if mErr != nil {
+			return
+		}
 	}
 }
 

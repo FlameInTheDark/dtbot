@@ -99,7 +99,7 @@ func joinHandler(discord *discordgo.Session, e *discordgo.GuildMemberAdd) {
 			Greeting:    "",
 		}
 	} else {
-		bot.Greetings(discord, e, guilds.Guilds[e.GuildID], conf)
+		bot.Greetings(discord, e, guilds.Guilds[e.GuildID])
 	}
 }
 
