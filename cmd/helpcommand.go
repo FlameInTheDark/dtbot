@@ -19,7 +19,7 @@ func HelpCommand(ctx bot.Context) {
 		if (ctx.IsAdmin()) {
 			ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!b_admin"))
 		}
-	case "!y":
+	case "y":
 		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!y"))
 	case "r":
 		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!r"))
