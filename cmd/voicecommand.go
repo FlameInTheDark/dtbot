@@ -49,11 +49,10 @@ func VoiceCommand(ctx bot.Context) {
 			if err != nil {
 				ctx.ReplyEmbed(ctx.Loc("player"), ctx.Loc("player_wrong_volume"))
 				return
-			} else {
-				ctx.Guilds.Guilds[ctx.Guild.ID].VoiceVolume = float32(vol / 100)
-				_ = ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"voicevolume": float32(vol / 100)}})
-				ctx.ReplyEmbed(ctx.Loc("player"), fmt.Sprintf(ctx.Loc("player_volume_changed"), ctx.Args[1]))
 			}
+			ctx.Guilds.Guilds[ctx.Guild.ID].VoiceVolume = float32(vol / 100)
+			_ = ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"voicevolume": float32(vol / 100)}})
+			ctx.ReplyEmbed(ctx.Loc("player"), fmt.Sprintf(ctx.Loc("player_volume_changed"), ctx.Args[1]))
 		}
 	}
 }

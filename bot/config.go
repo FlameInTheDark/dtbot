@@ -15,6 +15,7 @@ type WeatherConfig struct {
 	City         string
 }
 
+// VoiceConfig some voice settings
 type VoiceConfig struct {
 	Volume float32
 }
@@ -75,6 +76,7 @@ type LocalesMap map[string]map[string]string
 // WeatherCodesMap symbols for font
 type WeatherCodesMap map[string]string
 
+// DarkSkyConfig Dark Sky weather api config
 type DarkSkyConfig struct {
 	Token string
 }

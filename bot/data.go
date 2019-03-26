@@ -79,9 +79,8 @@ func (data *DataType) AddCronJob(ctx *Context, id cron.EntryID, cmd string) erro
 		data.GuildSchedules[ctx.Guild.ID] = &GuildSchedule{CronJobs: make(map[cron.EntryID]string)}
 		data.GuildSchedules[ctx.Guild.ID].CronJobs[id] = cmd
 		return nil
-	} else {
-		return errors.New("Error adding cron job")
 	}
+	return errors.New("Error adding cron job")
 }
 
 // CronIsFull checks if cron jobs is maximum count

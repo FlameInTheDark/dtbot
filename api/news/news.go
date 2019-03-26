@@ -43,13 +43,13 @@ func GetNews(ctx *bot.Context) error {
 	resp, err := http.Get(fmt.Sprintf("https://newsapi.org/v2/top-headlines?country=%v&category=%v&apiKey=%v", ctx.Conf.News.Country, category, ctx.Conf.News.APIKey))
 	if err != nil {
 		ctx.Log("news", ctx.Guild.ID, fmt.Sprintf("Get news error: %v", err))
-		return errors.New(fmt.Sprintf("Get news error: %v", err))
+		return fmt.Errorf("get news error: %v", err)
 	}
 
 	err = json.NewDecoder(resp.Body).Decode(&result)
 	if err != nil {
 		ctx.Log("news", ctx.Guild.ID, fmt.Sprintf("Parse news error: %v", err))
-		return errors.New(fmt.Sprintf("Parse news error: %v", err))
+		return fmt.Errorf("parse news error: %v", err)
 	}
 
 	if result.Status == "ok" {
@@ -62,10 +62,8 @@ func GetNews(ctx *bot.Context) error {
 			emb.Color(ctx.Conf.General.EmbedColor)
 			_, _ = ctx.Discord.ChannelMessageSendEmbed(ctx.Message.ChannelID, emb.GetEmbed())
 			return nil
-		} else {
-			return errors.New(ctx.Loc("news_404"))
 		}
-	} else {
-		return errors.New(ctx.Loc("news_api_error"))
+		return errors.New(ctx.Loc("news_404"))
 	}
+	return errors.New(ctx.Loc("news_api_error"))
 }
