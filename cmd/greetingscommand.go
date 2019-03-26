@@ -22,7 +22,7 @@ func GreetingsCommand(ctx bot.Context) {
 				ctx.MetricsCommand("greetings", ctx.Loc("greetings_removed"))
 				ctx.RemoveGreetings()
 			case "test":
-				ctx.ReplyPM(ctx.Guilds.Guilds[ctx.Guild.ID].Greeting)
+				_ = ctx.ReplyPM(ctx.Guilds.Guilds[ctx.Guild.ID].Greeting)
 			}
 		}
 	} else {
