@@ -25,7 +25,7 @@ func (emb *NewEmbedStruct) Field(name, value string, inline bool) *NewEmbedStruc
 
 // Author adds author to embed
 func (emb *NewEmbedStruct) Author(name, url, iconURL string) *NewEmbedStruct {
-	emb.Embed.Author = &discordgo.MessageEmbedAuthor{URL:url, Name:name, IconURL:iconURL}
+	emb.Embed.Author = &discordgo.MessageEmbedAuthor{URL: url, Name: name, IconURL: iconURL}
 	return emb
 }
 
@@ -156,7 +156,12 @@ func (ctx *Context) ReplyEmbedPM(name, content string) *discordgo.Message {
 }
 
 func (ctx *Context) ReplyPM(content string) *discordgo.Message {
-	msg, err := ctx.Discord.ChannelMessageSend(ctx.Message.Author.ID, content)
+	ch, err := ctx.Discord.UserChannelCreate(ctx.User.ID)
+	if err != nil {
+		ctx.Log("reply_pm", "", fmt.Sprintf("Error whilst creating private channel: %v", err.Error()))
+		return nil
+	}
+	msg, err := ctx.Discord.ChannelMessageSend(ch.ID, content)
 	if err != nil {
 		ctx.Log("reply_pm", "", fmt.Sprintf("ReplyPM error: %v", err.Error()))
 	}
