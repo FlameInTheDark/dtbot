@@ -155,6 +155,11 @@ func (ctx *Context) ReplyEmbedPM(name, content string) *discordgo.Message {
 		SendPM(ctx)
 }
 
+func (ctx *Context) ReplyPM(content string) *discordgo.Message {
+	msg, _ := ctx.Discord.ChannelMessageSend(ctx.Message.Author.ID, content)
+	return msg
+}
+
 // ReplyEmbedAttachment reply on message with embed message with attachment
 func (ctx *Context) ReplyEmbedAttachment(name, content, fileName string, file io.Reader) *discordgo.Message {
 	return NewEmbed("").
