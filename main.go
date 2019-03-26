@@ -79,14 +79,46 @@ func main() {
 	twitch = bot.TwitchInit(discord, conf, dbWorker)
 	go MetricsSender(discord)
 	// Init command handler
+	discord.AddHandler(guildAddHandler)
 	discord.AddHandler(commandHandler)
 	discord.AddHandler(joinHandler)
 	onStart()
 	<-sc
 }
 
-func joinHandler(disord *discordgo.Session, e *discordgo.GuildMemberAdd) {
-	bot.Greeting(disord, e, guilds.Guilds[e.GuildID], conf)
+func joinHandler(discord *discordgo.Session, e *discordgo.GuildMemberAdd) {
+	if _, ok := guilds.Guilds[e.GuildID]; !ok {
+		guilds.Guilds[e.GuildID] = &bot.GuildData{
+			ID:          e.GuildID,
+			WeatherCity: conf.Weather.City,
+			NewsCounty:  conf.News.Country,
+			Language:    conf.General.Language,
+			Timezone:    conf.General.Timezone,
+			EmbedColor:  conf.General.EmbedColor,
+			VoiceVolume: conf.Voice.Volume,
+			Greeting:    "",
+		}
+	} else {
+		bot.Greeting(discord, e, guilds.Guilds[e.GuildID], conf)
+	}
+}
+
+func guildAddHandler(discord *discordgo.Session, e *discordgo.GuildCreate) {
+	if _, ok := guilds.Guilds[e.ID]; !ok {
+		guilds.Guilds[e.ID] = &bot.GuildData{
+			ID:          e.ID,
+			WeatherCity: conf.Weather.City,
+			NewsCounty:  conf.News.Country,
+			Language:    conf.General.Language,
+			Timezone:    conf.General.Timezone,
+			EmbedColor:  conf.General.EmbedColor,
+			VoiceVolume: conf.Voice.Volume,
+			Greeting:    "",
+		}
+	}
+	emb := bot.NewEmbed("").
+		Field(conf.GetLocaleLang("bot_joined_title", guilds.Guilds[e.ID].Language), conf.GetLocaleLang("bot_joined_text", guilds.Guilds[e.ID].Language), false)
+	_, _ = discord.ChannelMessageSendEmbed(e.OwnerID, emb.GetEmbed())
 }
 
 // Handle discord messages

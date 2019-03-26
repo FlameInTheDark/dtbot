@@ -17,6 +17,8 @@
         "help_command_!geoip": "`!geoip [ip_address]` | Shows geographic information about IP address",
         "help_command_!twitch": "`!twitch add [twitch_login] [custom_announce_message]` | Adds streamer in announcer (custom message is optional)\n`!twitch remove [twitch_login]` | Removes streamer from announcer\n`!twitch list` | List of streamers",
         "conf_list": "`general.language [string]` | Sets bot language\n`general.timezone [num]` | Sets bot timezone\n`general.nick [string]` | Sets bot nickname\n`embed.color [hex color like #007700]` | Sets bot embed color\n`news.country [string]` | Sets bot news country\n`weather.city [string]` | Sets default city for weather",
+        "bot_joined_title": "I am joined!",
+        "bot_joined_text": "Hi! Now i joined in your guild!\nIf you want to know what i can do, use the `!help` command in one of the text channels in you guild!",
         "stats_command": "Guilds: %v\nUsers: %v",
         "error": "An error occurred",
         "nan": "not a number",
