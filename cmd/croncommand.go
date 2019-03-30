@@ -10,7 +10,7 @@ import (
 
 // CronCommand manipulates cron functions
 func CronCommand(ctx bot.Context) {
-	if ctx.GetRoles().ExistsName("bot.admin") {
+	if ctx.IsServerAdmin() {
 		// !cron add 0 0 7 * * * !w Chelyabinsk
 		switch ctx.Args[0] {
 		case "add":

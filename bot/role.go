@@ -16,6 +16,13 @@ func (ctx *Context) IsAdmin() bool {
 	return ctx.User.ID == ctx.Conf.General.AdminID
 }
 
+func (ctx *Context) IsServerAdmin() bool {
+	if ctx.User.ID == ctx.Guild.OwnerID || ctx.GetRoles().ExistsName("bot.admin") || ctx.IsAdmin() {
+		return true
+	}
+	return false
+}
+
 // GetRoles returns UserRoles struct pointer
 func (ctx *Context) GetRoles() *UserRoles {
 	var userRoles = new(UserRoles)

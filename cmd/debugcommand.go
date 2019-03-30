@@ -11,7 +11,7 @@ import (
 // DebugCommand special bot commands handler
 func DebugCommand(ctx bot.Context) {
 	ctx.MetricsCommand("debug", "admin")
-	if ctx.GetRoles().ExistsName("bot.admin") {
+	if ctx.IsServerAdmin() {
 		if len(ctx.Args) == 0 {
 			return
 		}

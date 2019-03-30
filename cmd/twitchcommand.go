@@ -8,7 +8,7 @@ import (
 
 // TwitchCommand manipulates twitch announcer
 func TwitchCommand(ctx bot.Context) {
-	if ctx.GetRoles().ExistsName("bot.admin") || ctx.IsAdmin() {
+	if ctx.IsServerAdmin() {
 		if len(ctx.Args) == 0 {
 			return
 		}

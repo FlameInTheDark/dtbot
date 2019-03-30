@@ -21,7 +21,7 @@ func showLogs(ctx *bot.Context, count int) {
 
 // BotCommand special bot commands handler
 func BotCommand(ctx bot.Context) {
-	if ctx.GetRoles().ExistsName("bot.admin") || ctx.IsAdmin() {
+	if ctx.IsServerAdmin() {
 		if len(ctx.Args) == 0 {
 			return
 		}
