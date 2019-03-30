@@ -171,7 +171,7 @@ func (t *Twitch) Update() {
 					if s.CustomMessage != "" {
 						emb.Content = s.CustomMessage
 					} else {
-						emb.Content = fmt.Sprintf(t.Conf.GetLocaleLang("twitch_online", stream.Language), stream.UserName, s.Login)
+						emb.Content = fmt.Sprintf(t.Conf.GetLocaleLang("twitch_online", stream.Language), s.Name, s.Login)
 					}
 					_, _ = t.Discord.ChannelMessageSendComplex(s.Channel, emb.MessageSend)
 				}
