@@ -27,6 +27,10 @@ func PlayerCommand(ctx bot.Context) {
 		}
 	case "stop":
 		ctx.MetricsCommand("player", "stop")
+		if sess == nil {
+			ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_not_in_voice"))
+			return
+		}
 		sess.Stop()
 	}
 }

@@ -17,7 +17,7 @@ func VoiceCommand(ctx bot.Context) {
 	switch ctx.Args[0] {
 	case "join":
 		ctx.MetricsCommand("voice", "join")
-		if ctx.Sessions.GetByGuild(ctx.Guild.ID) != nil {
+		if sess != nil {
 			ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_connected"))
 			return
 		}
