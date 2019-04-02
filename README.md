@@ -9,6 +9,8 @@
 
 [![Musor stats on Discord Bot List](https://discordbotlist.com/bots/424221765321883658/widget)](https://discordbotlist.com/bots/424221765321883658)
 
+## [Documentation](https://dtbot.realpha.ru)
+
 ## Used APIs and external software
 
 * [Dark Sky](https://darksky.net/poweredby/)
