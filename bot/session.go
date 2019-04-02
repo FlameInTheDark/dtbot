@@ -84,11 +84,7 @@ func (manager *SessionManager) Join(discord *discordgo.Session, guildID, channel
 	properties JoinProperties, volume float32) (*Session, error) {
 	vc, err := discord.ChannelVoiceJoin(guildID, channelID, properties.Muted, properties.Deafened)
 	if err != nil {
-		if _, ok := discord.VoiceConnections[guildID]; ok {
-			vc = discord.VoiceConnections[guildID]
-		} else {
-			return nil, err
-		}
+		return nil, err
 	}
 	sess := newSession(guildID, channelID, NewConnection(vc), volume)
 	manager.sessions[channelID] = sess
