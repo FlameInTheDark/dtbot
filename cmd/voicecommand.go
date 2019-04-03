@@ -50,8 +50,8 @@ func VoiceCommand(ctx bot.Context) {
 				ctx.ReplyEmbed(ctx.Loc("player"), ctx.Loc("player_wrong_volume"))
 				return
 			}
-			ctx.Guilds.Guilds[ctx.Guild.ID].VoiceVolume = float32(vol / 100)
-			_ = ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"voicevolume": float32(vol / 100)}})
+			ctx.Guilds.Guilds[ctx.Guild.ID].VoiceVolume = float32(vol * 0.01)
+			_ = ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"voicevolume": float32(vol * 0.01)}})
 			ctx.ReplyEmbed(ctx.Loc("player"), fmt.Sprintf(ctx.Loc("player_volume_changed"), ctx.Args[1]))
 		}
 	}
