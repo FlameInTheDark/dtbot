@@ -1,6 +1,7 @@
 package bot
 
 import (
+	"fmt"
 	"github.com/bwmarrin/discordgo"
 )
 
@@ -50,6 +51,7 @@ func (sess *Session) Play(source string, volume float32) error {
 
 // PlayYoutube starts to play song from youtube
 func (sess Session) PlayYoutube(song Song) error {
+	fmt.Println("SESS VOLUME: ", fmt.Sprintf("volume=%.3f", sess.Volume))
 	return sess.connection.PlayYoutube(song.Ffmpeg(sess.Volume))
 }
 

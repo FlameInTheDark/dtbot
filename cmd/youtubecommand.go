@@ -208,6 +208,7 @@ func YoutubeShortCommand(ctx bot.Context) {
 			Muted:    false,
 			Deafened: true,
 		}, ctx.Guilds.Guilds[ctx.Guild.ID].VoiceVolume)
+		fmt.Println(fmt.Sprintf("volume=%.3f",ctx.Guilds.Guilds[ctx.Guild.ID].VoiceVolume))
 		sess = nsess
 		if serr != nil {
 			ctx.Log("Youtube", ctx.Guild.ID, fmt.Sprintf("session error: %v", serr.Error()))
