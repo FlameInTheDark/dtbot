@@ -24,7 +24,7 @@ func PlayerCommand(ctx bot.Context) {
 			go sess.Player.Start(sess, ctx.Args[1], func(msg string) {
 				ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), msg)
 			}, ctx.Guilds.Guilds[ctx.Guild.ID].VoiceVolume)
-			fmt.Printf("volume=%.3f", ctx.Guilds.Guilds[ctx.Guild.ID].VoiceVolume)
+			fmt.Println(fmt.Sprintf("volume=%.3f", ctx.Guilds.Guilds[ctx.Guild.ID].VoiceVolume))
 		}
 	case "stop":
 		ctx.MetricsCommand("player", "stop")

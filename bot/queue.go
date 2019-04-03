@@ -50,7 +50,7 @@ func (queue SongQueue) Start(sess *Session, callback func(string)) {
 	for queue.HasNext() && queue.Running {
 		song := queue.Next()
 		callback(song.Title)
-		fmt.Printf("volume=%.3f", sess.Volume)
+		fmt.Println(fmt.Sprintf("volume=%.3f", sess.Volume))
 		_ = sess.PlayYoutube(song)
 	}
 	if !queue.Running {
