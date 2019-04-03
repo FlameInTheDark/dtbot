@@ -16,7 +16,6 @@ type Song struct {
 
 // Ffmpeg returns ffmpeg executable command
 func (song Song) Ffmpeg(volume float32) *exec.Cmd {
-	fmt.Printf("volume=%.3f", volume)
 	return exec.Command("ffmpeg", "-i", song.Media, "-f", "s16le", "-filter:a", fmt.Sprintf("volume=%.3f", volume), "-ar", strconv.Itoa(FRAME_RATE), "-ac",
 		strconv.Itoa(CHANNELS), "pipe:1")
 }
