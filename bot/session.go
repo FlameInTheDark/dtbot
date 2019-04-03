@@ -49,7 +49,7 @@ func (sess *Session) Play(source string, volume float32) error {
 }
 
 // PlayYoutube starts to play song from youtube
-func (sess *Session) PlayYoutube(song Song) error {
+func (sess Session) PlayYoutube(song Song) error {
 	return sess.connection.PlayYoutube(song.Ffmpeg(sess.Volume))
 }
 
