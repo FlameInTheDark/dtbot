@@ -196,6 +196,6 @@ func (db *DBWorker) RemoveRadioStation(key string) error {
 // AddRadioStation adds new radio station
 func (db *DBWorker) AddRadioStation(name, url, key string) error {
 	station := RadioStation{Name: name, URL: url, Key: key}
-	err := db.DBSession.DB(db.DBName).C("streams").Insert(&station)
+	err := db.DBSession.DB(db.DBName).C("stations").Insert(&station)
 	return err
 }

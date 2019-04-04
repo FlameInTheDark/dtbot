@@ -117,7 +117,7 @@ func BotCommand(ctx bot.Context) {
 			}
 		case "stations":
 			ctx.MetricsCommand("bot", "stations")
-			if len(ctx.Args) < 2 && !ctx.IsAdmin() {
+			if !ctx.IsAdmin() {
 				return
 			}
 			switch ctx.Args[1] {
@@ -126,8 +126,9 @@ func BotCommand(ctx bot.Context) {
 					name := strings.Join(ctx.Args[4:], " ")
 					err := ctx.DB.AddRadioStation(name, ctx.Args[2], ctx.Args[3])
 					if err != nil {
-						ctx.ReplyEmbed("Stations", ctx.Loc("stations_added"))
+						ctx.ReplyEmbed("Stations", "Adding error")
 					}
+					ctx.ReplyEmbed("Stations", ctx.Loc("stations_added"))
 				} else {
 					ctx.ReplyEmbed("Stations", "Arguments missed")
 				}

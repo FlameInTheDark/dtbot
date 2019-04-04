@@ -39,7 +39,7 @@ func PlayerCommand(ctx bot.Context) {
 					response += fmt.Sprintf("[%v] - %v", s.Key, s.Name)
 				}
 			}
-			ctx.ReplyEmbed(ctx.Loc("player"), ctx.Loc("stations_list")+"\n"+response)
+			ctx.ReplyEmbed(ctx.Loc("player"), response)
 		} else {
 			ctx.ReplyEmbed(ctx.Loc("player"), ctx.Loc("stations_not_found"))
 		}
