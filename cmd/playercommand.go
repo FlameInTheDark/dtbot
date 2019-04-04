@@ -35,11 +35,13 @@ func PlayerCommand(ctx bot.Context) {
 					response += fmt.Sprintf("[%v] - %v", s.Key, s.Name)
 				}
 			} else {
-				for _,s := range stations {
+				for _, s := range stations {
 					response += fmt.Sprintf("[%v] - %v", s.Key, s.Name)
 				}
 			}
-			ctx.ReplyEmbed(ctx.Loc("player"), ctx.Loc("stations_list") + "\n" + response)
+			ctx.ReplyEmbed(ctx.Loc("player"), ctx.Loc("stations_list")+"\n"+response)
+		} else {
+			ctx.ReplyEmbed(ctx.Loc("player"), ctx.Loc("stations_not_found"))
 		}
 	case "station":
 		if sess == nil {
@@ -47,7 +49,7 @@ func PlayerCommand(ctx bot.Context) {
 			return
 		}
 		if len(ctx.Args) > 1 {
-			station, err :=ctx.DB.GetRadioStationByKey(ctx.Args[1])
+			station, err := ctx.DB.GetRadioStationByKey(ctx.Args[1])
 			if err != nil {
 				ctx.ReplyEmbed(ctx.Loc("player"), ctx.Loc("stations_not_found"))
 				return

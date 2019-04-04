@@ -179,7 +179,7 @@ func (db *DBWorker) GetRadioStations() []RadioStation {
 // GetRadioStationByKey returns one station by key
 func (db *DBWorker) GetRadioStationByKey(key string) (*RadioStation, error) {
 	station := RadioStation{}
-	err := db.DBSession.DB(db.DBName).C("stations").Find(bson.M{"key":key}).One(&station)
+	err := db.DBSession.DB(db.DBName).C("stations").Find(bson.M{"key": key}).One(&station)
 	if err != nil {
 		fmt.Println("Mongo: ", err)
 		return nil, fmt.Errorf("station not found")
@@ -195,7 +195,7 @@ func (db *DBWorker) RemoveRadioStation(key string) error {
 
 // AddRadioStation adds new radio station
 func (db *DBWorker) AddRadioStation(name, url, key string) error {
-	station := RadioStation{Name:name, URL: url, Key: key}
+	station := RadioStation{Name: name, URL: url, Key: key}
 	err := db.DBSession.DB(db.DBName).C("streams").Insert(&station)
 	return err
 }

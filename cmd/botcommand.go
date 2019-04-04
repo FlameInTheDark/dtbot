@@ -128,6 +128,8 @@ func BotCommand(ctx bot.Context) {
 					if err != nil {
 						ctx.ReplyEmbed("Stations", ctx.Loc("stations_added"))
 					}
+				} else {
+					ctx.ReplyEmbed("Stations", "Arguments missed")
 				}
 			case "remove":
 				if len(ctx.Args) > 2 {
@@ -135,6 +137,8 @@ func BotCommand(ctx bot.Context) {
 					if err != nil {
 						ctx.ReplyEmbed("Stations", ctx.Loc("stations_removed"))
 					}
+				} else {
+					ctx.ReplyEmbed("Stations", "Arguments missed")
 				}
 			}
 		case "guild":
