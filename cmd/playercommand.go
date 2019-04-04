@@ -32,11 +32,11 @@ func PlayerCommand(ctx bot.Context) {
 			var response string
 			if len(stations) > 20 {
 				for _, s := range stations[:20] {
-					response += fmt.Sprintf("[%v] - %v", s.Key, s.Name)
+					response += fmt.Sprintf("[%v] - %v\n", s.Key, s.Name)
 				}
 			} else {
 				for _, s := range stations {
-					response += fmt.Sprintf("[%v] - %v", s.Key, s.Name)
+					response += fmt.Sprintf("[%v] - %v\n", s.Key, s.Name)
 				}
 			}
 			ctx.ReplyEmbed(ctx.Loc("player"), response)
