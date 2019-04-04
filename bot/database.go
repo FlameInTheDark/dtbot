@@ -39,6 +39,13 @@ type GuildsMap struct {
 	Guilds map[string]*GuildData
 }
 
+// RadioStation contains info about radio station
+type RadioStation struct {
+	Name string
+	URL  string
+	Key  string
+}
+
 // NewDBSession creates new MongoDB instance
 func NewDBSession(dbname string) *DBWorker {
 	session, err := mgo.Dial(os.Getenv("MONGO_CONN"))
@@ -157,4 +164,38 @@ func (db *DBWorker) AddStream(stream *TwitchStream) {
 // RemoveStream removes stream from mongodb
 func (db *DBWorker) RemoveStream(stream *TwitchStream) {
 	_ = db.DBSession.DB(db.DBName).C("streams").Remove(bson.M{"login": stream.Login, "guild": stream.Guild})
+}
+
+// GetRadioStations gets stations from database and returns slice of them
+func (db *DBWorker) GetRadioStations() []RadioStation {
+	stations := []RadioStation{}
+	err := db.DBSession.DB(db.DBName).C("stations").Find(nil).All(&stations)
+	if err != nil {
+		fmt.Println("Mongo: ", err)
+	}
+	return stations
+}
+
+// GetRadioStationByKey returns one station by key
+func (db *DBWorker) GetRadioStationByKey(key string) (*RadioStation, error) {
+	station := RadioStation{}
+	err := db.DBSession.DB(db.DBName).C("stations").Find(bson.M{"key":key}).One(&station)
+	if err != nil {
+		fmt.Println("Mongo: ", err)
+		return nil, fmt.Errorf("station not found")
+	}
+	return &station, nil
+}
+
+// RemoveRadioStation removes radio station by key
+func (db *DBWorker) RemoveRadioStation(key string) error {
+	err := db.DBSession.DB(db.DBName).C("stations").Remove(bson.M{"key": key})
+	return err
+}
+
+// AddRadioStation adds new radio station
+func (db *DBWorker) AddRadioStation(name, url, key string) error {
+	station := RadioStation{Name:name, URL: url, Key: key}
+	err := db.DBSession.DB(db.DBName).C("streams").Insert(&station)
+	return err
 }

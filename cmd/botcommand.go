@@ -115,6 +115,28 @@ func BotCommand(ctx bot.Context) {
 					}
 				}
 			}
+		case "stations":
+			ctx.MetricsCommand("bot", "stations")
+			if len(ctx.Args) < 2 && !ctx.IsAdmin() {
+				return
+			}
+			switch ctx.Args[1] {
+			case "add":
+				if len(ctx.Args) > 4 {
+					name := strings.Join(ctx.Args[4:], " ")
+					err := ctx.DB.AddRadioStation(name, ctx.Args[2], ctx.Args[3])
+					if err != nil {
+						ctx.ReplyEmbed("Stations", ctx.Loc("stations_added"))
+					}
+				}
+			case "remove":
+				if len(ctx.Args) > 2 {
+					err := ctx.DB.RemoveRadioStation(ctx.Args[2])
+					if err != nil {
+						ctx.ReplyEmbed("Stations", ctx.Loc("stations_removed"))
+					}
+				}
+			}
 		case "guild":
 			ctx.MetricsCommand("bot", "guild")
 			if len(ctx.Args) < 2 && !ctx.IsAdmin() {
