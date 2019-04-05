@@ -20,6 +20,8 @@ func PlayerCommand(ctx bot.Context) {
 		playerList(&ctx)
 	case "station":
 		playerStation(sess, &ctx)
+	case "genres":
+		playerCategories(&ctx)
 	case "stop":
 		ctx.MetricsCommand("player", "stop")
 		if sess == nil {
