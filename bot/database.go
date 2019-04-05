@@ -41,9 +41,10 @@ type GuildsMap struct {
 
 // RadioStation contains info about radio station
 type RadioStation struct {
-	Name string
-	URL  string
-	Key  string
+	Name     string
+	URL      string
+	Key      string
+	Category string
 }
 
 // NewDBSession creates new MongoDB instance
@@ -167,9 +168,13 @@ func (db *DBWorker) RemoveStream(stream *TwitchStream) {
 }
 
 // GetRadioStations gets stations from database and returns slice of them
-func (db *DBWorker) GetRadioStations() []RadioStation {
+func (db *DBWorker) GetRadioStations(category string) []RadioStation {
 	stations := []RadioStation{}
-	err := db.DBSession.DB(db.DBName).C("stations").Find(nil).All(&stations)
+	var request = bson.M{}
+	if category != "" {
+		request = bson.M{"category": category}
+	}
+	err := db.DBSession.DB(db.DBName).C("stations").Find(request).All(&stations)
 	if err != nil {
 		fmt.Println("Mongo: ", err)
 	}
@@ -194,8 +199,8 @@ func (db *DBWorker) RemoveRadioStation(key string) error {
 }
 
 // AddRadioStation adds new radio station
-func (db *DBWorker) AddRadioStation(name, url, key string) error {
-	station := RadioStation{Name: name, URL: url, Key: key}
+func (db *DBWorker) AddRadioStation(name, url, key, category string) error {
+	station := RadioStation{Name: name, URL: url, Key: key, Category: category}
 	err := db.DBSession.DB(db.DBName).C("stations").Insert(&station)
 	return err
 }

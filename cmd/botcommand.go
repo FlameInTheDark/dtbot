@@ -57,7 +57,7 @@ func BotCommand(ctx bot.Context) {
 		case "setconf":
 			botSetConf(&ctx)
 		case "stations":
-			botStation(&ctx)
+			botStations(&ctx)
 		case "guild":
 			botGuild(&ctx)
 		case "stats":
@@ -244,16 +244,16 @@ func botGuild(ctx *bot.Context) {
 	}
 }
 
-func botStation(ctx *bot.Context) {
+func botStations(ctx *bot.Context) {
 	ctx.MetricsCommand("bot", "stations")
 	if !ctx.IsAdmin() {
 		return
 	}
 	switch ctx.Args[1] {
 	case "add":
-		if len(ctx.Args) > 4 {
-			name := strings.Join(ctx.Args[4:], " ")
-			err := ctx.DB.AddRadioStation(name, ctx.Args[2], ctx.Args[3])
+		if len(ctx.Args) > 5 {
+			name := strings.Join(ctx.Args[5:], " ")
+			err := ctx.DB.AddRadioStation(name, ctx.Args[3], ctx.Args[4], ctx.Args[2])
 			if err != nil {
 				ctx.ReplyEmbed("Stations", "Adding error")
 			}

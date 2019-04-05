@@ -45,16 +45,35 @@ func playerPlay(sess *bot.Session, ctx *bot.Context) {
 }
 
 func playerList(ctx *bot.Context) {
-	stations := ctx.DB.GetRadioStations()
+	var stations []bot.RadioStation
+	if len(ctx.Args) > 1 {
+		stations = ctx.DB.GetRadioStations(ctx.Args[1])
+	} else {
+		stations = ctx.DB.GetRadioStations("")
+	}
+
+	var category = make(map[string][]*bot.RadioStation)
+
+	for i,s := range stations {
+		category[s.Category] = append(category[s.Category], &stations[i])
+	}
+
 	if len(stations) > 0 {
 		var response string
 		if len(stations) > 20 {
-			for _, s := range stations[:20] {
-				response += fmt.Sprintf("[%v] - %v\n", s.Key, s.Name)
+			for c, st := range category {
+				response += c
+				for _, s := range st[:20] {
+					response += fmt.Sprintf("[%v] - %v\n - [%v]", s.Key, s.Name, s.Category)
+				}
 			}
+
 		} else {
-			for _, s := range stations {
-				response += fmt.Sprintf("[%v] - %v\n", s.Key, s.Name)
+			for c, st := range category {
+				response += c
+				for _, s := range st {
+					response += fmt.Sprintf("[%v] - %v\n - [%v]", s.Key, s.Name, s.Category)
+				}
 			}
 		}
 		ctx.ReplyEmbed(ctx.Loc("player"), response)
