@@ -60,17 +60,14 @@ func playerList(ctx *bot.Context) {
 
 	if len(stations) > 0 {
 		var response string
-		if len(stations) > 20 {
-			for c, st := range category {
-				response += c
+
+		for c, st := range category {
+			response += c
+			if len(st) > 20 {
 				for _, s := range st[:20] {
 					response += fmt.Sprintf("[%v] - %v\n - [%v]", s.Key, s.Name, s.Category)
 				}
-			}
-
-		} else {
-			for c, st := range category {
-				response += c
+			} else {
 				for _, s := range st {
 					response += fmt.Sprintf("[%v] - %v\n - [%v]", s.Key, s.Name, s.Category)
 				}
