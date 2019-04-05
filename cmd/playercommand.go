@@ -64,11 +64,11 @@ func playerList(ctx *bot.Context) {
 			var response string
 			if len(st) > 20 {
 				for _, s := range st[:20] {
-					response += fmt.Sprintf("[%v] - %v - [%v]\n", s.Key, s.Name, s.Category)
+					response += fmt.Sprintf("[%v] - %v\n", s.Key, s.Name)
 				}
 			} else {
 				for _, s := range st {
-					response += fmt.Sprintf("[%v] - %v - [%v]\n", s.Key, s.Name, s.Category)
+					response += fmt.Sprintf("[%v] - %v\n", s.Key, s.Name)
 				}
 			}
 			embed.Field(c, response, false)
