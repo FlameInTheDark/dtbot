@@ -70,6 +70,10 @@ func (ctx *Context) WeatherCode(code string) string {
 	return ctx.Conf.WeatherCodes[code]
 }
 
+func (ctx *Context) GuildConf() *GuildData {
+	return ctx.Guilds.Guilds[ctx.Guild.ID]
+}
+
 // GetVoiceChannel returns user voice channel
 func (ctx *Context) GetVoiceChannel() *discordgo.Channel {
 	if ctx.VoiceChannel != nil {

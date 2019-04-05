@@ -71,7 +71,7 @@ func playerList(ctx *bot.Context) {
 					response += fmt.Sprintf("[%v] - %v\n", s.Key, s.Name)
 				}
 			}
-			embed.Field(c, response, false)
+			embed.Field(c, response, false).Color(ctx.GuildConf().EmbedColor)
 		}
 		embed.Send(ctx)
 	} else {
