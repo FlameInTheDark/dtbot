@@ -79,6 +79,20 @@ func playerList(ctx *bot.Context) {
 	}
 }
 
+func playerCategories(ctx *bot.Context) {
+	stations := ctx.DB.GetRadioStations("")
+	var categories = make(map[string]bool)
+	var reply = ctx.Loc("stations_categories")
+	for _, st := range stations {
+		categories[st.Category] = true
+	}
+
+	for c, _ := range categories {
+		reply += "`" + c + "`, "
+	}
+	ctx.ReplyEmbed(ctx.Loc("player"), reply)
+}
+
 func playerStation(sess *bot.Session, ctx *bot.Context) {
 	if sess == nil {
 		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_not_in_voice"))

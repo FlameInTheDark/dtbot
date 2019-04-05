@@ -70,6 +70,7 @@ func (ctx *Context) WeatherCode(code string) string {
 	return ctx.Conf.WeatherCodes[code]
 }
 
+// GuildConf returns config of guild
 func (ctx *Context) GuildConf() *GuildData {
 	return ctx.Guilds.Guilds[ctx.Guild.ID]
 }
