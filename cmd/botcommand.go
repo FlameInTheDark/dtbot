@@ -55,166 +55,11 @@ func BotCommand(ctx bot.Context) {
 			ctx.MetricsCommand("bot", "conflist")
 			ctx.ReplyEmbed("Config", ctx.Loc("conf_list"))
 		case "setconf":
-			ctx.MetricsCommand("bot", "setconf")
-			if len(ctx.Args) > 2 {
-				target := strings.Split(ctx.Args[1], ".")
-				switch target[0] {
-				case "general":
-					switch target[1] {
-					case "language":
-						ctx.Guilds.Guilds[ctx.Guild.ID].Language = ctx.Args[2]
-						_ = ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"language": ctx.Args[2]}})
-						ctx.ReplyEmbedPM("Config", fmt.Sprintf("Language set to: %v", ctx.Args[2]))
-					case "timezone":
-						tz, err := strconv.Atoi(ctx.Args[1])
-						if err != nil {
-							ctx.ReplyEmbedPM("Settings", "Not a number")
-						}
-						ctx.Guilds.Guilds[ctx.Guild.ID].Timezone = tz
-						_ = ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"timezone": tz}})
-						ctx.ReplyEmbedPM("Config", fmt.Sprintf("Timezone set to: %v", ctx.Args[2]))
-					case "nick":
-						_ = ctx.Discord.GuildMemberNickname(ctx.Guild.ID, "@me", ctx.Args[2])
-						ctx.ReplyEmbedPM("Config", fmt.Sprintf("Nickname changed to %v", ctx.Args[2]))
-					}
-				case "weather":
-					switch target[1] {
-					case "city":
-						ctx.Guilds.Guilds[ctx.Guild.ID].WeatherCity = ctx.Args[2]
-						_ = ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"weathercity": ctx.Args[2]}})
-						ctx.ReplyEmbedPM("Config", fmt.Sprintf("Weather city set to: %v", ctx.Args[2]))
-					}
-				case "news":
-					switch target[1] {
-					case "country":
-						ctx.Guilds.Guilds[ctx.Guild.ID].NewsCounty = ctx.Args[2]
-						_ = ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"weathercountry": ctx.Args[2]}})
-						ctx.ReplyEmbedPM("Config", fmt.Sprintf("News country set to: %v", ctx.Args[2]))
-					}
-				case "embed":
-					switch target[1] {
-					case "color":
-						var color int64
-						var err error
-						if strings.HasPrefix(ctx.Args[2], "#") {
-							color, err = strconv.ParseInt(ctx.Args[2][1:], 16, 32)
-							if err != nil {
-								ctx.Log("Config", ctx.Guild.ID, fmt.Sprintf("error setting parameter %v to value %v: %v", ctx.Args[1], target[2], err.Error()))
-								return
-							}
-						} else {
-							color, err = strconv.ParseInt(ctx.Args[2], 16, 32)
-							if err != nil {
-								ctx.Log("Config", ctx.Guild.ID, fmt.Sprintf("error setting parameter %v to value %v: %v", ctx.Args[1], ctx.Args[2], err.Error()))
-								return
-							}
-						}
-						ctx.Guilds.Guilds[ctx.Guild.ID].EmbedColor = int(color)
-						_ = ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"embedcolor": int(color)}})
-						ctx.ReplyEmbedPM("Config", fmt.Sprintf("Embed color set to: %v", ctx.Args[2]))
-					}
-				}
-			}
+			botSetConf(&ctx)
 		case "stations":
-			ctx.MetricsCommand("bot", "stations")
-			if !ctx.IsAdmin() {
-				return
-			}
-			switch ctx.Args[1] {
-			case "add":
-				if len(ctx.Args) > 4 {
-					name := strings.Join(ctx.Args[4:], " ")
-					err := ctx.DB.AddRadioStation(name, ctx.Args[2], ctx.Args[3])
-					if err != nil {
-						ctx.ReplyEmbed("Stations", "Adding error")
-					}
-					ctx.ReplyEmbed("Stations", ctx.Loc("stations_added"))
-				} else {
-					ctx.ReplyEmbed("Stations", "Arguments missed")
-				}
-			case "remove":
-				if len(ctx.Args) > 2 {
-					err := ctx.DB.RemoveRadioStation(ctx.Args[2])
-					if err != nil {
-						ctx.ReplyEmbed("Stations", ctx.Loc("stations_removed"))
-					}
-				} else {
-					ctx.ReplyEmbed("Stations", "Arguments missed")
-				}
-			}
+			botStation(&ctx)
 		case "guild":
-			ctx.MetricsCommand("bot", "guild")
-			if len(ctx.Args) < 2 && !ctx.IsAdmin() {
-				return
-			}
-			switch ctx.Args[1] {
-			case "leave":
-				if len(ctx.Args) < 3 {
-					return
-				}
-				err := ctx.Discord.GuildLeave(ctx.Args[2])
-				if err != nil {
-					ctx.Log("Guild", ctx.Guild.ID, fmt.Sprintf("error leaving from guild [%v]: %v", ctx.Args[2], err.Error()))
-					ctx.ReplyEmbedPM("Guild", fmt.Sprintf("Error leaving from guild [%v]: %v", ctx.Args[2], err.Error()))
-					return
-				}
-				ctx.ReplyEmbedPM("Guild", fmt.Sprintf("Leave from guild: %v", ctx.Args[2]))
-			case "list":
-				var selected string
-				var paged = false
-				if len(ctx.Args) > 2 && ctx.Args[2] == "id" {
-					if len(ctx.Args) > 3 {
-						selected = ctx.Args[3]
-						paged = true
-					} else {
-						selected = "1"
-					}
-				} else {
-					if len(ctx.Args) > 2 {
-						selected = ctx.Args[2]
-						paged = true
-					} else {
-						selected = "1"
-					}
-				}
-				// calculates count of pages
-				guilds := ctx.Discord.State.Guilds
-				pages := 1 + int(len(guilds)/20)
-				// paginate
-				var indexTo = 20
-				if paged {
-					page, err := strconv.Atoi(selected)
-					if err == nil {
-						indexTo = page * 20
-						indexFrom := indexTo - 20
-
-						if indexFrom < 0 {
-							indexFrom = 0
-						}
-						if indexTo > len(guilds) {
-							indexTo = len(guilds) - 1
-						}
-						if len(ctx.Args) > 2 && ctx.Args[2] == "id" {
-							ctx.ReplyEmbed("Guilds", guildsListID(guilds[indexFrom:indexTo], page, pages)+fmt.Sprintf("\nFrom: %v\nTo: %v", indexFrom, indexTo))
-						} else {
-							ctx.ReplyEmbed("Guilds", guildsListName(guilds[indexFrom:indexTo], page, pages)+fmt.Sprintf("\nFrom: %v\nTo: %v", indexFrom, indexTo))
-						}
-
-					} else {
-						ctx.ReplyEmbed("Guilds", fmt.Sprintf("Selected: %v\nError: %v", selected, err.Error()))
-					}
-
-				} else {
-					if indexTo > len(guilds) {
-						indexTo = len(guilds) - 1
-					}
-					if len(ctx.Args) > 2 && ctx.Args[2] == "id" {
-						ctx.ReplyEmbed("Guilds", guildsListID(guilds[:indexTo], 1, 1)+fmt.Sprintf("\nTo: %v", indexTo))
-					} else {
-						ctx.ReplyEmbed("Guilds", guildsListName(guilds[:indexTo], 1, 1)+fmt.Sprintf("\nTo: %v", indexTo))
-					}
-				}
-			}
+			botGuild(&ctx)
 		case "stats":
 			ctx.MetricsCommand("bot", "stats")
 			if !ctx.IsAdmin() {
@@ -259,4 +104,171 @@ func guildsListName(guilds []*discordgo.Guild, current, pages int) string {
 	}
 	list += fmt.Sprintf("Page: %v | %v", current, pages)
 	return list
+}
+
+func botSetConf(ctx *bot.Context) {
+	ctx.MetricsCommand("bot", "setconf")
+	if len(ctx.Args) > 2 {
+		target := strings.Split(ctx.Args[1], ".")
+		switch target[0] {
+		case "general":
+			switch target[1] {
+			case "language":
+				ctx.Guilds.Guilds[ctx.Guild.ID].Language = ctx.Args[2]
+				_ = ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"language": ctx.Args[2]}})
+				ctx.ReplyEmbedPM("Config", fmt.Sprintf("Language set to: %v", ctx.Args[2]))
+			case "timezone":
+				tz, err := strconv.Atoi(ctx.Args[1])
+				if err != nil {
+					ctx.ReplyEmbedPM("Settings", "Not a number")
+				}
+				ctx.Guilds.Guilds[ctx.Guild.ID].Timezone = tz
+				_ = ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"timezone": tz}})
+				ctx.ReplyEmbedPM("Config", fmt.Sprintf("Timezone set to: %v", ctx.Args[2]))
+			case "nick":
+				_ = ctx.Discord.GuildMemberNickname(ctx.Guild.ID, "@me", ctx.Args[2])
+				ctx.ReplyEmbedPM("Config", fmt.Sprintf("Nickname changed to %v", ctx.Args[2]))
+			}
+		case "weather":
+			switch target[1] {
+			case "city":
+				ctx.Guilds.Guilds[ctx.Guild.ID].WeatherCity = ctx.Args[2]
+				_ = ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"weathercity": ctx.Args[2]}})
+				ctx.ReplyEmbedPM("Config", fmt.Sprintf("Weather city set to: %v", ctx.Args[2]))
+			}
+		case "news":
+			switch target[1] {
+			case "country":
+				ctx.Guilds.Guilds[ctx.Guild.ID].NewsCounty = ctx.Args[2]
+				_ = ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"weathercountry": ctx.Args[2]}})
+				ctx.ReplyEmbedPM("Config", fmt.Sprintf("News country set to: %v", ctx.Args[2]))
+			}
+		case "embed":
+			switch target[1] {
+			case "color":
+				var color int64
+				var err error
+				if strings.HasPrefix(ctx.Args[2], "#") {
+					color, err = strconv.ParseInt(ctx.Args[2][1:], 16, 32)
+					if err != nil {
+						ctx.Log("Config", ctx.Guild.ID, fmt.Sprintf("error setting parameter %v to value %v: %v", ctx.Args[1], target[2], err.Error()))
+						return
+					}
+				} else {
+					color, err = strconv.ParseInt(ctx.Args[2], 16, 32)
+					if err != nil {
+						ctx.Log("Config", ctx.Guild.ID, fmt.Sprintf("error setting parameter %v to value %v: %v", ctx.Args[1], ctx.Args[2], err.Error()))
+						return
+					}
+				}
+				ctx.Guilds.Guilds[ctx.Guild.ID].EmbedColor = int(color)
+				_ = ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"embedcolor": int(color)}})
+				ctx.ReplyEmbedPM("Config", fmt.Sprintf("Embed color set to: %v", ctx.Args[2]))
+			}
+		}
+	}
+}
+
+func botGuild(ctx *bot.Context) {
+	ctx.MetricsCommand("bot", "guild")
+	if len(ctx.Args) < 2 && !ctx.IsAdmin() {
+		return
+	}
+	switch ctx.Args[1] {
+	case "leave":
+		if len(ctx.Args) < 3 {
+			return
+		}
+		err := ctx.Discord.GuildLeave(ctx.Args[2])
+		if err != nil {
+			ctx.Log("Guild", ctx.Guild.ID, fmt.Sprintf("error leaving from guild [%v]: %v", ctx.Args[2], err.Error()))
+			ctx.ReplyEmbedPM("Guild", fmt.Sprintf("Error leaving from guild [%v]: %v", ctx.Args[2], err.Error()))
+			return
+		}
+		ctx.ReplyEmbedPM("Guild", fmt.Sprintf("Leave from guild: %v", ctx.Args[2]))
+	case "list":
+		var selected string
+		var paged = false
+		if len(ctx.Args) > 2 && ctx.Args[2] == "id" {
+			if len(ctx.Args) > 3 {
+				selected = ctx.Args[3]
+				paged = true
+			} else {
+				selected = "1"
+			}
+		} else {
+			if len(ctx.Args) > 2 {
+				selected = ctx.Args[2]
+				paged = true
+			} else {
+				selected = "1"
+			}
+		}
+		// calculates count of pages
+		guilds := ctx.Discord.State.Guilds
+		pages := 1 + int(len(guilds)/20)
+		// paginate
+		var indexTo = 20
+		if paged {
+			page, err := strconv.Atoi(selected)
+			if err == nil {
+				indexTo = page * 20
+				indexFrom := indexTo - 20
+
+				if indexFrom < 0 {
+					indexFrom = 0
+				}
+				if indexTo > len(guilds) {
+					indexTo = len(guilds) - 1
+				}
+				if len(ctx.Args) > 2 && ctx.Args[2] == "id" {
+					ctx.ReplyEmbed("Guilds", guildsListID(guilds[indexFrom:indexTo], page, pages)+fmt.Sprintf("\nFrom: %v\nTo: %v", indexFrom, indexTo))
+				} else {
+					ctx.ReplyEmbed("Guilds", guildsListName(guilds[indexFrom:indexTo], page, pages)+fmt.Sprintf("\nFrom: %v\nTo: %v", indexFrom, indexTo))
+				}
+
+			} else {
+				ctx.ReplyEmbed("Guilds", fmt.Sprintf("Selected: %v\nError: %v", selected, err.Error()))
+			}
+
+		} else {
+			if indexTo > len(guilds) {
+				indexTo = len(guilds) - 1
+			}
+			if len(ctx.Args) > 2 && ctx.Args[2] == "id" {
+				ctx.ReplyEmbed("Guilds", guildsListID(guilds[:indexTo], 1, 1)+fmt.Sprintf("\nTo: %v", indexTo))
+			} else {
+				ctx.ReplyEmbed("Guilds", guildsListName(guilds[:indexTo], 1, 1)+fmt.Sprintf("\nTo: %v", indexTo))
+			}
+		}
+	}
+}
+
+func botStation(ctx *bot.Context) {
+	ctx.MetricsCommand("bot", "stations")
+	if !ctx.IsAdmin() {
+		return
+	}
+	switch ctx.Args[1] {
+	case "add":
+		if len(ctx.Args) > 4 {
+			name := strings.Join(ctx.Args[4:], " ")
+			err := ctx.DB.AddRadioStation(name, ctx.Args[2], ctx.Args[3])
+			if err != nil {
+				ctx.ReplyEmbed("Stations", "Adding error")
+			}
+			ctx.ReplyEmbed("Stations", ctx.Loc("stations_added"))
+		} else {
+			ctx.ReplyEmbed("Stations", "Arguments missed")
+		}
+	case "remove":
+		if len(ctx.Args) > 2 {
+			err := ctx.DB.RemoveRadioStation(ctx.Args[2])
+			if err != nil {
+				ctx.ReplyEmbed("Stations", ctx.Loc("stations_removed"))
+			}
+		} else {
+			ctx.ReplyEmbed("Stations", "Arguments missed")
+		}
+	}
 }

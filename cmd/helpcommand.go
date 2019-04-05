@@ -11,35 +11,36 @@ func HelpCommand(ctx bot.Context) {
 		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_reply"))
 		return
 	}
-	switch ctx.Args[0] {
-	case "v":
-		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!v"))
-	case "b":
-		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!b"))
-		if ctx.IsAdmin() {
-			ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!b_admin"))
+
+	commandMap := map[string]string{
+		"v": "help_command_!v",
+		"b": "help_command_!b",
+		"y": "help_command_!y",
+		"r": "help_command_!r",
+		"w": "help_command_!w",
+		"n": "help_command_!n",
+		"t": "help_command_!t",
+		"c": "help_command_!c",
+		"p": "help_command_!p",
+		"geoip": "help_command_!geoip",
+		"twitch": "help_command_!twitch",
+		"greetings": "help_command_!greetings",
+		"bot.admin": "admin_help",
+	}
+
+	adminCommandMap := map[string]string{
+		"b": "help_command_!b_admin",
+	}
+
+	if _, ok := commandMap[ctx.Args[0]]; !ok {
+		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_reply"))
+	}
+
+	ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc(commandMap[ctx.Args[0]]))
+
+	if ctx.IsAdmin() {
+		if _, ok := adminCommandMap[ctx.Args[0]]; ok {
+			ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc(adminCommandMap[ctx.Args[0]]))
 		}
-	case "y":
-		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!y"))
-	case "r":
-		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!r"))
-	case "w":
-		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!w"))
-	case "n":
-		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!n"))
-	case "t":
-		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!t"))
-	case "c":
-		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!c"))
-	case "p":
-		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!p"))
-	case "geoip":
-		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!geoip"))
-	case "twitch":
-		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!twitch"))
-	case "greetings":
-		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("help_command_!greetings"))
-	case "bot.admin":
-		ctx.ReplyEmbed(ctx.Loc("help"), ctx.Loc("admin_help"))
 	}
 }
