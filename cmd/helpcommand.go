@@ -13,17 +13,17 @@ func HelpCommand(ctx bot.Context) {
 	}
 
 	commandMap := map[string]string{
-		"v": "help_command_!v",
-		"b": "help_command_!b",
-		"y": "help_command_!y",
-		"r": "help_command_!r",
-		"w": "help_command_!w",
-		"n": "help_command_!n",
-		"t": "help_command_!t",
-		"c": "help_command_!c",
-		"p": "help_command_!p",
-		"geoip": "help_command_!geoip",
-		"twitch": "help_command_!twitch",
+		"v":         "help_command_!v",
+		"b":         "help_command_!b",
+		"y":         "help_command_!y",
+		"r":         "help_command_!r",
+		"w":         "help_command_!w",
+		"n":         "help_command_!n",
+		"t":         "help_command_!t",
+		"c":         "help_command_!c",
+		"p":         "help_command_!p",
+		"geoip":     "help_command_!geoip",
+		"twitch":    "help_command_!twitch",
 		"greetings": "help_command_!greetings",
 		"bot.admin": "admin_help",
 	}
