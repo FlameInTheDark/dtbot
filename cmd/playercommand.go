@@ -54,26 +54,26 @@ func playerList(ctx *bot.Context) {
 
 	var category = make(map[string][]*bot.RadioStation)
 
-	for i,s := range stations {
+	for i, s := range stations {
 		category[s.Category] = append(category[s.Category], &stations[i])
 	}
 
 	if len(stations) > 0 {
-		var response string
-
+		var embed = bot.NewEmbed(ctx.Loc("player"))
 		for c, st := range category {
-			response += c
+			var response string
 			if len(st) > 20 {
 				for _, s := range st[:20] {
-					response += fmt.Sprintf("[%v] - %v\n - [%v]", s.Key, s.Name, s.Category)
+					response += fmt.Sprintf("[%v] - %v - [%v]\n", s.Key, s.Name, s.Category)
 				}
 			} else {
 				for _, s := range st {
-					response += fmt.Sprintf("[%v] - %v\n - [%v]", s.Key, s.Name, s.Category)
+					response += fmt.Sprintf("[%v] - %v - [%v]\n", s.Key, s.Name, s.Category)
 				}
 			}
+			embed.Field(c, response, false)
 		}
-		ctx.ReplyEmbed(ctx.Loc("player"), response)
+		embed.Send(ctx)
 	} else {
 		ctx.ReplyEmbed(ctx.Loc("player"), ctx.Loc("stations_not_found"))
 	}
