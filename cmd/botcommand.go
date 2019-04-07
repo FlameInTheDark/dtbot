@@ -227,7 +227,7 @@ func botGuild(ctx *bot.Context) {
 			}
 		}
 		guildUsers = len(guild.Members)
-		usersOffline = len(guild.Members) - (usersOnline + usersIdle + usersDND)
+		usersOffline = guild.MemberCount - (usersOnline + usersIdle + usersDND)
 
 		for _, c := range guild.Channels {
 			switch c.Type {
