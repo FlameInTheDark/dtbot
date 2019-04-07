@@ -209,6 +209,7 @@ func botGuild(ctx *bot.Context) {
 			channelsText  int
 			guildEmojis   int
 			guildRoles    string
+			guildUsers    int
 		)
 
 		for _, p := range guild.Presences {
@@ -225,7 +226,7 @@ func botGuild(ctx *bot.Context) {
 				usersBot++
 			}
 		}
-
+		guildUsers = len(guild.Members)
 		usersOffline = len(guild.Members) - (usersOnline + usersIdle + usersDND)
 
 		for _, c := range guild.Channels {
@@ -254,7 +255,7 @@ func botGuild(ctx *bot.Context) {
 		emb.Field(ctx.Loc("guild_emoji"), fmt.Sprintf(ctx.Loc("guild_emoji_count"), guildEmojis), true)
 		emb.Field(ctx.Loc("guild_channels"), fmt.Sprintf(ctx.Loc("guild_channels_format"), channelsText, channelsVoice), true)
 		emb.Field(ctx.Loc("guild_id"), ctx.Guild.ID, true)
-		emb.Field(ctx.Loc("guild_users"), fmt.Sprintf(ctx.Loc("guild_users_format"), usersOnline, usersOffline, usersIdle, usersDND, usersBot), true)
+		emb.Field(ctx.Loc("guild_users"), fmt.Sprintf(ctx.Loc("guild_users_format"), guildUsers, usersOnline, usersOffline, usersIdle, usersDND, usersBot), true)
 		emb.Field(ctx.Loc("guild_roles"), guildRoles, true)
 		emb.Send(ctx)
 	case "list":
