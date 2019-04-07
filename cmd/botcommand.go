@@ -248,7 +248,7 @@ func botGuild(ctx *bot.Context) {
 			if r.Name == "@everyone" {
 				continue
 			}
-			if len(guildRoles + r.Name) < 1024 {
+			if len(guildRoles + r.Name) < 100 {
 				guildRoles += r.Name + "\n"
 			}
 		}
