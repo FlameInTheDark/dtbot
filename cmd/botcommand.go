@@ -186,6 +186,62 @@ func botGuild(ctx *bot.Context) {
 			return
 		}
 		ctx.ReplyEmbedPM("Guild", fmt.Sprintf("Leave from guild: %v", ctx.Args[2]))
+	case "info":
+		var guild *discordgo.Guild
+		var err error
+
+		if len(ctx.Args) < 3 {
+			guild = ctx.Guild
+		} else {
+			guild, err = ctx.Discord.Guild(ctx.Args[2])
+			if err != nil {
+				return
+			}
+		}
+
+		var (
+			usersOnline   int
+			usersOffline  int
+			usersIdle     int
+			usersDND      int
+			usersBot      int
+			channelsVoice int
+			channelsText  int
+		)
+
+		for _, p := range guild.Presences {
+			if !p.User.Bot {
+				switch p.Status {
+				case discordgo.StatusOnline:
+					usersOnline++
+				case discordgo.StatusOffline:
+					usersOffline++
+				case discordgo.StatusIdle:
+					usersIdle++
+				case discordgo.StatusDoNotDisturb:
+					usersDND++
+				}
+			} else {
+				usersBot++
+			}
+		}
+
+		for _, c := range guild.Channels {
+			switch c.Type {
+			case discordgo.ChannelTypeGuildText:
+				channelsText++
+			case discordgo.ChannelTypeGuildVoice:
+				channelsVoice++
+			}
+		}
+
+		emb := bot.NewEmbed(ctx.Loc("guild_info"))
+		emb.Field(ctx.Loc("guild_name"), ctx.Guild.Name, true)
+		emb.Field(ctx.Loc("guild_id"), ctx.Guild.ID, true)
+		emb.Field(ctx.Loc("guild_users"), fmt.Sprintf(ctx.Loc("guild_users_format"), usersOnline, usersOffline, usersIdle, usersDND, usersBot), true)
+		emb.Field(ctx.Loc("guild_emoji"), fmt.Sprintf(ctx.Loc("guild_emoji_count"), len(ctx.Guild.Emojis)), true)
+		emb.Field(ctx.Loc("guild_channels"), fmt.Sprintf(ctx.Loc("guild_channels_format"), channelsText, channelsVoice), true)
+		emb.Send(ctx)
 	case "list":
 		var selected string
 		var paged = false

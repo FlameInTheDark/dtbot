@@ -92,7 +92,16 @@
         "greetings": "Greetings",
         "greetings_add": "Added new greetings!",
         "greetings_no_text": "You need to add text! `!greetings add Some text of greetings`",
-        "greetings_removed": "Greetings removed!"
+        "greetings_removed": "Greetings removed!",
+        "guild_info": "Guild info",
+        "guild_name": "Guild name",
+        "guild_id": "Guild ID",
+        "guild_users": "Users",
+        "guild_users_format": "Online: %v\nOffline: %v\nIdle: %v\nDND: %v\nBots: %v",
+        "guild_emoji": "Guild emoji",
+        "guild_emoji_count": "Count: %v",
+        "guild_channels": "Guild channels",
+        "guild_channels_format": "Text: %v\nVoice: %v"
     },
     "ru": {
         "admin_require": "Для использования данной команды вам необходимо иметь роль \"bot.admin\". Для помощи используйте `!help bot.admin`",
