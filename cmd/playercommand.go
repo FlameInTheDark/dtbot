@@ -47,6 +47,7 @@ func playerPlay(sess *bot.Session, ctx *bot.Context) {
 }
 
 func playerList(ctx *bot.Context) {
+	ctx.MetricsCommand("player", "list")
 	var stations []bot.RadioStation
 	if len(ctx.Args) > 1 {
 		stations = ctx.DB.GetRadioStations(ctx.Args[1])
@@ -82,6 +83,7 @@ func playerList(ctx *bot.Context) {
 }
 
 func playerCategories(ctx *bot.Context) {
+	ctx.MetricsCommand("player", "categories")
 	stations := ctx.DB.GetRadioStations("")
 	var categories = make(map[string]bool)
 	var reply = ctx.Loc("stations_categories")
@@ -96,6 +98,7 @@ func playerCategories(ctx *bot.Context) {
 }
 
 func playerStation(sess *bot.Session, ctx *bot.Context) {
+	ctx.MetricsCommand("player", "station")
 	if sess == nil {
 		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_not_in_voice"))
 		return
