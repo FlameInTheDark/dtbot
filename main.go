@@ -205,7 +205,7 @@ func MetricsSender(d *discordgo.Session) {
 		// Calculating users count
 		usersCount := 0
 		for _, g := range d.State.Guilds {
-			usersCount += len(g.Members)
+			usersCount += g.MemberCount
 		}
 
 		// Metrics counters
