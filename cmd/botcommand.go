@@ -207,6 +207,7 @@ func botGuild(ctx *bot.Context) {
 			usersBot      int
 			channelsVoice int
 			channelsText  int
+			guildEmojis   int
 		)
 
 		for _, m := range guild.Members {
@@ -238,10 +239,14 @@ func botGuild(ctx *bot.Context) {
 			}
 		}
 
+		for _, _ = range guild.Emojis {
+			guildEmojis++
+		}
+
 		emb := bot.NewEmbed(ctx.Loc("guild_info"))
 		emb.Color(ctx.GetGuild().EmbedColor)
 		emb.Field(ctx.Loc("guild_name"), ctx.Guild.Name, true)
-		emb.Field(ctx.Loc("guild_emoji"), fmt.Sprintf(ctx.Loc("guild_emoji_count"), len(ctx.Guild.Emojis)), true)
+		emb.Field(ctx.Loc("guild_emoji"), fmt.Sprintf(ctx.Loc("guild_emoji_count"), guildEmojis), true)
 		emb.Field(ctx.Loc("guild_channels"), fmt.Sprintf(ctx.Loc("guild_channels_format"), channelsText, channelsVoice), true)
 		emb.Field(ctx.Loc("guild_id"), ctx.Guild.ID, true)
 		emb.Field(ctx.Loc("guild_users"), fmt.Sprintf(ctx.Loc("guild_users_format"), usersOnline, usersOffline, usersIdle, usersDND, usersBot), true)
