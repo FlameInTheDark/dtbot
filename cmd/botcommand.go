@@ -245,6 +245,9 @@ func botGuild(ctx *bot.Context) {
 		}
 
 		for _, r := range guild.Roles {
+			if r.Name == "@everyone" {
+				continue
+			}
 			guildRoles += r.Name + "\n"
 		}
 
