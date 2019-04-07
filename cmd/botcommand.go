@@ -209,17 +209,20 @@ func botGuild(ctx *bot.Context) {
 			channelsText  int
 		)
 
-		for _, p := range guild.Presences {
-			if p.User.Bot {
-				switch p.Status {
-				case discordgo.StatusOnline:
-					usersOnline++
-				case discordgo.StatusOffline:
-					usersOffline++
-				case discordgo.StatusIdle:
-					usersIdle++
-				case discordgo.StatusDoNotDisturb:
-					usersDND++
+		for _, m := range guild.Members {
+			if !m.User.Bot {
+				p,err := ctx.Discord.State.Presence(guild.ID, m.User.ID)
+				if err == nil {
+					switch p.Status {
+					case discordgo.StatusOnline:
+						usersOnline++
+					case discordgo.StatusOffline:
+						usersOffline++
+					case discordgo.StatusIdle:
+						usersIdle++
+					case discordgo.StatusDoNotDisturb:
+						usersDND++
+					}
 				}
 			} else {
 				usersBot++
