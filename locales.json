@@ -101,7 +101,8 @@
         "guild_emoji": "Guild emoji",
         "guild_emoji_count": "Count: %v",
         "guild_channels": "Guild channels",
-        "guild_channels_format": "Text: %v\nVoice: %v"
+        "guild_channels_format": "Text: %v\nVoice: %v",
+        "guild_roles": "Guild roles"
     },
     "ru": {
         "admin_require": "Для использования данной команды вам необходимо иметь роль \"bot.admin\". Для помощи используйте `!help bot.admin`",
@@ -193,6 +194,16 @@
         "greetings": "Приветствие",
         "greetings_add": "Добавлено новое приветствие!",
         "greetings_no_text": "Вам нужно добавить текст! `!greetings add Some text of greetings`",
-        "greetings_removed": "Приветствие удалено!"
+        "greetings_removed": "Приветствие удалено!",
+        "guild_info": "Информация о гильдии",
+        "guild_name": "Название гильдии",
+        "guild_id": "ID гильдии",
+        "guild_users": "Пользователи",
+        "guild_users_format": "Онлайн: %v\nОфлайн: %v\nОтошел: %v\nНе беспокоить: %v\nБоты: %v",
+        "guild_emoji": "Эмодзи гильдии",
+        "guild_emoji_count": "Количество: %v",
+        "guild_channels": "Каналы гильдии",
+        "guild_channels_format": "Текстовые: %v\nГолосовые: %v",
+        "guild_roles": "Роли гильдии"
     }
 }

@@ -208,6 +208,7 @@ func botGuild(ctx *bot.Context) {
 			channelsVoice int
 			channelsText  int
 			guildEmojis   int
+			guildRoles    string
 		)
 
 		for _, m := range guild.Members {
@@ -243,6 +244,10 @@ func botGuild(ctx *bot.Context) {
 			guildEmojis++
 		}
 
+		for _, r := range guild.Roles {
+			guildRoles += r.Name + "\n"
+		}
+
 		emb := bot.NewEmbed(ctx.Loc("guild_info"))
 		emb.Color(ctx.GetGuild().EmbedColor)
 		emb.Field(ctx.Loc("guild_name"), ctx.Guild.Name, true)
@@ -250,6 +255,7 @@ func botGuild(ctx *bot.Context) {
 		emb.Field(ctx.Loc("guild_channels"), fmt.Sprintf(ctx.Loc("guild_channels_format"), channelsText, channelsVoice), true)
 		emb.Field(ctx.Loc("guild_id"), ctx.Guild.ID, true)
 		emb.Field(ctx.Loc("guild_users"), fmt.Sprintf(ctx.Loc("guild_users_format"), usersOnline, usersOffline, usersIdle, usersDND, usersBot), true)
+		emb.Field(ctx.Loc("guild_roles"), guildRoles, true)
 		emb.Send(ctx)
 	case "list":
 		var selected string
