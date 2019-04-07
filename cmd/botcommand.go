@@ -250,6 +250,8 @@ func botGuild(ctx *bot.Context) {
 			}
 			if len(guildRoles + r.Name) < 100 {
 				guildRoles += r.Name + "\n"
+			} else {
+				guildRoles += "..."
 			}
 		}
 
