@@ -213,21 +213,23 @@ func botGuild(ctx *bot.Context) {
 		)
 
 		for _, p := range guild.Presences {
-			if !p.User.Bot {
-				switch p.Status {
-				case discordgo.StatusOnline:
-					usersOnline++
-				case discordgo.StatusIdle:
-					usersIdle++
-				case discordgo.StatusDoNotDisturb:
-					usersDND++
-				}
-			} else {
-				usersBot++
+			switch p.Status {
+			case discordgo.StatusOnline:
+				usersOnline++
+			case discordgo.StatusIdle:
+				usersIdle++
+			case discordgo.StatusDoNotDisturb:
+				usersDND++
 			}
 		}
 		guildUsers = len(guild.Members)
 		usersOffline = guild.MemberCount - (usersOnline + usersIdle + usersDND)
+
+		for _,m := range guild.Members {
+			if m.User.Bot {
+				usersBot++
+			}
+		}
 
 		for _, c := range guild.Channels {
 			switch c.Type {
