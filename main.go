@@ -177,7 +177,7 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 
 // Adds bot commands
 func registerCommands() {
-	CmdHandler.Register("!r", cmd.PlayerCommand)
+	CmdHandler.Register("!r", cmd.RadioCommand)
 	CmdHandler.Register("!w", cmd.WeatherCommand)
 	CmdHandler.Register("!t", cmd.TranslateCommand)
 	CmdHandler.Register("!n", cmd.NewsCommand)

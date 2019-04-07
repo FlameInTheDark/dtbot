@@ -7,7 +7,7 @@ import (
 )
 
 // PlayerCommand Player handler
-func PlayerCommand(ctx bot.Context) {
+func RadioCommand(ctx bot.Context) {
 	sess := ctx.Sessions.GetByGuild(ctx.Guild.ID)
 	if len(ctx.Args) == 0 {
 		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_no_args"))
@@ -23,7 +23,7 @@ func PlayerCommand(ctx bot.Context) {
 	case "genres":
 		playerCategories(&ctx)
 	case "stop":
-		ctx.MetricsCommand("player", "stop")
+		ctx.MetricsCommand("radio", "stop")
 		if sess == nil {
 			ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_not_in_voice"))
 			return
@@ -33,7 +33,7 @@ func PlayerCommand(ctx bot.Context) {
 }
 
 func playerPlay(sess *bot.Session, ctx *bot.Context) {
-	ctx.MetricsCommand("player", "play")
+	ctx.MetricsCommand("radio", "play")
 	if sess == nil {
 		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_not_in_voice"))
 		return
@@ -47,7 +47,7 @@ func playerPlay(sess *bot.Session, ctx *bot.Context) {
 }
 
 func playerList(ctx *bot.Context) {
-	ctx.MetricsCommand("player", "list")
+	ctx.MetricsCommand("radio", "list")
 	var stations []bot.RadioStation
 	if len(ctx.Args) > 1 {
 		stations = ctx.DB.GetRadioStations(ctx.Args[1])
@@ -83,7 +83,7 @@ func playerList(ctx *bot.Context) {
 }
 
 func playerCategories(ctx *bot.Context) {
-	ctx.MetricsCommand("player", "categories")
+	ctx.MetricsCommand("radio", "categories")
 	stations := ctx.DB.GetRadioStations("")
 	var categories = make(map[string]bool)
 	var reply = ctx.Loc("stations_categories")
@@ -98,7 +98,7 @@ func playerCategories(ctx *bot.Context) {
 }
 
 func playerStation(sess *bot.Session, ctx *bot.Context) {
-	ctx.MetricsCommand("player", "station")
+	ctx.MetricsCommand("radio", "station")
 	if sess == nil {
 		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_not_in_voice"))
 		return
