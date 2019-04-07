@@ -216,8 +216,6 @@ func botGuild(ctx *bot.Context) {
 				switch p.Status {
 				case discordgo.StatusOnline:
 					usersOnline++
-				case discordgo.StatusOffline:
-					usersOffline++
 				case discordgo.StatusIdle:
 					usersIdle++
 				case discordgo.StatusDoNotDisturb:
@@ -227,6 +225,8 @@ func botGuild(ctx *bot.Context) {
 				usersBot++
 			}
 		}
+
+		usersOffline = len(guild.Members) - (usersOnline + usersIdle + usersDND)
 
 		for _, c := range guild.Channels {
 			switch c.Type {
