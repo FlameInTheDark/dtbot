@@ -6,7 +6,7 @@ import (
 	"github.com/FlameInTheDark/dtbot/bot"
 )
 
-// PlayerCommand Player handler
+// RadioCommand Player handler
 func RadioCommand(ctx bot.Context) {
 	sess := ctx.Sessions.GetByGuild(ctx.Guild.ID)
 	if len(ctx.Args) == 0 {
