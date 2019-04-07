@@ -248,7 +248,9 @@ func botGuild(ctx *bot.Context) {
 			if r.Name == "@everyone" {
 				continue
 			}
-			guildRoles += r.Name + "\n"
+			if len(guildRoles + r.Name) < 1024 {
+				guildRoles += r.Name + "\n"
+			}
 		}
 
 		emb := bot.NewEmbed(ctx.Loc("guild_info"))
