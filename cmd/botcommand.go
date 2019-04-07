@@ -210,7 +210,7 @@ func botGuild(ctx *bot.Context) {
 		)
 
 		for _, p := range guild.Presences {
-			if !p.User.Bot {
+			if p.User.Bot {
 				switch p.Status {
 				case discordgo.StatusOnline:
 					usersOnline++
