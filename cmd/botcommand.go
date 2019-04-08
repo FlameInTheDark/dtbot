@@ -210,7 +210,14 @@ func botGuild(ctx *bot.Context) {
 			guildEmojis   int
 			guildRoles    string
 			guildUsers    int
+			guildOwner    string
 		)
+
+		for _, m := range guild.Members {
+			if m.User.ID == guild.OwnerID {
+				guildOwner = m.User.Username + "#" + m.User.Discriminator
+			}
+		}
 
 		for _, p := range guild.Presences {
 			switch p.Status {
@@ -225,7 +232,7 @@ func botGuild(ctx *bot.Context) {
 		guildUsers = len(guild.Members)
 		usersOffline = guild.MemberCount - (usersOnline + usersIdle + usersDND)
 
-		for _,m := range guild.Members {
+		for _, m := range guild.Members {
 			if m.User.Bot {
 				usersBot++
 			}
@@ -248,7 +255,7 @@ func botGuild(ctx *bot.Context) {
 			if r.Name == "@everyone" {
 				continue
 			}
-			if len(guildRoles + r.Name) < 100 {
+			if len(guildRoles+r.Name) < 100 {
 				guildRoles += r.Name + "\n"
 			}
 		}
@@ -261,6 +268,7 @@ func botGuild(ctx *bot.Context) {
 		emb.Field(ctx.Loc("guild_id"), guild.ID, true)
 		emb.Field(ctx.Loc("guild_users"), fmt.Sprintf(ctx.Loc("guild_users_format"), guildUsers, usersOnline, usersOffline, usersIdle, usersDND, usersBot), true)
 		emb.Field(ctx.Loc("guild_roles"), guildRoles, true)
+		emb.Field(ctx.Loc("guild_owner"), fmt.Sprintf(ctx.Loc("guild_owner_format"), guildOwner, guild.OwnerID), true)
 		emb.Send(ctx)
 	case "list":
 		var selected string
