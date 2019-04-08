@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+git pull origin master
 go build
 docker kill $(docker ps -a -q --filter="name=dtbot")
 docker rm $(docker ps -a -q --filter="name=dtbot")
