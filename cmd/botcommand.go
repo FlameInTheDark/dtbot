@@ -195,6 +195,7 @@ func botGuild(ctx *bot.Context) {
 		} else {
 			guild, err = ctx.Discord.Guild(ctx.Args[2])
 			if err != nil {
+				ctx.ReplyEmbed(ctx.Loc("guild_info"), ctx.Loc("guild_not_found"))
 				return
 			}
 		}

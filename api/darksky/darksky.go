@@ -111,8 +111,17 @@ type DarkSkyFlags struct {
 	Units          string   `json:"units"`
 }
 
+func (d *DarkSkyData) GetTime(location string, tz int) time.Time {
+	fLoc, fLocErr := time.LoadLocation(location)
+	if fLocErr != nil {
+		fmt.Printf("Weather timezone error: %v", fLocErr)
+		return d.TZTime(tz)
+	}
+	return time.Unix(d.Time, 0).UTC().In(fLoc)
+}
+
 // TZTime converts epoch date to normal with timezone
-func (d DarkSkyData) TZTime(tz int) time.Time {
+func (d *DarkSkyData) TZTime(tz int) time.Time {
 	return time.Unix(d.Time, 0).UTC().Add(time.Hour * time.Duration(tz))
 }
 
@@ -189,7 +198,7 @@ func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	if err := gc.LoadFontFace("lato.ttf", 30); err != nil {
 		panic(err)
 	}
-	gc.DrawStringAnchored(fmt.Sprintf("%.2v:00", forecast.Currently.TZTime(ctx.Conf.General.Timezone).Hour()), 50, 200, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%.2v:00", forecast.Currently.GetTime(forecast.Timezone, ctx.Conf.General.Timezone).Hour()), 50, 200, 0.5, 0.5)
 	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", int(forecast.Currently.Humidity*100)), 200, 200, 0.5, 0.5)
 	gc.DrawStringAnchored(fmt.Sprintf("C:%v%%", int(forecast.Currently.CloudCover*100)), 350, 200, 0.5, 0.5)
 
@@ -211,10 +220,10 @@ func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	}
 
 	// Time
-	gc.DrawStringAnchored(fmt.Sprintf("%.2v:00", forecast.Hourly.Data[2].TZTime(ctx.Conf.General.Timezone).Hour()), 100, 285, 0, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("%.2v:00", forecast.Hourly.Data[4].TZTime(ctx.Conf.General.Timezone).Hour()), 100, 385, 0, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("%.2v:00", forecast.Hourly.Data[6].TZTime(ctx.Conf.General.Timezone).Hour()), 100, 485, 0, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("%.2v:00", forecast.Hourly.Data[8].TZTime(ctx.Conf.General.Timezone).Hour()), 100, 585, 0, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%.2v:00", forecast.Hourly.Data[2].GetTime(forecast.Timezone, ctx.Conf.General.Timezone).Hour()), 100, 285, 0, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%.2v:00", forecast.Hourly.Data[4].GetTime(forecast.Timezone, ctx.Conf.General.Timezone).Hour()), 100, 385, 0, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%.2v:00", forecast.Hourly.Data[6].GetTime(forecast.Timezone, ctx.Conf.General.Timezone).Hour()), 100, 485, 0, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%.2v:00", forecast.Hourly.Data[8].GetTime(forecast.Timezone, ctx.Conf.General.Timezone).Hour()), 100, 585, 0, 0.5)
 
 	// Humidity and cloudiness
 	if err := gc.LoadFontFace("lato.ttf", 20); err != nil {
