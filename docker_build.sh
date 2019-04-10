@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 git pull origin master
+cp /usr/local/go/lib/time/zoneinfo.zip ./zoneinfo.zip
 go build
 docker kill $(docker ps -a -q --filter="name=dtbot")
 docker rm $(docker ps -a -q --filter="name=dtbot")
