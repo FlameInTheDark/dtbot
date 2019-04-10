@@ -114,7 +114,7 @@ type DarkSkyFlags struct {
 func (d *DarkSkyData) GetTime(location string, tz int) time.Time {
 	fLoc, fLocErr := time.LoadLocation(location)
 	if fLocErr != nil {
-		fmt.Printf("Weather timezone error: %v", fLocErr)
+		fmt.Printf("Weather timezone error: %v", fLocErr.Error())
 		return d.TZTime(tz)
 	}
 	return time.Unix(d.Time, 0).UTC().In(fLoc)
