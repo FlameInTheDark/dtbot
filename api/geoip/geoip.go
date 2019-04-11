@@ -72,6 +72,9 @@ type GeoIPCountry struct {
 
 // GetGeoIP makes request to API and returns geoip data formatted to string
 func GetGeoIP(ctx *bot.Context) string {
+	if len(ctx.Args) == 0 {
+		return ctx.Loc("geoip_no_data")
+	}
 	resp, err := http.Get(fmt.Sprintf("http://api.sypexgeo.net/json/%v", ctx.Args[0]))
 	if err != nil {
 		return ctx.Loc("geoip_no_data")
