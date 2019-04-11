@@ -38,11 +38,14 @@ func playerPlay(sess *bot.Session, ctx *bot.Context) {
 		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_not_in_voice"))
 		return
 	}
-	if len(ctx.Args) > 1 {
+	if ctx.Arg(1) == "attachment" {
+		go sess.Player.Start(sess, ctx.Message.Attachments[0].URL, func(msg string) {
+			ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), msg)
+		}, ctx.Guilds.Guilds[ctx.Guild.ID].VoiceVolume)
+	} else if len(ctx.Args) > 1 {
 		go sess.Player.Start(sess, ctx.Args[1], func(msg string) {
 			ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), msg)
 		}, ctx.Guilds.Guilds[ctx.Guild.ID].VoiceVolume)
-
 	}
 }
 
