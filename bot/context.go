@@ -128,3 +128,11 @@ func (ctx *Context) Log(module, guildID, text string) {
 	ctx.DB.Log(module, guildID, text)
 	ctx.MetricsLog(module)
 }
+
+// Arg returns argument by index. If argument not exists returns empty string
+func (ctx *Context) Arg(index int) string {
+	if len(ctx.Args) > index {
+		return ctx.Args[index]
+	}
+	return ""
+}

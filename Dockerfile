@@ -6,4 +6,3 @@ RUN chmod a+rx youtube-dl
 ENV ZONEINFO /zoneinfo.zip
 COPY . .
 ENTRYPOINT ["./dtbot"]
-

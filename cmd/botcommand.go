@@ -174,7 +174,7 @@ func botGuild(ctx *bot.Context) {
 	if len(ctx.Args) < 2 && !ctx.IsAdmin() {
 		return
 	}
-	switch ctx.Args[1] {
+	switch ctx.Arg(1) {
 	case "leave":
 		if len(ctx.Args) < 3 {
 			return
