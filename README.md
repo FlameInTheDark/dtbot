@@ -1,4 +1,4 @@
-<p align="center"><img src="https://github.com/FlameIntheDark/dtbot/blob/master/logo.png?raw=true" style="max-width:50%;"></p>
+<p align="center"><img src="https://github.com/FlameIntheDark/dtbot/blob/master/logo.png?raw=true" style="max-width:50%;" width="50%"></p>
 # Discord Tools Bot
 
 [![Go report](http://goreportcard.com/badge/FlameInTheDark/dtbot)](http://goreportcard.com/report/FlameInTheDark/dtbot)
