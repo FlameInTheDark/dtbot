@@ -1,7 +1,5 @@
 package bot
 
-import "fmt"
-
 // SongQueue struct contains songs array
 type SongQueue struct {
 	list    []Song
@@ -50,7 +48,6 @@ func (queue SongQueue) Start(sess *Session, callback func(string)) {
 	for queue.HasNext() && queue.Running {
 		song := queue.Next()
 		callback(song.Title)
-		fmt.Println(fmt.Sprintf("volume=%.3f", sess.Volume))
 		_ = sess.PlayYoutube(song)
 	}
 	if !queue.Running {

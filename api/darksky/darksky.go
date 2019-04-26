@@ -22,7 +22,7 @@ type DarkSkyResponse struct {
 	Hourly    DarkSkyHourly `json:"hourly"`
 	Daily     DarkSkyDaily  `json:"daily"`
 	Flags     DarkSkyFlags  `json:"flags"`
-	Offset    int64         `json:"offset"`
+	Offset    float64         `json:"offset"`
 }
 
 // DarkSkyData contains main hourly weather data
@@ -138,7 +138,7 @@ func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 
 	loc, err := location.New(ctx.Conf.General.GeonamesUsername, city)
 	if err != nil {
-		fmt.Printf("Location API: %v", err)
+		fmt.Printf("Location API: %v\n", err)
 		return
 	}
 
@@ -149,13 +149,13 @@ func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	resp, err := http.Get(fmt.Sprintf("https://api.darksky.net/forecast/%v/%v,%v?units=ca&lang=%v",
 		ctx.Conf.DarkSky.Token, newlat, newlng, ctx.Conf.General.Language))
 	if err != nil {
-		fmt.Printf("Weather API: %v", err)
+		fmt.Printf("Weather API: %v\n", err)
 		return
 	}
 
 	err = json.NewDecoder(resp.Body).Decode(&forecast)
 	if err != nil {
-		fmt.Printf("Weather Decode: %v", err)
+		fmt.Printf("Weather Decode: %v\n", err)
 		return
 	}
 
@@ -265,7 +265,7 @@ func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	buf = new(bytes.Buffer)
 	pngerr := png.Encode(buf, gc.Image())
 	if pngerr != nil {
-		fmt.Printf("Image: %v", pngerr)
+		fmt.Printf("Image: %v\n", pngerr)
 	}
 	return
 }
