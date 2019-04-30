@@ -149,8 +149,9 @@ func ShowKills(ctx *bot.Context) {
 	if len(search.Players) > 0 {
 		fmt.Println("Players more then 0")
 		kills, err := GetPlayerKills(search.Players[0].ID)
+		fmt.Println("Searching kills of " + search.Players[0].Name + search.Players[0].ID)
 		if err != nil {
-			fmt.Printf("Error:" + err.Error())
+			fmt.Println("Error: " + err.Error())
 			return
 		}
 		fmt.Println("Founded kills of " + search.Players[0].Name)
