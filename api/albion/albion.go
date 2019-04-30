@@ -140,32 +140,27 @@ func GetPlayerKills(id string) (result []Kill, err error) {
 
 // ShowKills sends embed message in discord
 func ShowKills(ctx *bot.Context) {
-	fmt.Println("ShowKills()")
 	search, err := SearchPlayers(ctx.Args[1])
 	if err != nil {
 		fmt.Println("Error:" + err.Error())
 		return
 	}
-	fmt.Println("SearchPlayer() OK")
 	if len(search.Players) > 0 {
 		kills, err := GetPlayerKills(search.Players[0].ID)
 		if err != nil {
 			fmt.Printf("Error:" + err.Error())
 			return
 		}
-		fmt.Println("GetPlayerKills() OK")
-		embed := bot.NewEmbed(ctx.Loc("Albion Killboard"))
-		embed.Author("https://albiononline.com/ru/killboard/player/"+search.Players[0].ID, "", "https://assets.albiononline.com/assets/images/icons/favicon.ico")
+		embed := bot.NewEmbed("Albion Killboard")
+		embed = embed.Author("https://albiononline.com/ru/killboard/player/"+search.Players[0].ID, "", "https://assets.albiononline.com/assets/images/icons/favicon.ico")
 		for _, k := range kills {
 			t, err := time.Parse("2006-01-02T15:04:05.000+0000", k.TimeStamp)
 			var timeString string
 			if err == nil {
 				timeString = fmt.Sprintf("%v.%v.%v %v:%v", t.Day(), t.Month(), t.Year(), t.Hour(), t.Minute())
 			}
-			embed.Field(k.Victim.Name, fmt.Sprintf(ctx.Loc("albion_kill_short"), k.Victim.FameRatio, k.Victim.AverageItemPower, timeString), false)
+			embed = embed.Field(k.Victim.Name, fmt.Sprintf(ctx.Loc("albion_kill_short"), k.Victim.FameRatio, k.Victim.AverageItemPower, timeString), false)
 		}
 		embed.Send(ctx)
-		fmt.Printf("Albion: sended")
 	}
-	fmt.Println("missed")
 }
