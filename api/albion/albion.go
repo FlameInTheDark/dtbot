@@ -163,7 +163,7 @@ func ShowKills(ctx *bot.Context) {
 			for _, k := range kills {
 				fmt.Println("Killed " + k.Victim.Name)
 				var timeString string
-				t, err := time.Parse("2019-04-28T18:59:21.942273100Z", k.TimeStamp)
+				t, err := time.Parse("2006-01-02T15:04:05.000000000Z", k.TimeStamp)
 				if err == nil {
 					timeString = fmt.Sprintf("%v.%v.%v %v:%v", t.Day(), t.Month().String(), t.Year(), t.Hour(), t.Minute())
 				} else {
