@@ -143,14 +143,14 @@ func ShowKills(ctx *bot.Context) {
 	fmt.Println("ShowKills()")
 	search, err := SearchPlayers(ctx.Args[1])
 	if err != nil {
-		fmt.Printf(err.Error())
+		fmt.Println("Error:" + err.Error())
 		return
 	}
 	fmt.Println("SearchPlayer() OK")
 	if len(search.Players) > 0 {
 		kills, err := GetPlayerKills(search.Players[0].ID)
 		if err != nil {
-			fmt.Printf(err.Error())
+			fmt.Printf("Error:" + err.Error())
 			return
 		}
 		fmt.Println("GetPlayerKills() OK")
