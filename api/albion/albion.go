@@ -26,19 +26,19 @@ type GuildSearch struct {
 }
 
 // PlayerSearch contains player data from search response
-type PlayerSearch struct {
-	ID           string `json:"Id"`
-	Name         string `json:"Name"`
-	AllianceID   string `json:"AllianceId"`
-	AllianceName string `json:"AllianceName"`
-	KillFame     int    `json:"KillFame"`
-	DeathFame    int    `json:"DeathFame"`
-	Avatar       string `json:"Avatar"`
-	AvatarRing   string `json:"AvatarRing"`
-	FameRation   int    `json:"FameRatio"`
-	TotalKills   int    `json:"totalKills"`
-	GVGKills     int    `json:"gvgKills"`
-	GVGWon       int    `json:"gvgWon"`
+type PlayerSearch struct
+	ID           string  `json:"Id"`
+	Name         string  `json:"Name"`
+	AllianceID   string  `json:"AllianceId"`
+	AllianceName string  `json:"AllianceName"`
+	KillFame     int     `json:"KillFame"`
+	DeathFame    int     `json:"DeathFame"`
+	Avatar       string  `json:"Avatar"`
+	AvatarRing   string  `json:"AvatarRing"`
+	FameRation   float64 `json:"FameRatio"`
+	TotalKills   int     `json:"totalKills"`
+	GVGKills     int     `json:"gvgKills"`
+	GVGWon       int     `json:"gvgWon"`
 }
 
 // Player data
