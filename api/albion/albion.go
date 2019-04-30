@@ -43,7 +43,7 @@ type PlayerSearch struct {
 
 // Player data
 type Player struct {
-	AverageItemPower int       `json:"AverageItemPower"`
+	AverageItemPower float64   `json:"AverageItemPower"`
 	Equipment        Equipment `json:"Equipment"`
 	Inventory        []Item    `json:"Inventory"`
 	Name             string    `json:"Name"`
