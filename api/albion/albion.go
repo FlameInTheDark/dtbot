@@ -9,11 +9,13 @@ import (
 	"time"
 )
 
+// SearchResult contains search response
 type SearchResult struct {
 	Guilds  []GuildSearch  `json:"guilds"`
 	Players []PlayerSearch `json:"players"`
 }
 
+// GuildSearch contains guild data from search response
 type GuildSearch struct {
 	ID           string `json:"Id"`
 	Name         string `json:"Name"`
@@ -23,6 +25,7 @@ type GuildSearch struct {
 	DeathFame    int    `json:"DeathFame"`
 }
 
+// PlayerSearch contains player data from search response
 type PlayerSearch struct {
 	ID           string `json:"Id"`
 	Name         string `json:"Name"`
@@ -38,6 +41,7 @@ type PlayerSearch struct {
 	GVGWon       int    `json:"gvgWon"`
 }
 
+// Player data
 type Player struct {
 	AverageItemPower int       `json:"AverageItemPower"`
 	Equipment        Equipment `json:"Equipment"`
@@ -56,6 +60,7 @@ type Player struct {
 	FameRatio        int       `json:"FameRatio"`
 }
 
+// Equipment contains items in slots
 type Equipment struct {
 	MainHand Item `json:"MainHand"`
 	OffHand  Item `json:"OffHand"`
@@ -69,12 +74,14 @@ type Equipment struct {
 	Food     Item `json:"Food"`
 }
 
+// Item contains item data
 type Item struct {
 	Type    string `json:"Type"`
 	Count   int    `json:"Count"`
 	Quality int    `json:"Quality"`
 }
 
+// Kill contains kill data
 type Kill struct {
 	GroupMemberCount     int      `json:"groupMemberCount"`
 	NumberOfParticipants int      `json:"numberOfParticipants"`
@@ -91,8 +98,9 @@ type Kill struct {
 	Type                 string   `json:"Type"`
 }
 
+// SearchPlayers returns player list by name
 func SearchPlayers(name string) (result *SearchResult, err error) {
-	var sresult SearchResult
+	var sResult SearchResult
 	resp, err := http.Get(fmt.Sprintf("https://gameinfo.albiononline.com/api/gameinfo/search?q=%v", name))
 	if err != nil {
 		return nil, err
@@ -102,14 +110,15 @@ func SearchPlayers(name string) (result *SearchResult, err error) {
 		return nil, errors.New("status " + resp.Status)
 	}
 
-	err = json.NewDecoder(resp.Body).Decode(&sresult)
+	err = json.NewDecoder(resp.Body).Decode(&sResult)
 	if err != nil {
 		return nil, err
 	}
 
-	return &sresult, nil
+	return &sResult, nil
 }
 
+// GetPlayerKills returns array of kills by player id
 func GetPlayerKills(id string) (result []Kill, err error) {
 	var kills []Kill
 	resp, err := http.Get(fmt.Sprintf("https://gameinfo.albiononline.com/api/gameinfo/players/%v/topkills?range=lastWeek&offset=0&limit=11", id))
@@ -129,14 +138,17 @@ func GetPlayerKills(id string) (result []Kill, err error) {
 	return kills, nil
 }
 
+// ShowKills sends embed message in discord
 func ShowKills(ctx *bot.Context) {
 	search, err := SearchPlayers(ctx.Args[1])
 	if err != nil {
+		fmt.Printf(err.Error())
 		return
 	}
 	if len(search.Players) > 0 {
 		kills, err := GetPlayerKills(search.Players[0].ID)
 		if err != nil {
+			fmt.Printf(err.Error())
 			return
 		}
 		embed := bot.NewEmbed(ctx.Loc("Albion Killboard"))
