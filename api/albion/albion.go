@@ -169,7 +169,14 @@ func ShowKills(ctx *bot.Context) {
 				} else {
 					fmt.Println("Parse time: ", err.Error())
 				}
-				embed.Field(fmt.Sprintf("[%v](https://albiononline.com/ru/killboard/kill/%v)", k.Victim.Name, k.EventID), fmt.Sprintf(ctx.Loc("albion_kill_short"), k.Victim.DeathFame, k.Victim.AverageItemPower, timeString), false)
+				embed.Field(
+					k.Victim.Name,
+					fmt.Sprintf("[%v](https://albiononline.com/ru/killboard/kill/%v)",
+						fmt.Sprintf(ctx.Loc("albion_kill_short"),
+							k.Victim.DeathFame,
+							k.Victim.AverageItemPower,
+							timeString),
+						k.EventID), false)
 			}
 			embed.Send(ctx)
 		}
