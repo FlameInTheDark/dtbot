@@ -26,7 +26,7 @@ type GuildSearch struct {
 }
 
 // PlayerSearch contains player data from search response
-type PlayerSearch struct
+type PlayerSearch struct {
 	ID           string  `json:"Id"`
 	Name         string  `json:"Name"`
 	AllianceID   string  `json:"AllianceId"`
