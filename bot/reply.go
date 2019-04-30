@@ -23,6 +23,11 @@ func (emb *NewEmbedStruct) Field(name, value string, inline bool) *NewEmbedStruc
 	return emb
 }
 
+func (emb *NewEmbedStruct) TimeStamp(ts string) *NewEmbedStruct {
+	emb.Embed.Timestamp = ts
+	return emb
+}
+
 // Author adds author to embed
 func (emb *NewEmbedStruct) Author(name, url, iconURL string) *NewEmbedStruct {
 	emb.Embed.Author = &discordgo.MessageEmbedAuthor{URL: url, Name: name, IconURL: iconURL}
