@@ -57,7 +57,7 @@ type Player struct {
 	AvatarRing       string    `json:"AvatarRing"`
 	DeathFame        int       `json:"DeathFame"`
 	KillFame         int       `json:"KillFame"`
-	FameRatio        int       `json:"FameRatio"`
+	FameRatio        float64   `json:"FameRatio"`
 }
 
 // Equipment contains items in slots
