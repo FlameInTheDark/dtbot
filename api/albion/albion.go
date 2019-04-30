@@ -159,6 +159,7 @@ func ShowKills(ctx *bot.Context) {
 			fmt.Println("Kills more then 0")
 			embed := bot.NewEmbed("Albion Killboard")
 			embed.Desc(fmt.Sprintf("[%v](https://albiononline.com/ru/killboard/player/%v)", search.Players[0].Name, search.Players[0].ID)) // "https://assets.albiononline.com/assets/images/icons/favicon.ico")
+			embed.Color(ctx.GuildConf().EmbedColor)
 			for _, k := range kills {
 				fmt.Println("Killed " + k.Victim.Name)
 				t, err := time.Parse("2006-01-02T15:04:05.000+0000", k.TimeStamp)
