@@ -162,12 +162,12 @@ func ShowKills(ctx *bot.Context) {
 			embed.Color(ctx.GuildConf().EmbedColor)
 			for _, k := range kills {
 				fmt.Println("Killed " + k.Victim.Name)
-				t, err := time.Parse("2006-01-02T15:04:05.000+0000", k.TimeStamp)
+				t, err := time.Parse("2006-01-02T15:04:05.000", k.TimeStamp)
 				var timeString string
 				if err == nil {
 					timeString = fmt.Sprintf("%v.%v.%v %v:%v", t.Day(), t.Month(), t.Year(), t.Hour(), t.Minute())
 				}
-				embed.Field(k.Victim.Name, fmt.Sprintf(ctx.Loc("albion_kill_short"), k.Victim.FameRatio, k.Victim.AverageItemPower, timeString), false)
+				embed.Field(k.Victim.Name, fmt.Sprintf(ctx.Loc("albion_kill_short"), k.Victim.KillFame, k.Victim.AverageItemPower, timeString), false)
 			}
 			embed.Send(ctx)
 		}
