@@ -140,17 +140,20 @@ func GetPlayerKills(id string) (result []Kill, err error) {
 
 // ShowKills sends embed message in discord
 func ShowKills(ctx *bot.Context) {
+	fmt.Println("ShowKills()")
 	search, err := SearchPlayers(ctx.Args[1])
 	if err != nil {
 		fmt.Printf(err.Error())
 		return
 	}
+	fmt.Println("SearchPlayer() OK")
 	if len(search.Players) > 0 {
 		kills, err := GetPlayerKills(search.Players[0].ID)
 		if err != nil {
 			fmt.Printf(err.Error())
 			return
 		}
+		fmt.Println("GetPlayerKills() OK")
 		embed := bot.NewEmbed(ctx.Loc("Albion Killboard"))
 		embed.Author("https://albiononline.com/ru/killboard/player/"+search.Players[0].ID, "", "https://assets.albiononline.com/assets/images/icons/favicon.ico")
 		for _, k := range kills {
@@ -164,4 +167,5 @@ func ShowKills(ctx *bot.Context) {
 		embed.Send(ctx)
 		fmt.Printf("Albion: sended")
 	}
+	fmt.Println("missed")
 }
