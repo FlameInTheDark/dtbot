@@ -195,6 +195,7 @@ func registerCommands() {
 	CmdHandler.Register("!geoip", cmd.GeoIPCommand)
 	CmdHandler.Register("!twitch", cmd.TwitchCommand)
 	CmdHandler.Register("!greetings", cmd.GreetingsCommand)
+	CmdHandler.Register("!alb", cmd.AlbionCommand)
 }
 
 // MetricsSender sends metrics to InfluxDB and another services
