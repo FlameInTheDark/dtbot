@@ -145,22 +145,30 @@ func ShowKills(ctx *bot.Context) {
 		fmt.Println("Error:" + err.Error())
 		return
 	}
+	fmt.Println("Founded players")
 	if len(search.Players) > 0 {
+		fmt.Println("Players more then 0")
 		kills, err := GetPlayerKills(search.Players[0].ID)
 		if err != nil {
 			fmt.Printf("Error:" + err.Error())
 			return
 		}
-		embed := bot.NewEmbed("Albion Killboard")
-		embed = embed.Author(search.Players[0].Name, "https://albiononline.com/ru/killboard/player/"+search.Players[0].ID, "https://assets.albiononline.com/assets/images/icons/favicon.ico")
-		for _, k := range kills {
-			t, err := time.Parse("2006-01-02T15:04:05.000+0000", k.TimeStamp)
-			var timeString string
-			if err == nil {
-				timeString = fmt.Sprintf("%v.%v.%v %v:%v", t.Day(), t.Month(), t.Year(), t.Hour(), t.Minute())
+		fmt.Println("Founded kills of " + search.Players[0].Name)
+		if len(kills) > 0 {
+			fmt.Println("Kills more then 0")
+			embed := bot.NewEmbed("Albion Killboard")
+			embed.Desc(fmt.Sprintf("[%v](https://albiononline.com/ru/killboard/player/%v)", search.Players[0].Name, search.Players[0].ID)) // "https://assets.albiononline.com/assets/images/icons/favicon.ico")
+			for _, k := range kills {
+				fmt.Println("Killed " + k.Victim.Name)
+				t, err := time.Parse("2006-01-02T15:04:05.000+0000", k.TimeStamp)
+				var timeString string
+				if err == nil {
+					timeString = fmt.Sprintf("%v.%v.%v %v:%v", t.Day(), t.Month(), t.Year(), t.Hour(), t.Minute())
+				}
+				embed.Field(k.Victim.Name, fmt.Sprintf(ctx.Loc("albion_kill_short"), k.Victim.FameRatio, k.Victim.AverageItemPower, timeString), false)
 			}
-			embed = embed.Field(k.Victim.Name, fmt.Sprintf(ctx.Loc("albion_kill_short"), k.Victim.FameRatio, k.Victim.AverageItemPower, timeString), false)
+			embed.Send(ctx)
 		}
-		embed.Send(ctx)
+
 	}
 }
