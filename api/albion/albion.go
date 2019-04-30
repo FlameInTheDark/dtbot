@@ -152,7 +152,7 @@ func ShowKills(ctx *bot.Context) {
 			return
 		}
 		embed := bot.NewEmbed("Albion Killboard")
-		embed = embed.Author("https://albiononline.com/ru/killboard/player/"+search.Players[0].ID, "", "https://assets.albiononline.com/assets/images/icons/favicon.ico")
+		embed = embed.Author(search.Players[0].Name, "https://albiononline.com/ru/killboard/player/"+search.Players[0].ID, "https://assets.albiononline.com/assets/images/icons/favicon.ico")
 		for _, k := range kills {
 			t, err := time.Parse("2006-01-02T15:04:05.000+0000", k.TimeStamp)
 			var timeString string
