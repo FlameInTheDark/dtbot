@@ -162,5 +162,6 @@ func ShowKills(ctx *bot.Context) {
 			embed.Field(k.Victim.Name, fmt.Sprintf(ctx.Loc("albion_kill_short"), k.Victim.FameRatio, k.Victim.AverageItemPower, timeString), false)
 		}
 		embed.Send(ctx)
+		fmt.Printf("Albion: sended")
 	}
 }
