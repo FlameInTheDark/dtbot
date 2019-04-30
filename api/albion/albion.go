@@ -165,7 +165,7 @@ func ShowKills(ctx *bot.Context) {
 				var timeString string
 				t, err := time.Parse("2019-04-28T18:59:21.942273100Z", k.TimeStamp)
 				if err == nil {
-					timeString = fmt.Sprintf("%v.%v.%v %v:%v", t.Day(), t.Month(), t.Year(), t.Hour(), t.Minute())
+					timeString = fmt.Sprintf("%v.%v.%v %v:%v", t.Day(), t.Month().String(), t.Year(), t.Hour(), t.Minute())
 				} else {
 					fmt.Println("Parse time: ", err.Error())
 				}
