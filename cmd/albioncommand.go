@@ -14,7 +14,11 @@ func AlbionCommand(ctx bot.Context) {
 				ctx.MetricsCommand("albion", "kills")
 				albion.ShowKills(&ctx)
 			}
-
+		case "kill":
+			if len(ctx.Args) > 1 {
+				ctx.MetricsCommand("albion", "kill")
+				albion.ShowKill(&ctx)
+			}
 		}
 	}
 

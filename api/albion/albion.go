@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/FlameInTheDark/dtbot/bot"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -138,8 +139,23 @@ func GetPlayerKills(id string) (result []Kill, err error) {
 	return kills, nil
 }
 
-func GetKillID(id string) (kill Kill, err error) {
+func GetKillID(id string) (kill *Kill, err error) {
+	var result Kill
+	resp, err := http.Get(fmt.Sprintf("https://gameinfo.albiononline.com/api/gameinfo/events/%v", id))
+	if err != nil {
+		return nil, err
+	}
 
+	if resp.StatusCode != 200 {
+		return nil, errors.New("status " + resp.Status)
+	}
+
+	err = json.NewDecoder(resp.Body).Decode(&result)
+	if err != nil {
+		return nil, err
+	}
+
+	return kill, nil
 }
 
 // ShowKills sends embed message in discord
@@ -186,4 +202,30 @@ func ShowKills(ctx *bot.Context) {
 		}
 
 	}
+}
+
+func ShowKill(ctx *bot.Context) {
+	kill, err := GetKillID(ctx.Args[1])
+	if err != nil {
+		fmt.Println("Error:" + err.Error())
+		return
+	}
+	embed := bot.NewEmbed(fmt.Sprintf("Show on killboard #%v", kill.EventID))
+	embed.Desc(fmt.Sprintf("%v :crossed_swords: %v", kill.Killer.Name, kill.Victim.Name))
+	embed.Color(ctx.GuildConf().EmbedColor)
+	embed.URL(fmt.Sprintf("https://albiononline.com/ru/killboard/kill/%v", kill.EventID))
+	embed.AttachThumbURL("https://assets.albiononline.com/assets/images/killboard/kill__date.png")
+	embed.Author("Albion Killboard", "https://albiononline.com/ru/killboard", "https://assets.albiononline.com/assets/images/icons/favicon.ico")
+	embed.TimeStamp(kill.TimeStamp)
+	embed.Field(ctx.Loc("albion_guild"), kill.Victim.GuildName, true)
+	embed.Field(ctx.Loc("albion_fame"), string(kill.Victim.DeathFame), true)
+	embed.Field(ctx.Loc("albion_item_power"), fmt.Sprintf("%.3f", kill.Victim.AverageItemPower), true)
+	if len(kill.Participants) > 0 {
+		var names []string
+		for _,p := range kill.Participants {
+			names = append(names, p.Name)
+		}
+		embed.Field(ctx.Loc("albion_participants"), strings.Join(names, ", "), true)
+	}
+	embed.Send(ctx)
 }
