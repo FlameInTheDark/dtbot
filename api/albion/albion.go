@@ -138,6 +138,10 @@ func GetPlayerKills(id string) (result []Kill, err error) {
 	return kills, nil
 }
 
+func GetKillID(id string) (kill Kill, err error) {
+
+}
+
 // ShowKills sends embed message in discord
 func ShowKills(ctx *bot.Context) {
 	search, err := SearchPlayers(ctx.Args[1])
@@ -171,7 +175,7 @@ func ShowKills(ctx *bot.Context) {
 				}
 				embed.Field(
 					k.Victim.Name,
-					fmt.Sprintf("[%v](https://albiononline.com/ru/killboard/kill/%v)",
+					fmt.Sprintf("%v [[Link](https://albiononline.com/ru/killboard/kill/%v)]",
 						fmt.Sprintf(ctx.Loc("albion_kill_short"),
 							k.Victim.DeathFame,
 							k.Victim.AverageItemPower,
