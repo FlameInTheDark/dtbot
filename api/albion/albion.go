@@ -191,11 +191,12 @@ func ShowKills(ctx *bot.Context) {
 				}
 				embed.Field(
 					k.Victim.Name,
-					fmt.Sprintf("%v [[Link](https://albiononline.com/ru/killboard/kill/%v)]",
+					fmt.Sprintf("%v [[%v](https://albiononline.com/ru/killboard/kill/%v)]",
 						fmt.Sprintf(ctx.Loc("albion_kill_short"),
 							k.Victim.DeathFame,
 							k.Victim.AverageItemPower,
 							timeString),
+						k.EventID,
 						k.EventID), false)
 			}
 			embed.Send(ctx)
@@ -219,7 +220,7 @@ func ShowKill(ctx *bot.Context) {
 	embed.Author("Albion Killboard", "https://albiononline.com/ru/killboard", "https://assets.albiononline.com/assets/images/icons/favicon.ico")
 	embed.TimeStamp(kill.TimeStamp)
 	embed.Field(ctx.Loc("albion_guild"), kill.Victim.GuildName, true)
-	embed.Field(ctx.Loc("albion_fame"), string(kill.Victim.DeathFame), true)
+	embed.Field(ctx.Loc("albion_fame"), fmt.Sprintf("%v", kill.Victim.DeathFame), true)
 	embed.Field(ctx.Loc("albion_item_power"), fmt.Sprintf("%.3f", kill.Victim.AverageItemPower), true)
 	if len(kill.Participants) > 0 {
 		var names []string
