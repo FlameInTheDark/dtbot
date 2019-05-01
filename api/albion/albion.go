@@ -217,7 +217,7 @@ func ShowKill(ctx *bot.Context) {
 	embed.URL(fmt.Sprintf("https://albiononline.com/ru/killboard/kill/%v", kill.EventID))
 	embed.AttachThumbURL("https://assets.albiononline.com/assets/images/killboard/kill__date.png")
 	embed.Author("Albion Killboard", "https://albiononline.com/ru/killboard", "https://assets.albiononline.com/assets/images/icons/favicon.ico")
-	embed.TimeStamp(kill.TimeStamp)
+	//embed.TimeStamp(kill.TimeStamp)
 	embed.Field(ctx.Loc("albion_guild"), kill.Victim.GuildName, true)
 	embed.Field(ctx.Loc("albion_fame"), string(kill.Victim.DeathFame), true)
 	embed.Field(ctx.Loc("albion_item_power"), fmt.Sprintf("%.3f", kill.Victim.AverageItemPower), true)
