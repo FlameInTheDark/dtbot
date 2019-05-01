@@ -210,6 +210,10 @@ func ShowKill(ctx *bot.Context) {
 		fmt.Println("Error:" + err.Error())
 		return
 	}
+	if kill == nil {
+		fmt.Println("Error! Kill is nil!")
+		return
+	}
 	embed := bot.NewEmbed(fmt.Sprintf("Show on killboard #%v", kill.EventID))
 	embed.Desc(fmt.Sprintf("%v :crossed_swords: %v", kill.Killer.Name, kill.Victim.Name))
 	embed.Color(ctx.GuildConf().EmbedColor)
