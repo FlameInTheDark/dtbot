@@ -106,7 +106,11 @@
     "guild_owner": "Guild owner",
     "guild_owner_format": "Name: %v\nID: %v",
     "guild_not_found": "Guild not found",
-    "albion_kill_short": "Fame: %v | Power: %v | Time: %v"
+    "albion_kill_short": "Fame: %v | Power: %v | Time: %v",
+    "albion_guild": "Guild",
+    "albion_fame": "Fame",
+    "albion_item_power": "Item power",
+    "albion_participants": "Participants"
   },
   "ru": {
     "admin_require": "Для использования данной команды вам необходимо иметь роль \"bot.admin\". Для помощи используйте `!help bot.admin`",
