@@ -59,6 +59,7 @@ type Player struct {
 	DeathFame        int       `json:"DeathFame"`
 	KillFame         int       `json:"KillFame"`
 	FameRatio        float64   `json:"FameRatio"`
+	DamageDone       float64   `json:"DamageDone"`
 }
 
 // Equipment contains items in slots
@@ -224,8 +225,8 @@ func ShowKill(ctx *bot.Context) {
 	embed.Field(ctx.Loc("albion_item_power"), fmt.Sprintf("%.3f", kill.Victim.AverageItemPower), true)
 	if len(kill.Participants) > 0 {
 		var names []string
-		for _,p := range kill.Participants {
-			names = append(names, p.Name)
+		for _, p := range kill.Participants {
+			names = append(names, fmt.Sprintf("%v (%.0f)", p.Name, p.DamageDone))
 		}
 		embed.Field(ctx.Loc("albion_participants"), strings.Join(names, ", "), true)
 	}
