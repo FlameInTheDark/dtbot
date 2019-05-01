@@ -223,6 +223,7 @@ func ShowKill(ctx *bot.Context) {
 	embed.Field(ctx.Loc("albion_guild"), kill.Victim.GuildName, true)
 	embed.Field(ctx.Loc("albion_fame"), fmt.Sprintf("%v", kill.Victim.DeathFame), true)
 	embed.Field(ctx.Loc("albion_item_power"), fmt.Sprintf("%.3f", kill.Victim.AverageItemPower), true)
+	embed.Field(ctx.Loc("albion_killer_item_power"), fmt.Sprintf("%.3f", kill.Killer.AverageItemPower), true)
 	if len(kill.Participants) > 0 {
 		var names []string
 		for _, p := range kill.Participants {
