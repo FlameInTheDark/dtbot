@@ -352,11 +352,11 @@ func (u *AlbionUpdater) Update(session *discordgo.Session, worker *DBWorker, con
 				}
 				fmt.Printf("Kill time: %v | New kill time: %v\n", killTime.Unix(), newKillTime)
 				if killTime.Unix() > lastTime.Unix() {
-					fmt.Printf("  Kill time: %v | > | Last kill: %v\n", killTime.Unix(), lastTime.Unix())
+					fmt.Printf("...Kill time: %v | > | Last kill: %v\n", killTime.Unix(), lastTime.Unix())
 					if killTime.Unix() > newKillTime {
-						fmt.Printf("    Kill time: %v | > | Last kill: %v\n", killTime.Unix(), newKillTime)
+						fmt.Printf("......Kill time: %v | > | Last kill: %v\n", killTime.Unix(), newKillTime)
 						newKillTime = killTime.Unix()
-						fmt.Printf("      New kill time: %v\n", newKillTime)
+						fmt.Printf(".........New kill time: %v\n", newKillTime)
 					}
 					SendKill(session, conf, &kills[i], p.UserID)
 				}
