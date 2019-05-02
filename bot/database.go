@@ -2,6 +2,7 @@ package bot
 
 import (
 	"fmt"
+	"github.com/FlameInTheDark/dtbot/api/albion"
 	"github.com/bwmarrin/discordgo"
 	"github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
@@ -203,4 +204,34 @@ func (db *DBWorker) AddRadioStation(name, url, key, category string) error {
 	station := RadioStation{Name: name, URL: url, Key: key, Category: category}
 	err := db.DBSession.DB(db.DBName).C("stations").Insert(&station)
 	return err
+}
+
+func (db *DBWorker) GetAlbionPlayers() []albion.PlayerUpdater{
+	var kills []albion.PlayerUpdater
+	_ = db.DBSession.DB(db.DBName).C("albion").Find(nil).All(&kills)
+	return kills
+}
+
+func (db *DBWorker) AddAlbionPlayer(player albion.PlayerUpdater) {
+	err := db.DBSession.DB(db.DBName).C("albion").Insert(&player)
+	if err != nil {
+		fmt.Println("Error adding Albion player: ", err.Error())
+	}
+}
+
+func (db *DBWorker) RemoveAlbionPlayer(id string) {
+	err := db.DBSession.DB(db.DBName).C("albion").Remove(bson.M{"userid": id})
+	if err != nil {
+		fmt.Println("Error removing Albion player: ", err.Error())
+	}
+}
+
+func (db *DBWorker) UpdateAlbionPlayerLast(userID string, lastKill int64) {
+	err := db.DBSession.DB(db.DBName).C("albion").
+		Update(
+			bson.M{"userid": userID},
+			bson.M{"$set": bson.M{"lastkill": lastKill}})
+	if err != nil {
+		fmt.Println(err.Error())
+	}
 }

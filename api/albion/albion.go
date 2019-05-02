@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/FlameInTheDark/dtbot/bot"
+	"github.com/bwmarrin/discordgo"
 	"net/http"
 	"strings"
 	"time"
@@ -100,6 +101,17 @@ type Kill struct {
 	Type                 string   `json:"Type"`
 }
 
+type AlbionUpdater struct {
+	Players map[string]*PlayerUpdater
+}
+
+type PlayerUpdater struct {
+	PlayerID string
+	UserID   string
+	LastKill int64
+	StartAt  int64
+}
+
 // SearchPlayers returns player list by name
 func SearchPlayers(name string) (result *SearchResult, err error) {
 	var sResult SearchResult
@@ -123,7 +135,7 @@ func SearchPlayers(name string) (result *SearchResult, err error) {
 // GetPlayerKills returns array of kills by player id
 func GetPlayerKills(id string) (result []Kill, err error) {
 	var kills []Kill
-	resp, err := http.Get(fmt.Sprintf("https://gameinfo.albiononline.com/api/gameinfo/players/%v/topkills?range=lastWeek&offset=0&limit=11", id))
+	resp, err := http.Get(fmt.Sprintf("https://gameinfo.albiononline.com/api/gameinfo/players/%v/topkills?range=lastWeek&offset=0&limit=20", id))
 	if err != nil {
 		return nil, err
 	}
@@ -232,4 +244,123 @@ func ShowKill(ctx *bot.Context) {
 		embed.Field(ctx.Loc("albion_participants"), strings.Join(names, ", "), true)
 	}
 	embed.Send(ctx)
+}
+
+func SendKill(session *discordgo.Session, conf *bot.Config, kill *Kill, userID string) {
+	embed := bot.NewEmbed(fmt.Sprintf("Show on killboard #%v", kill.EventID))
+	embed.Desc(fmt.Sprintf("%v :crossed_swords: %v", kill.Killer.Name, kill.Victim.Name))
+	embed.Color(4460547)
+	embed.URL(fmt.Sprintf("https://albiononline.com/ru/killboard/kill/%v", kill.EventID))
+	embed.AttachThumbURL("https://assets.albiononline.com/assets/images/header/logo.png")
+	embed.Author("Albion Killboard", "https://albiononline.com/ru/killboard", "")
+	embed.TimeStamp(kill.TimeStamp)
+	embed.Field(conf.GetLocale("albion_guild"), kill.Victim.GuildName, true)
+	embed.Field(conf.GetLocale("albion_fame"), fmt.Sprintf("%v", kill.Victim.DeathFame), true)
+	embed.Field(conf.GetLocale("albion_item_power"), fmt.Sprintf("%.3f", kill.Victim.AverageItemPower), true)
+	embed.Field(conf.GetLocale("albion_killer_item_power"), fmt.Sprintf("%.3f", kill.Killer.AverageItemPower), true)
+	if len(kill.Participants) > 0 {
+		var names []string
+		for _, p := range kill.Participants {
+			names = append(names, fmt.Sprintf("%v (%.0f)", p.Name, p.DamageDone))
+		}
+		embed.Field(conf.GetLocale("albion_participants"), strings.Join(names, ", "), true)
+	}
+	ch, err := session.UserChannelCreate(userID)
+	if err != nil {
+		fmt.Println("Error whilst creating private channel, ", err)
+		return
+	}
+	_, err = session.ChannelMessageSendEmbed(ch.ID, embed.GetEmbed())
+	if err != nil {
+		fmt.Println("Error whilst sending embed message, ", err)
+		return
+	}
+}
+
+func GetPlayerID(name string) string {
+	search, err := SearchPlayers(name)
+	if err == nil {
+		if len(search.Players) > 0 {
+			return search.Players[0].ID
+		}
+	}
+	return ""
+}
+
+func GetUpdater(db *bot.DBWorker) *AlbionUpdater {
+	var updater AlbionUpdater
+	var players []PlayerUpdater
+	players = db.GetAlbionPlayers()
+	for _, p := range players {
+		updater.Players[p.UserID] = &p
+	}
+	return &updater
+}
+
+func SendPlayerKills(session *discordgo.Session, worker *bot.DBWorker, conf *bot.Config, updater *AlbionUpdater, userID string) {
+	startTime := time.Unix(updater.Players[userID].StartAt, 0)
+	lastTime := time.Unix(updater.Players[userID].LastKill,0)
+	if startTime.Add(time.Hour * 24).Unix() > time.Now().Unix() {
+		worker.RemoveAlbionPlayer(updater.Players[userID].UserID)
+		delete(updater.Players, updater.Players[userID].UserID)
+		return
+	} else {
+		kills, err := GetPlayerKills(updater.Players[userID].PlayerID)
+		if err != nil {
+			return
+		}
+		var newKillTime int64
+		for i,k := range kills {
+			killTime, err := time.Parse("", k.TimeStamp)
+			if err != nil {
+				return
+			}
+			if killTime.Unix() > lastTime.Unix() {
+				if killTime.Unix() > newKillTime {
+					newKillTime = killTime.Unix()
+				}
+				SendKill(session, conf, &kills[i], userID)
+			}
+		}
+		if newKillTime > lastTime.Unix() {
+			worker.UpdateAlbionPlayerLast(userID, newKillTime)
+			updater.Players[userID].LastKill = newKillTime
+		}
+	}
+}
+
+func (u *AlbionUpdater) Update(session *discordgo.Session, worker *bot.DBWorker, conf *bot.Config) {
+	for _, p := range u.Players {
+		go SendPlayerKills(session, worker, conf, u, p.UserID)
+	}
+}
+
+func (u *AlbionUpdater) Add(ctx *bot.Context) error {
+	if len(ctx.Args) > 1 {
+		search, err := SearchPlayers(ctx.Args[1])
+		if err != nil {
+			fmt.Println("Error searching Albion player: ", err.Error())
+			return errors.New("error searching Albion player")
+		}
+		if _, ok := ctx.Albion.Players[ctx.User.ID]; !ok {
+			kills, err := GetPlayerKills(search.Players[0].ID)
+			if err != nil {
+				fmt.Println("Error getting Albion kills: ", err.Error())
+				return errors.New("error getting Albion kills")
+			}
+			var lastKill int64
+			for _, k := range kills {
+				killTime, err := time.Parse("2006-01-02T15:04:05.000000000Z", k.TimeStamp)
+				if err != nil {
+					continue
+				}
+				if killTime.Unix() > lastKill {
+					lastKill = killTime.Unix()
+				}
+			}
+			ctx.Albion.Players[ctx.User.ID] = &PlayerUpdater{search.Players[0].ID, ctx.User.ID, lastKill, time.Now().Unix()}
+			return nil
+		}
+	}
+	return errors.New("error")
 }

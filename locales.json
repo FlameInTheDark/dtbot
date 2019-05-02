@@ -111,7 +111,9 @@
     "albion_fame": "Fame",
     "albion_item_power": "Item power",
     "albion_killer_item_power": "Killer item power",
-    "albion_participants": "Participants"
+    "albion_participants": "Participants",
+    "albion_add_error": "Error adding player",
+    "albion_added": "Player added"
   },
   "ru": {
     "admin_require": "Для использования данной команды вам необходимо иметь роль \"bot.admin\". Для помощи используйте `!help bot.admin`",

@@ -19,6 +19,15 @@ func AlbionCommand(ctx bot.Context) {
 				ctx.MetricsCommand("albion", "kill")
 				albion.ShowKill(&ctx)
 			}
+		case "watch":
+			if len(ctx.Args) > 1 {
+				err := ctx.Albion.Add(&ctx)
+				if err != nil {
+					ctx.ReplyEmbed("Albion Killboard", ctx.Loc("albion_add_error"))
+				} else {
+					ctx.ReplyEmbed("Albion Killboard", ctx.Loc("albion_added"))
+				}
+			}
 		}
 	}
 

@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"github.com/FlameInTheDark/dtbot/api/albion"
 	"net/http"
 	"net/url"
 	"os"
@@ -32,6 +33,7 @@ var (
 	guilds          *bot.GuildsMap
 	botCron         *cron.Cron
 	twitch          *bot.Twitch
+	albUpdater      *albion.AlbionUpdater
 	messagesCounter int
 )
 
@@ -77,7 +79,8 @@ func main() {
 	defer botCron.Stop()
 	defer dbWorker.DBSession.Close()
 	twitch = bot.TwitchInit(discord, conf, dbWorker)
-	go MetricsSender(discord)
+	albUpdater = albion.GetUpdater(dbWorker)
+	go BotUpdater(discord)
 	// Init command handler
 	discord.AddHandler(guildAddHandler)
 	discord.AddHandler(commandHandler)
@@ -162,7 +165,8 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 			dbWorker,
 			guilds,
 			botCron,
-			twitch)
+			twitch,
+			albUpdater)
 		ctx.Args = args[1:]
 		c := *command
 		c(*ctx)
@@ -199,7 +203,7 @@ func registerCommands() {
 }
 
 // MetricsSender sends metrics to InfluxDB and another services
-func MetricsSender(d *discordgo.Session) {
+func BotUpdater(d *discordgo.Session) {
 	for {
 		go twitch.Update()
 
