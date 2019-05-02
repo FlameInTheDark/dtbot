@@ -20,12 +20,20 @@ func AlbionCommand(ctx bot.Context) {
 			}
 		case "watch":
 			if len(ctx.Args) > 1 {
-				err := ctx.Albion.Add(&ctx)
+				err := ctx.AlbionAddPlayer()
 				if err != nil {
 					ctx.ReplyEmbed("Albion Killboard", ctx.Loc("albion_add_error"))
 				} else {
 					ctx.ReplyEmbed("Albion Killboard", ctx.Loc("albion_added"))
 				}
+			}
+		case "unwatch":
+			if _,ok := ctx.Albion.Players[ctx.User.ID]; ok {
+				delete(ctx.Albion.Players, ctx.User.ID)
+				ctx.DB.RemoveAlbionPlayer(ctx.User.ID)
+				ctx.ReplyEmbed("Albion Killboard", ctx.Loc("albion_removed"))
+			} else {
+				ctx.ReplyEmbed("Albion Killboard", ctx.Loc("albion_not_watching"))
 			}
 		}
 	}

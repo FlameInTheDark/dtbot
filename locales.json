@@ -113,7 +113,9 @@
     "albion_killer_item_power": "Killer item power",
     "albion_participants": "Participants",
     "albion_add_error": "Error adding player",
-    "albion_added": "Player added"
+    "albion_added": "Player added",
+    "albion_removed": "Player removed",
+    "albion_not_watching": "You are not watching now"
   },
   "ru": {
     "admin_require": "Для использования данной команды вам необходимо иметь роль \"bot.admin\". Для помощи используйте `!help bot.admin`",
@@ -219,6 +221,16 @@
     "guild_roles": "Роли гильдии",
     "guild_owner": "Владелец гильдии",
     "guild_owner_format": "Имя: %v\nID: %v",
-    "guild_not_found": "Гильдия не найдена"
+    "guild_not_found": "Гильдия не найдена",
+    "albion_kill_short": "Fame: %v | Сила: %v | Время: %v",
+    "albion_guild": "Гильдия",
+    "albion_fame": "Fame",
+    "albion_item_power": "Сила предметов",
+    "albion_killer_item_power": "Сила предметов убийци",
+    "albion_participants": "Участники",
+    "albion_add_error": "Ошибка добовления игрока (не найден или уже добавлен)",
+    "albion_added": "Игрок добавлен",
+    "albion_removed": "Игрок удален",
+    "albion_not_watching": "Вы не наблюдаете в данный момент"
   }
 }
