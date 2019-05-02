@@ -297,32 +297,38 @@ func AlbionGetUpdater(db *DBWorker) *AlbionUpdater {
 }
 
 func SendPlayerKills(session *discordgo.Session, worker *DBWorker, conf *Config, updater *AlbionUpdater, userID string) {
+	fmt.Println("Updating player ", userID)
 	startTime := time.Unix(updater.Players[userID].StartAt, 0)
 	lastTime := time.Unix(updater.Players[userID].LastKill, 0)
 	if startTime.Add(time.Hour * 24).Unix() < time.Now().Unix() {
-		fmt.Println("Remove expired player")
 		worker.RemoveAlbionPlayer(updater.Players[userID].UserID)
 		delete(updater.Players, updater.Players[userID].UserID)
 		return
 	} else {
+		fmt.Println("Getting kills")
 		kills, err := AlbionGetPlayerKills(updater.Players[userID].PlayerID)
 		if err != nil {
 			return
 		}
+		fmt.Println("Get kills for ", kills[0].Killer.Name)
 		var newKillTime int64
 		for i, k := range kills {
+			fmt.Println("Kill ", k.Victim.Name)
 			killTime, err := time.Parse("", k.TimeStamp)
 			if err != nil {
 				return
 			}
 			if killTime.Unix() > lastTime.Unix() {
+				fmt.Println("Checked time")
 				if killTime.Unix() > newKillTime {
 					newKillTime = killTime.Unix()
 				}
 				SendKill(session, conf, &kills[i], userID)
 			}
 		}
+		fmt.Println("Writing time")
 		if newKillTime > lastTime.Unix() {
+			fmt.Println("New time saved")
 			worker.UpdateAlbionPlayerLast(userID, newKillTime)
 			updater.Players[userID].LastKill = newKillTime
 		}
