@@ -211,7 +211,7 @@ func BotUpdater(d *discordgo.Session) {
 		for _, g := range d.State.Guilds {
 			usersCount += g.MemberCount
 		}
-
+		go albUpdater.Update(d, dbWorker, conf)
 		// Metrics counters
 		queryCounters := []byte(fmt.Sprintf("counters guilds=%v,messages=%v,users=%v", len(d.State.Guilds), messagesCounter, usersCount))
 		addrCounters := fmt.Sprintf("%v/write?db=%v&u=%v&p=%v",
