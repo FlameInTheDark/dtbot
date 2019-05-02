@@ -253,12 +253,12 @@ func SendKill(session *discordgo.Session, conf *Config, kill *AlbionKill, userID
 	embed.AttachThumbURL("https://assets.albiononline.com/assets/images/header/logo.png")
 	embed.Author("Albion Killboard", "https://albiononline.com/ru/killboard", "")
 	embed.TimeStamp(kill.TimeStamp)
+	embed.Field(conf.GetLocale("albion_item_power"), fmt.Sprintf("%.2f", kill.Victim.AverageItemPower), true)
+	embed.Field(conf.GetLocale("albion_killer_item_power"), fmt.Sprintf("%.2f", kill.Killer.AverageItemPower), true)
+	embed.Field(conf.GetLocale("albion_fame"), fmt.Sprintf("%v", kill.Victim.DeathFame), true)
 	if kill.Victim.GuildName != "" {
 		embed.Field(conf.GetLocale("albion_guild"), kill.Victim.GuildName, true)
 	}
-	embed.Field(conf.GetLocale("albion_fame"), fmt.Sprintf("%v", kill.Victim.DeathFame), true)
-	embed.Field(conf.GetLocale("albion_item_power"), fmt.Sprintf("%.2f", kill.Victim.AverageItemPower), true)
-	embed.Field(conf.GetLocale("albion_killer_item_power"), fmt.Sprintf("%.2f", kill.Killer.AverageItemPower), true)
 	if len(kill.Participants) > 0 {
 		var names []string
 		for _, p := range kill.Participants {
