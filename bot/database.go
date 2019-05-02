@@ -2,7 +2,6 @@ package bot
 
 import (
 	"fmt"
-	"github.com/FlameInTheDark/dtbot/api/albion"
 	"github.com/bwmarrin/discordgo"
 	"github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
@@ -206,13 +205,13 @@ func (db *DBWorker) AddRadioStation(name, url, key, category string) error {
 	return err
 }
 
-func (db *DBWorker) GetAlbionPlayers() []albion.PlayerUpdater{
-	var kills []albion.PlayerUpdater
+func (db *DBWorker) GetAlbionPlayers() []AlbionPlayerUpdater {
+	var kills []AlbionPlayerUpdater
 	_ = db.DBSession.DB(db.DBName).C("albion").Find(nil).All(&kills)
 	return kills
 }
 
-func (db *DBWorker) AddAlbionPlayer(player albion.PlayerUpdater) {
+func (db *DBWorker) AddAlbionPlayer(player *AlbionPlayerUpdater) {
 	err := db.DBSession.DB(db.DBName).C("albion").Insert(&player)
 	if err != nil {
 		fmt.Println("Error adding Albion player: ", err.Error())

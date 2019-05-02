@@ -1,10 +1,9 @@
-package albion
+package bot
 
 import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/FlameInTheDark/dtbot/bot"
 	"github.com/bwmarrin/discordgo"
 	"net/http"
 	"strings"
@@ -12,13 +11,13 @@ import (
 )
 
 // SearchResult contains search response
-type SearchResult struct {
-	Guilds  []GuildSearch  `json:"guilds"`
-	Players []PlayerSearch `json:"players"`
+type AlbionSearchResult struct {
+	Guilds  []AlbionGuildSearch  `json:"guilds"`
+	Players []AlbionPlayerSearch `json:"players"`
 }
 
 // GuildSearch contains guild data from search response
-type GuildSearch struct {
+type AlbionGuildSearch struct {
 	ID           string `json:"Id"`
 	Name         string `json:"Name"`
 	AllianceID   string `json:"AllianceId"`
@@ -28,7 +27,7 @@ type GuildSearch struct {
 }
 
 // PlayerSearch contains player data from search response
-type PlayerSearch struct {
+type AlbionPlayerSearch struct {
 	ID           string  `json:"Id"`
 	Name         string  `json:"Name"`
 	AllianceID   string  `json:"AllianceId"`
@@ -44,68 +43,68 @@ type PlayerSearch struct {
 }
 
 // Player data
-type Player struct {
-	AverageItemPower float64   `json:"AverageItemPower"`
-	Equipment        Equipment `json:"Equipment"`
-	Inventory        []Item    `json:"Inventory"`
-	Name             string    `json:"Name"`
-	Id               string    `json:"Id"`
-	GuildName        string    `json:"GuildName"`
-	GuildId          string    `json:"GuildId"`
-	AllianceName     string    `json:"AllianceName"`
-	AllianceId       string    `json:"AllianceId"`
-	AllianceTag      string    `json:"AllianceTag"`
-	Avatar           string    `json:"Avatar"`
-	AvatarRing       string    `json:"AvatarRing"`
-	DeathFame        int       `json:"DeathFame"`
-	KillFame         int       `json:"KillFame"`
-	FameRatio        float64   `json:"FameRatio"`
-	DamageDone       float64   `json:"DamageDone"`
+type AlbionPlayer struct {
+	AverageItemPower float64         `json:"AverageItemPower"`
+	Equipment        AlbionEquipment `json:"Equipment"`
+	Inventory        []AlbionItem    `json:"Inventory"`
+	Name             string          `json:"Name"`
+	Id               string          `json:"Id"`
+	GuildName        string          `json:"GuildName"`
+	GuildId          string          `json:"GuildId"`
+	AllianceName     string          `json:"AllianceName"`
+	AllianceId       string          `json:"AllianceId"`
+	AllianceTag      string          `json:"AllianceTag"`
+	Avatar           string          `json:"Avatar"`
+	AvatarRing       string          `json:"AvatarRing"`
+	DeathFame        int             `json:"DeathFame"`
+	KillFame         int             `json:"KillFame"`
+	FameRatio        float64         `json:"FameRatio"`
+	DamageDone       float64         `json:"DamageDone"`
 }
 
 // Equipment contains items in slots
-type Equipment struct {
-	MainHand Item `json:"MainHand"`
-	OffHand  Item `json:"OffHand"`
-	Head     Item `json:"Head"`
-	Armor    Item `json:"Armor"`
-	Shoes    Item `json:"Shoes"`
-	Bag      Item `json:"Bag"`
-	Cape     Item `json:"Cape"`
-	Mount    Item `json:"Mount"`
-	Potion   Item `json:"Potion"`
-	Food     Item `json:"Food"`
+type AlbionEquipment struct {
+	MainHand AlbionItem `json:"MainHand"`
+	OffHand  AlbionItem `json:"OffHand"`
+	Head     AlbionItem `json:"Head"`
+	Armor    AlbionItem `json:"Armor"`
+	Shoes    AlbionItem `json:"Shoes"`
+	Bag      AlbionItem `json:"Bag"`
+	Cape     AlbionItem `json:"Cape"`
+	Mount    AlbionItem `json:"Mount"`
+	Potion   AlbionItem `json:"Potion"`
+	Food     AlbionItem `json:"Food"`
 }
 
 // Item contains item data
-type Item struct {
+type AlbionItem struct {
 	Type    string `json:"Type"`
 	Count   int    `json:"Count"`
 	Quality int    `json:"Quality"`
 }
 
 // Kill contains kill data
-type Kill struct {
-	GroupMemberCount     int      `json:"groupMemberCount"`
-	NumberOfParticipants int      `json:"numberOfParticipants"`
-	EventID              int      `json:"EventId"`
-	TimeStamp            string   `json:"TimeStamp"`
-	Version              int      `json:"Version"`
-	Killer               Player   `json:"Killer"`
-	Victim               Player   `json:"Victim"`
-	TotalVictimKillFame  int      `json:"TotalVictimKillFame"`
-	Location             string   `json:"Location"`
-	Participants         []Player `json:"Participants"`
-	GroupMembers         []Player `json:"GroupMembers"`
-	BattleID             int      `json:"BattleId"`
-	Type                 string   `json:"Type"`
+type AlbionKill struct {
+	GroupMemberCount     int            `json:"groupMemberCount"`
+	NumberOfParticipants int            `json:"numberOfParticipants"`
+	EventID              int            `json:"EventId"`
+	TimeStamp            string         `json:"TimeStamp"`
+	Version              int            `json:"Version"`
+	Killer               AlbionPlayer   `json:"Killer"`
+	Victim               AlbionPlayer   `json:"Victim"`
+	TotalVictimKillFame  int            `json:"TotalVictimKillFame"`
+	Location             string         `json:"Location"`
+	Participants         []AlbionPlayer `json:"Participants"`
+	GroupMembers         []AlbionPlayer `json:"GroupMembers"`
+	BattleID             int            `json:"BattleId"`
+	Type                 string         `json:"Type"`
 }
 
 type AlbionUpdater struct {
-	Players map[string]*PlayerUpdater
+	Players map[string]*AlbionPlayerUpdater
 }
 
-type PlayerUpdater struct {
+type AlbionPlayerUpdater struct {
 	PlayerID string
 	UserID   string
 	LastKill int64
@@ -113,8 +112,8 @@ type PlayerUpdater struct {
 }
 
 // SearchPlayers returns player list by name
-func SearchPlayers(name string) (result *SearchResult, err error) {
-	var sResult SearchResult
+func AlbionSearchPlayers(name string) (result *AlbionSearchResult, err error) {
+	var sResult AlbionSearchResult
 	resp, err := http.Get(fmt.Sprintf("https://gameinfo.albiononline.com/api/gameinfo/search?q=%v", name))
 	if err != nil {
 		return nil, err
@@ -133,8 +132,8 @@ func SearchPlayers(name string) (result *SearchResult, err error) {
 }
 
 // GetPlayerKills returns array of kills by player id
-func GetPlayerKills(id string) (result []Kill, err error) {
-	var kills []Kill
+func AlbionGetPlayerKills(id string) (result []AlbionKill, err error) {
+	var kills []AlbionKill
 	resp, err := http.Get(fmt.Sprintf("https://gameinfo.albiononline.com/api/gameinfo/players/%v/topkills?range=lastWeek&offset=0&limit=20", id))
 	if err != nil {
 		return nil, err
@@ -152,8 +151,8 @@ func GetPlayerKills(id string) (result []Kill, err error) {
 	return kills, nil
 }
 
-func GetKillID(id string) (kill *Kill, err error) {
-	var result Kill
+func AlbionGetKillID(id string) (kill *AlbionKill, err error) {
+	var result AlbionKill
 	resp, err := http.Get(fmt.Sprintf("https://gameinfo.albiononline.com/api/gameinfo/events/%v", id))
 	if err != nil {
 		return nil, err
@@ -172,8 +171,8 @@ func GetKillID(id string) (kill *Kill, err error) {
 }
 
 // ShowKills sends embed message in discord
-func ShowKills(ctx *bot.Context) {
-	search, err := SearchPlayers(ctx.Args[1])
+func (ctx *Context) AlbionShowKills() {
+	search, err := AlbionSearchPlayers(ctx.Args[1])
 	if err != nil {
 		fmt.Println("Error:" + err.Error())
 		return
@@ -181,7 +180,7 @@ func ShowKills(ctx *bot.Context) {
 	fmt.Println("Founded players")
 	if len(search.Players) > 0 {
 		fmt.Println("Players more then 0")
-		kills, err := GetPlayerKills(search.Players[0].ID)
+		kills, err := AlbionGetPlayerKills(search.Players[0].ID)
 		fmt.Println("Searching kills of " + search.Players[0].Name + search.Players[0].ID)
 		if err != nil {
 			fmt.Println("Error: " + err.Error())
@@ -190,7 +189,7 @@ func ShowKills(ctx *bot.Context) {
 		fmt.Println("Founded kills of " + search.Players[0].Name)
 		if len(kills) > 0 {
 			fmt.Println("Kills more then 0")
-			embed := bot.NewEmbed("Albion Killboard")
+			embed := NewEmbed("Albion Killboard")
 			embed.Desc(fmt.Sprintf("[%v](https://albiononline.com/ru/killboard/player/%v)", search.Players[0].Name, search.Players[0].ID)) // "https://assets.albiononline.com/assets/images/icons/favicon.ico")
 			embed.Color(ctx.GuildConf().EmbedColor)
 			for _, k := range kills {
@@ -218,14 +217,14 @@ func ShowKills(ctx *bot.Context) {
 	}
 }
 
-func ShowKill(ctx *bot.Context) {
-	kill, err := GetKillID(ctx.Args[1])
+func (ctx *Context) AlbionShowKill() {
+	kill, err := AlbionGetKillID(ctx.Args[1])
 	if err != nil {
 		fmt.Println("Error:" + err.Error())
 		return
 	}
 
-	embed := bot.NewEmbed(fmt.Sprintf("Show on killboard #%v", kill.EventID))
+	embed := NewEmbed(fmt.Sprintf("Show on killboard #%v", kill.EventID))
 	embed.Desc(fmt.Sprintf("%v :crossed_swords: %v", kill.Killer.Name, kill.Victim.Name))
 	embed.Color(ctx.GuildConf().EmbedColor)
 	embed.URL(fmt.Sprintf("https://albiononline.com/ru/killboard/kill/%v", kill.EventID))
@@ -246,8 +245,8 @@ func ShowKill(ctx *bot.Context) {
 	embed.Send(ctx)
 }
 
-func SendKill(session *discordgo.Session, conf *bot.Config, kill *Kill, userID string) {
-	embed := bot.NewEmbed(fmt.Sprintf("Show on killboard #%v", kill.EventID))
+func SendKill(session *discordgo.Session, conf *Config, kill *AlbionKill, userID string) {
+	embed := NewEmbed(fmt.Sprintf("Show on killboard #%v", kill.EventID))
 	embed.Desc(fmt.Sprintf("%v :crossed_swords: %v", kill.Killer.Name, kill.Victim.Name))
 	embed.Color(4460547)
 	embed.URL(fmt.Sprintf("https://albiononline.com/ru/killboard/kill/%v", kill.EventID))
@@ -278,7 +277,7 @@ func SendKill(session *discordgo.Session, conf *bot.Config, kill *Kill, userID s
 }
 
 func GetPlayerID(name string) string {
-	search, err := SearchPlayers(name)
+	search, err := AlbionSearchPlayers(name)
 	if err == nil {
 		if len(search.Players) > 0 {
 			return search.Players[0].ID
@@ -287,9 +286,9 @@ func GetPlayerID(name string) string {
 	return ""
 }
 
-func GetUpdater(db *bot.DBWorker) *AlbionUpdater {
+func AlbionGetUpdater(db *DBWorker) *AlbionUpdater {
 	var updater AlbionUpdater
-	var players []PlayerUpdater
+	var players []AlbionPlayerUpdater
 	players = db.GetAlbionPlayers()
 	for _, p := range players {
 		updater.Players[p.UserID] = &p
@@ -297,20 +296,20 @@ func GetUpdater(db *bot.DBWorker) *AlbionUpdater {
 	return &updater
 }
 
-func SendPlayerKills(session *discordgo.Session, worker *bot.DBWorker, conf *bot.Config, updater *AlbionUpdater, userID string) {
+func SendPlayerKills(session *discordgo.Session, worker *DBWorker, conf *Config, updater *AlbionUpdater, userID string) {
 	startTime := time.Unix(updater.Players[userID].StartAt, 0)
-	lastTime := time.Unix(updater.Players[userID].LastKill,0)
+	lastTime := time.Unix(updater.Players[userID].LastKill, 0)
 	if startTime.Add(time.Hour * 24).Unix() > time.Now().Unix() {
 		worker.RemoveAlbionPlayer(updater.Players[userID].UserID)
 		delete(updater.Players, updater.Players[userID].UserID)
 		return
 	} else {
-		kills, err := GetPlayerKills(updater.Players[userID].PlayerID)
+		kills, err := AlbionGetPlayerKills(updater.Players[userID].PlayerID)
 		if err != nil {
 			return
 		}
 		var newKillTime int64
-		for i,k := range kills {
+		for i, k := range kills {
 			killTime, err := time.Parse("", k.TimeStamp)
 			if err != nil {
 				return
@@ -329,21 +328,21 @@ func SendPlayerKills(session *discordgo.Session, worker *bot.DBWorker, conf *bot
 	}
 }
 
-func (u *AlbionUpdater) Update(session *discordgo.Session, worker *bot.DBWorker, conf *bot.Config) {
+func (u *AlbionUpdater) Update(session *discordgo.Session, worker *DBWorker, conf *Config) {
 	for _, p := range u.Players {
 		go SendPlayerKills(session, worker, conf, u, p.UserID)
 	}
 }
 
-func (u *AlbionUpdater) Add(ctx *bot.Context) error {
+func (u *AlbionUpdater) Add(ctx *Context) error {
 	if len(ctx.Args) > 1 {
-		search, err := SearchPlayers(ctx.Args[1])
+		search, err := AlbionSearchPlayers(ctx.Args[1])
 		if err != nil {
 			fmt.Println("Error searching Albion player: ", err.Error())
 			return errors.New("error searching Albion player")
 		}
 		if _, ok := ctx.Albion.Players[ctx.User.ID]; !ok {
-			kills, err := GetPlayerKills(search.Players[0].ID)
+			kills, err := AlbionGetPlayerKills(search.Players[0].ID)
 			if err != nil {
 				fmt.Println("Error getting Albion kills: ", err.Error())
 				return errors.New("error getting Albion kills")
@@ -358,7 +357,7 @@ func (u *AlbionUpdater) Add(ctx *bot.Context) error {
 					lastKill = killTime.Unix()
 				}
 			}
-			ctx.Albion.Players[ctx.User.ID] = &PlayerUpdater{search.Players[0].ID, ctx.User.ID, lastKill, time.Now().Unix()}
+			ctx.Albion.Players[ctx.User.ID] = &AlbionPlayerUpdater{search.Players[0].ID, ctx.User.ID, lastKill, time.Now().Unix()}
 			return nil
 		}
 	}

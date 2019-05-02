@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"github.com/FlameInTheDark/dtbot/api/albion"
 	"github.com/FlameInTheDark/dtbot/bot"
 )
 
@@ -12,12 +11,12 @@ func AlbionCommand(ctx bot.Context) {
 		case "kills":
 			if len(ctx.Args) > 1 {
 				ctx.MetricsCommand("albion", "kills")
-				albion.ShowKills(&ctx)
+				ctx.AlbionShowKills()
 			}
 		case "kill":
 			if len(ctx.Args) > 1 {
 				ctx.MetricsCommand("albion", "kill")
-				albion.ShowKill(&ctx)
+				ctx.AlbionShowKill()
 			}
 		case "watch":
 			if len(ctx.Args) > 1 {

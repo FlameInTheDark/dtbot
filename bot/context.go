@@ -2,7 +2,6 @@ package bot
 
 import (
 	"fmt"
-	"github.com/FlameInTheDark/dtbot/api/albion"
 	"github.com/bwmarrin/discordgo"
 	"gopkg.in/robfig/cron.v2"
 )
@@ -30,13 +29,13 @@ type Context struct {
 	Data       *DataType
 	Guilds     *GuildsMap
 	Twitch     *Twitch
-	Albion     *albion.AlbionUpdater
+	Albion     *AlbionUpdater
 }
 
 // NewContext create new context
 func NewContext(botID string, discord *discordgo.Session, guild *discordgo.Guild, textChannel *discordgo.Channel,
 	user *discordgo.User, message *discordgo.MessageCreate, conf *Config, cmdHandler *CommandHandler,
-	sessions *SessionManager, youtube *Youtube, botMsg *BotMessages, dataType *DataType, dbWorker *DBWorker, guilds *GuildsMap, botCron *cron.Cron, twitch *Twitch, albion *albion.AlbionUpdater) *Context {
+	sessions *SessionManager, youtube *Youtube, botMsg *BotMessages, dataType *DataType, dbWorker *DBWorker, guilds *GuildsMap, botCron *cron.Cron, twitch *Twitch, albion *AlbionUpdater) *Context {
 	ctx := new(Context)
 	ctx.BotID = botID
 	ctx.Discord = discord

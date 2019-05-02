@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"github.com/FlameInTheDark/dtbot/api/albion"
 	"net/http"
 	"net/url"
 	"os"
@@ -33,7 +32,7 @@ var (
 	guilds          *bot.GuildsMap
 	botCron         *cron.Cron
 	twitch          *bot.Twitch
-	albUpdater      *albion.AlbionUpdater
+	albUpdater      *bot.AlbionUpdater
 	messagesCounter int
 )
 
@@ -79,7 +78,7 @@ func main() {
 	defer botCron.Stop()
 	defer dbWorker.DBSession.Close()
 	twitch = bot.TwitchInit(discord, conf, dbWorker)
-	albUpdater = albion.GetUpdater(dbWorker)
+	albUpdater = bot.AlbionGetUpdater(dbWorker)
 	go BotUpdater(discord)
 	// Init command handler
 	discord.AddHandler(guildAddHandler)
