@@ -111,10 +111,6 @@ type AlbionPlayerUpdater struct {
 	StartAt  int64
 }
 
-func AlbionMakeUpdater() *AlbionUpdater {
-	return &AlbionUpdater{make(map[string]*AlbionPlayerUpdater)}
-}
-
 // SearchPlayers returns player list by name
 func AlbionSearchPlayers(name string) (result *AlbionSearchResult, err error) {
 	var sResult AlbionSearchResult
@@ -361,7 +357,9 @@ func (u *AlbionUpdater) Add(ctx *Context) error {
 					lastKill = killTime.Unix()
 				}
 			}
-			ctx.Albion.Players[ctx.User.ID] = &AlbionPlayerUpdater{search.Players[0].ID, ctx.User.ID, lastKill, time.Now().Unix()}
+			player := &AlbionPlayerUpdater{search.Players[0].ID, ctx.User.ID, lastKill, time.Now().Unix()}
+			ctx.Albion.Players[ctx.User.ID] = player
+			ctx.DB.AddAlbionPlayer(player)
 			return nil
 		}
 	}

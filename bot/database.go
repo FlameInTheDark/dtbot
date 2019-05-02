@@ -212,7 +212,7 @@ func (db *DBWorker) GetAlbionPlayers() []AlbionPlayerUpdater {
 }
 
 func (db *DBWorker) AddAlbionPlayer(player *AlbionPlayerUpdater) {
-	err := db.DBSession.DB(db.DBName).C("albion").Insert(&player)
+	err := db.DBSession.DB(db.DBName).C("albion").Insert(player)
 	if err != nil {
 		fmt.Println("Error adding Albion player: ", err.Error())
 	}
