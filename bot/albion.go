@@ -314,10 +314,13 @@ func SendPlayerKills(session *discordgo.Session, worker *DBWorker, conf *Config,
 		var newKillTime int64
 		for i, k := range kills {
 			fmt.Println("Kill ", k.Victim.Name)
-			killTime, err := time.Parse("", k.TimeStamp)
+			fmt.Println("Parse time")
+			killTime, err := time.Parse("2006-01-02T15:04:05.000000000Z", k.TimeStamp)
 			if err != nil {
-				return
+				fmt.Println("Kill time parse error: ", err.Error())
+				continue
 			}
+			fmt.Println("time parsed")
 			if killTime.Unix() > lastTime.Unix() {
 				fmt.Println("Checked time")
 				if killTime.Unix() > newKillTime {
