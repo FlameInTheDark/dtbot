@@ -58,9 +58,10 @@ func CronCommand(ctx bot.Context) {
 				ctx.ReplyEmbedPM("Cron", err.Error())
 				return
 			}
-			cerr := ctx.Data.CronRemove(&ctx, cron.EntryID(val))
-			if cerr != nil {
-				ctx.ReplyEmbedPM("Cron", err.Error())
+			cErr := ctx.Data.CronRemove(&ctx, cron.EntryID(val))
+			if cErr != nil {
+				ctx.ReplyEmbedPM("Cron", "Error adding job")
+				fmt.Println("Error adding job: ", cErr.Error())
 				return
 			}
 			ctx.ReplyEmbedPM("Cron", "Job removed")
