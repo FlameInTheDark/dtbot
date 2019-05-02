@@ -336,7 +336,6 @@ func SendPlayerKills(session *discordgo.Session, worker *DBWorker, conf *Config,
 
 func (u *AlbionUpdater) Update(session *discordgo.Session, worker *DBWorker, conf *Config) {
 	for _, p := range u.Players {
-		//go SendPlayerKills(session, worker, conf, u, p.UserID)
 		startTime := time.Unix(u.Players[p.UserID].StartAt, 0)
 		lastTime := time.Unix(u.Players[p.UserID].LastKill, 0)
 		if startTime.Add(time.Hour * 24).Unix() < time.Now().Unix() {
@@ -355,18 +354,13 @@ func (u *AlbionUpdater) Update(session *discordgo.Session, worker *DBWorker, con
 					fmt.Println("Kill time parse error: ", err.Error())
 					continue
 				}
-				fmt.Printf("Kill time: %v | Last time: %v\n", killTime.Unix(), lastTime.Unix())
 				if killTime.Unix() > lastTime.Unix() {
-					fmt.Printf("...Kill time: %v | > | Last kill: %v\n", killTime.Unix(), lastTime.Unix())
 					if killTime.Unix() > newKillTime {
-						fmt.Printf("......Kill time: %v | > | Last kill: %v\n", killTime.Unix(), newKillTime)
 						newKillTime = killTime.Unix()
-						fmt.Printf(".........New kill time: %v\n", newKillTime)
 					}
 					go SendKill(session, conf, &kills[i], p.UserID)
 				}
 			}
-			fmt.Printf("Last: %v | New: %v\n", lastTime.Unix(), newKillTime)
 			if newKillTime > lastTime.Unix() {
 				worker.UpdateAlbionPlayerLast(p.UserID, newKillTime)
 				u.Players[p.UserID].LastKill = newKillTime
