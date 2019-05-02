@@ -335,7 +335,6 @@ func SendPlayerKills(session *discordgo.Session, worker *DBWorker, conf *Config,
 }
 
 func (u *AlbionUpdater) Update(session *discordgo.Session, worker *DBWorker, conf *Config) {
-	fmt.Println("Start update")
 	for _, p := range u.Players {
 		startTime := time.Unix(u.Players[p.UserID].StartAt, 0)
 		lastTime := time.Unix(u.Players[p.UserID].LastKill, 0)
