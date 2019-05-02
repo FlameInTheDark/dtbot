@@ -20,6 +20,7 @@ func AlbionCommand(ctx bot.Context) {
 			}
 		case "watch":
 			if len(ctx.Args) > 1 {
+				ctx.MetricsCommand("albion", "watch")
 				err := ctx.AlbionAddPlayer()
 				if err != nil {
 					ctx.ReplyEmbed("Albion Killboard", ctx.Loc("albion_add_error"))
@@ -29,6 +30,7 @@ func AlbionCommand(ctx bot.Context) {
 			}
 		case "unwatch":
 			if _,ok := ctx.Albion.Players[ctx.User.ID]; ok {
+				ctx.MetricsCommand("albion", "unwatch")
 				delete(ctx.Albion.Players, ctx.User.ID)
 				ctx.DB.RemoveAlbionPlayer(ctx.User.ID)
 				ctx.ReplyEmbed("Albion Killboard", ctx.Loc("albion_removed"))
