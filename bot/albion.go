@@ -299,7 +299,7 @@ func AlbionGetUpdater(db *DBWorker) *AlbionUpdater {
 func SendPlayerKills(session *discordgo.Session, worker *DBWorker, conf *Config, updater *AlbionUpdater, userID string) {
 	startTime := time.Unix(updater.Players[userID].StartAt, 0)
 	lastTime := time.Unix(updater.Players[userID].LastKill, 0)
-	if startTime.Add(time.Hour * 24).Unix() > time.Now().Unix() {
+	if startTime.Add(time.Hour * 24).Unix() < time.Now().Unix() {
 		fmt.Println("Remove expired player")
 		worker.RemoveAlbionPlayer(updater.Players[userID].UserID)
 		delete(updater.Players, updater.Players[userID].UserID)
