@@ -134,7 +134,7 @@ func AlbionSearchPlayers(name string) (result *AlbionSearchResult, err error) {
 // GetPlayerKills returns array of kills by player id
 func AlbionGetPlayerKills(id string) (result []AlbionKill, err error) {
 	var kills []AlbionKill
-	resp, err := http.Get(fmt.Sprintf("https://gameinfo.albiononline.com/api/gameinfo/players/%v/topkills?range=lastWeek&offset=0&limit=20", id))
+	resp, err := http.Get(fmt.Sprintf("https://gameinfo.albiononline.com/api/gameinfo/players/%v/topkills?range=month&offset=0&limit=20", id))
 	if err != nil {
 		return nil, err
 	}
