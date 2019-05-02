@@ -276,7 +276,7 @@ func SendKill(session *discordgo.Session, conf *Config, kill *AlbionKill, userID
 	}
 }
 
-func GetPlayerID(name string) string {
+func GetPlayerByID(name string) string {
 	search, err := AlbionSearchPlayers(name)
 	if err == nil {
 		if len(search.Players) > 0 {
@@ -331,7 +331,37 @@ func SendPlayerKills(session *discordgo.Session, worker *DBWorker, conf *Config,
 
 func (u *AlbionUpdater) Update(session *discordgo.Session, worker *DBWorker, conf *Config) {
 	for _, p := range u.Players {
-		go SendPlayerKills(session, worker, conf, u, p.UserID)
+		//go SendPlayerKills(session, worker, conf, u, p.UserID)
+		startTime := time.Unix(u.Players[p.UserID].StartAt, 0)
+		lastTime := time.Unix(u.Players[p.UserID].LastKill, 0)
+		if startTime.Add(time.Hour * 24).Unix() < time.Now().Unix() {
+			worker.RemoveAlbionPlayer(p.UserID)
+			delete(u.Players, p.UserID)
+			return
+		} else {
+			kills, err := AlbionGetPlayerKills(p.PlayerID)
+			if err != nil {
+				return
+			}
+			var newKillTime int64
+			for i, k := range kills {
+				killTime, err := time.Parse("2006-01-02T15:04:05.000000000Z", k.TimeStamp)
+				if err != nil {
+					fmt.Println("Kill time parse error: ", err.Error())
+					continue
+				}
+				if killTime.Unix() > lastTime.Unix() {
+					if killTime.Unix() > newKillTime {
+						newKillTime = killTime.Unix()
+					}
+					SendKill(session, conf, &kills[i], p.UserID)
+				}
+			}
+			if newKillTime > lastTime.Unix() {
+				worker.UpdateAlbionPlayerLast(p.UserID, newKillTime)
+				u.Players[p.UserID].LastKill = newKillTime
+			}
+		}
 	}
 }
 
