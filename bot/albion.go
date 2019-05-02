@@ -358,6 +358,7 @@ func (u *AlbionUpdater) Update(session *discordgo.Session, worker *DBWorker, con
 					if killTime.Unix() > newKillTime {
 						newKillTime = killTime.Unix()
 					}
+					fmt.Println("send to: ", p.UserID)
 					go SendKill(session, conf, &kills[i], p.UserID)
 				}
 			}
