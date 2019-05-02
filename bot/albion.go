@@ -111,6 +111,10 @@ type AlbionPlayerUpdater struct {
 	StartAt  int64
 }
 
+func AlbionMakeUpdater() *AlbionUpdater {
+	return &AlbionUpdater{make(map[string]*AlbionPlayerUpdater)}
+}
+
 // SearchPlayers returns player list by name
 func AlbionSearchPlayers(name string) (result *AlbionSearchResult, err error) {
 	var sResult AlbionSearchResult
@@ -287,13 +291,13 @@ func GetPlayerID(name string) string {
 }
 
 func AlbionGetUpdater(db *DBWorker) *AlbionUpdater {
-	var updater AlbionUpdater
+	var updater = &AlbionUpdater{Players: make(map[string]*AlbionPlayerUpdater)}
 	var players []AlbionPlayerUpdater
 	players = db.GetAlbionPlayers()
 	for _, p := range players {
 		updater.Players[p.UserID] = &p
 	}
-	return &updater
+	return updater
 }
 
 func SendPlayerKills(session *discordgo.Session, worker *DBWorker, conf *Config, updater *AlbionUpdater, userID string) {
