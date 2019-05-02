@@ -204,6 +204,7 @@ func registerCommands() {
 // MetricsSender sends metrics to InfluxDB and another services
 func BotUpdater(d *discordgo.Session) {
 	for {
+		fmt.Println("Start update")
 		go twitch.Update()
 		go albUpdater.Update(d, dbWorker, conf)
 		// Calculating users count
