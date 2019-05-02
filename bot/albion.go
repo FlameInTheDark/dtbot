@@ -252,17 +252,20 @@ func SendKill(session *discordgo.Session, conf *Config, kill *AlbionKill, userID
 	embed.URL(fmt.Sprintf("https://albiononline.com/ru/killboard/kill/%v", kill.EventID))
 	embed.AttachThumbURL("https://assets.albiononline.com/assets/images/header/logo.png")
 	embed.Author("Albion Killboard", "https://albiononline.com/ru/killboard", "")
-	embed.TimeStamp(kill.TimeStamp)
+	//embed.TimeStamp(kill.TimeStamp)
 	embed.Field(conf.GetLocale("albion_guild"), kill.Victim.GuildName, true)
 	embed.Field(conf.GetLocale("albion_fame"), fmt.Sprintf("%v", kill.Victim.DeathFame), true)
-	embed.Field(conf.GetLocale("albion_item_power"), fmt.Sprintf("%.3f", kill.Victim.AverageItemPower), true)
-	embed.Field(conf.GetLocale("albion_killer_item_power"), fmt.Sprintf("%.3f", kill.Killer.AverageItemPower), true)
+	embed.Field(conf.GetLocale("albion_item_power"), fmt.Sprintf("%.2f", kill.Victim.AverageItemPower), true)
+	embed.Field(conf.GetLocale("albion_killer_item_power"), fmt.Sprintf("%.2f", kill.Killer.AverageItemPower), true)
 	if len(kill.Participants) > 0 {
 		var names []string
 		for _, p := range kill.Participants {
 			names = append(names, fmt.Sprintf("%v (%.0f)", p.Name, p.DamageDone))
 		}
-		embed.Field(conf.GetLocale("albion_participants"), strings.Join(names, ", "), true)
+		participants := strings.Join(names, ", ")
+		if len(participants) < 1000 {
+			embed.Field(conf.GetLocale("albion_participants"), participants, true)
+		}
 	}
 	ch, err := session.UserChannelCreate(userID)
 	if err != nil {
@@ -358,7 +361,7 @@ func (u *AlbionUpdater) Update(session *discordgo.Session, worker *DBWorker, con
 						newKillTime = killTime.Unix()
 						fmt.Printf(".........New kill time: %v\n", newKillTime)
 					}
-					SendKill(session, conf, &kills[i], p.UserID)
+					go SendKill(session, conf, &kills[i], p.UserID)
 				}
 			}
 			fmt.Printf("Last: %v | New: %v\n", lastTime.Unix(), newKillTime)
