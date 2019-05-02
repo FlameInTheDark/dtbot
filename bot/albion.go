@@ -350,7 +350,7 @@ func (u *AlbionUpdater) Update(session *discordgo.Session, worker *DBWorker, con
 					fmt.Println("Kill time parse error: ", err.Error())
 					continue
 				}
-				fmt.Printf("Kill time: %v | New kill time: %v", killTime.Unix(), newKillTime)
+				fmt.Printf("Kill time: %v | New kill time: %v\n", killTime.Unix(), newKillTime)
 				if killTime.Unix() > lastTime.Unix() {
 					fmt.Printf("  Kill time: %v | > | Last kill: %v", killTime.Unix(), lastTime.Unix())
 					if killTime.Unix() > newKillTime {
