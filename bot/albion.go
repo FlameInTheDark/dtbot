@@ -336,8 +336,8 @@ func SendPlayerKills(session *discordgo.Session, worker *DBWorker, conf *Config,
 
 func (u *AlbionUpdater) Update(session *discordgo.Session, worker *DBWorker, conf *Config) {
 	for _, p := range u.Players {
-		startTime := time.Unix(u.Players[p.UserID].StartAt, 0)
-		lastTime := time.Unix(u.Players[p.UserID].LastKill, 0)
+		startTime := time.Unix(p.StartAt, 0)
+		lastTime := time.Unix(p.LastKill, 0)
 		if startTime.Add(time.Hour * 24).Unix() < time.Now().Unix() {
 			worker.RemoveAlbionPlayer(p.UserID)
 			delete(u.Players, p.UserID)
@@ -358,10 +358,10 @@ func (u *AlbionUpdater) Update(session *discordgo.Session, worker *DBWorker, con
 					if killTime.Unix() > newKillTime {
 						newKillTime = killTime.Unix()
 					}
-					fmt.Println("send to: ", p.UserID)
 					go SendKill(session, conf, &kills[i], p.UserID)
 				}
 			}
+			fmt.Printf("User: %v | Last: %v | New: %v\n", p.UserID, lastTime.Unix(), newKillTime)
 			if newKillTime > lastTime.Unix() {
 				worker.UpdateAlbionPlayerLast(p.UserID, newKillTime)
 				u.Players[p.UserID].LastKill = newKillTime
