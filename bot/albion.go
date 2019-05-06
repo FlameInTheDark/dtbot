@@ -107,6 +107,7 @@ type AlbionUpdater struct {
 type AlbionPlayerUpdater struct {
 	PlayerID string
 	UserID   string
+	Language string
 	LastKill int64
 	StartAt  int64
 }
@@ -245,7 +246,7 @@ func (ctx *Context) AlbionShowKill() {
 	embed.Send(ctx)
 }
 
-func SendKill(session *discordgo.Session, conf *Config, kill *AlbionKill, userID string) {
+func SendKill(session *discordgo.Session, conf *Config, kill *AlbionKill, userID, lang string) {
 	embed := NewEmbed(fmt.Sprintf("Show on killboard #%v", kill.EventID))
 	embed.Desc(fmt.Sprintf("%v :crossed_swords: %v", kill.Killer.Name, kill.Victim.Name))
 	embed.Color(4460547)
@@ -253,11 +254,11 @@ func SendKill(session *discordgo.Session, conf *Config, kill *AlbionKill, userID
 	embed.AttachThumbURL("https://assets.albiononline.com/assets/images/header/logo.png")
 	embed.Author("Albion Killboard", "https://albiononline.com/ru/killboard", "")
 	embed.TimeStamp(kill.TimeStamp)
-	embed.Field(conf.GetLocale("albion_item_power"), fmt.Sprintf("%.2f", kill.Victim.AverageItemPower), true)
-	embed.Field(conf.GetLocale("albion_killer_item_power"), fmt.Sprintf("%.2f", kill.Killer.AverageItemPower), true)
-	embed.Field(conf.GetLocale("albion_fame"), fmt.Sprintf("%v", kill.Victim.DeathFame), true)
+	embed.Field(conf.GetLocaleLang("albion_item_power", lang), fmt.Sprintf("%.2f", kill.Victim.AverageItemPower), true)
+	embed.Field(conf.GetLocaleLang("albion_killer_item_power", lang), fmt.Sprintf("%.2f", kill.Killer.AverageItemPower), true)
+	embed.Field(conf.GetLocaleLang("albion_fame", lang), fmt.Sprintf("%v", kill.Victim.DeathFame), true)
 	if kill.Victim.GuildName != "" {
-		embed.Field(conf.GetLocale("albion_guild"), kill.Victim.GuildName, true)
+		embed.Field(conf.GetLocaleLang("albion_guild", lang), kill.Victim.GuildName, true)
 	}
 	if len(kill.Participants) > 0 {
 		var names []string
@@ -266,7 +267,7 @@ func SendKill(session *discordgo.Session, conf *Config, kill *AlbionKill, userID
 		}
 		participants := strings.Join(names, ", ")
 		if len(participants) < 1000 {
-			embed.Field(conf.GetLocale("albion_participants"), participants, true)
+			embed.Field(conf.GetLocaleLang("albion_participants", lang), participants, true)
 		}
 	}
 	ch, err := session.UserChannelCreate(userID)
@@ -324,7 +325,7 @@ func SendPlayerKills(session *discordgo.Session, worker *DBWorker, conf *Config,
 				if killTime.Unix() > newKillTime {
 					newKillTime = killTime.Unix()
 				}
-				SendKill(session, conf, &kills[i], userID)
+				SendKill(session, conf, &kills[i], userID, updater.Players[userID].Language)
 			}
 		}
 		if newKillTime > lastTime.Unix() {
@@ -393,7 +394,7 @@ func (ctx *Context) AlbionAddPlayer() error {
 					lastKill = killTime.Unix()
 				}
 			}
-			player := &AlbionPlayerUpdater{search.Players[0].ID, ctx.User.ID, lastKill, time.Now().Unix()}
+			player := &AlbionPlayerUpdater{search.Players[0].ID, ctx.User.ID, ctx.GuildConf().Language, lastKill, time.Now().Unix()}
 			ctx.Albion.Players[ctx.User.ID] = player
 			ctx.DB.AddAlbionPlayer(player)
 			return nil
