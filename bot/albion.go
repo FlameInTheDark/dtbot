@@ -359,7 +359,7 @@ func (u *AlbionUpdater) Update(session *discordgo.Session, worker *DBWorker, con
 					if killTime.Unix() > newKillTime {
 						newKillTime = killTime.Unix()
 					}
-					go SendKill(session, conf, &kills[i], p.UserID)
+					go SendKill(session, conf, &kills[i], p.UserID, p.Language)
 				}
 			}
 			fmt.Printf("User: %v | Last: %v | New: %v\n", p.UserID, lastTime.Unix(), newKillTime)
