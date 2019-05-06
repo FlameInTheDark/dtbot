@@ -47,6 +47,10 @@ type RadioStation struct {
 	Category string
 }
 
+type BlackListElement struct {
+	ID string
+}
+
 // NewDBSession creates new MongoDB instance
 func NewDBSession(dbname string) *DBWorker {
 	session, err := mgo.Dial(os.Getenv("MONGO_CONN"))
@@ -205,12 +209,14 @@ func (db *DBWorker) AddRadioStation(name, url, key, category string) error {
 	return err
 }
 
+// GetAlbionPlayers gets players from database
 func (db *DBWorker) GetAlbionPlayers() []AlbionPlayerUpdater {
 	var kills []AlbionPlayerUpdater
 	_ = db.DBSession.DB(db.DBName).C("albion").Find(nil).All(&kills)
 	return kills
 }
 
+// AddAlbionPlayer adds new player in database
 func (db *DBWorker) AddAlbionPlayer(player *AlbionPlayerUpdater) {
 	err := db.DBSession.DB(db.DBName).C("albion").Insert(player)
 	if err != nil {
@@ -218,6 +224,7 @@ func (db *DBWorker) AddAlbionPlayer(player *AlbionPlayerUpdater) {
 	}
 }
 
+// RemoveAlbionPlayer removes player from database
 func (db *DBWorker) RemoveAlbionPlayer(id string) {
 	err := db.DBSession.DB(db.DBName).C("albion").Remove(bson.M{"userid": id})
 	if err != nil {
@@ -225,6 +232,7 @@ func (db *DBWorker) RemoveAlbionPlayer(id string) {
 	}
 }
 
+// UpdateAlbionPlayerLast updates last kill of albion player
 func (db *DBWorker) UpdateAlbionPlayerLast(userID string, lastKill int64) {
 	err := db.DBSession.DB(db.DBName).C("albion").
 		Update(
@@ -232,5 +240,57 @@ func (db *DBWorker) UpdateAlbionPlayerLast(userID string, lastKill int64) {
 			bson.M{"$set": bson.M{"lastkill": lastKill}})
 	if err != nil {
 		fmt.Println(err.Error())
+	}
+}
+
+// GetBlackList gets blacklist from database
+func (db *DBWorker) GetBlacklist() *BlackListStruct {
+	var (
+		blacklist BlackListStruct
+		Guilds []BlackListElement
+		Users  []BlackListElement
+	)
+	_ = db.DBSession.DB(db.DBName).C("blusers").Find(nil).All(&Users)
+	_ = db.DBSession.DB(db.DBName).C("blguilds").Find(nil).All(&Guilds)
+
+	for _, g := range Guilds {
+		blacklist.Guilds = append(blacklist.Guilds, g.ID)
+	}
+	for _, u := range Users {
+		blacklist.Users = append(blacklist.Users, u.ID)
+	}
+
+	return &blacklist
+}
+
+// AddBlacklistGuild adds guild in database blacklist
+func (db *DBWorker) AddBlacklistGuild(id string) {
+	err := db.DBSession.DB(db.DBName).C("blguilds").Insert(BlackListElement{ID: id})
+	if err != nil {
+		fmt.Println("Error adding guild in blacklist: ", err.Error())
+	}
+}
+
+// AddBlacklistUser adds user in database blacklist
+func (db *DBWorker) AddBlacklistUser(id string) {
+	err := db.DBSession.DB(db.DBName).C("blusers").Insert(BlackListElement{ID: id})
+	if err != nil {
+		fmt.Println("Error adding user in blacklist: ", err.Error())
+	}
+}
+
+// RemoveBlacklistGuild removes guild from database blacklist
+func (db *DBWorker) RemoveBlacklistGuild(id string) {
+	err := db.DBSession.DB(db.DBName).C("blguilds").Remove(bson.M{"id": id})
+	if err != nil {
+		fmt.Println("Error removing guild from blacklist: ", err.Error())
+	}
+}
+
+// RemoveBlacklistUser removes user from database blacklist
+func (db *DBWorker) RemoveBlacklistUser(id string) {
+	err := db.DBSession.DB(db.DBName).C("blusers").Remove(bson.M{"id": id})
+	if err != nil {
+		fmt.Println("Error removing user from blacklist: ", err.Error())
 	}
 }

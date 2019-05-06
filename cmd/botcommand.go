@@ -70,6 +70,8 @@ func BotCommand(ctx bot.Context) {
 				users += len(g.Members)
 			}
 			ctx.ReplyEmbed("Stats", fmt.Sprintf(ctx.Loc("stats_command"), len(ctx.Discord.State.Guilds), users))
+		case "blacklist":
+			botBlacklist(&ctx)
 		}
 	} else {
 		ctx.ReplyEmbed("Bot", ctx.Loc("admin_require"))
@@ -356,4 +358,20 @@ func botStations(ctx *bot.Context) {
 			ctx.ReplyEmbed("Stations", "Arguments missed")
 		}
 	}
+}
+
+func botBlacklist(ctx *bot.Context) {
+	if len(ctx.Args) > 2 {
+		switch ctx.Args[1] {
+		case "addguild":
+			ctx.BlacklistAddGuild(ctx.Args[2])
+		case "adduser":
+			ctx.BlacklistAddUser(ctx.Args[2])
+		case "removeuser":
+			ctx.BlacklistRemoveUser(ctx.Args[2])
+		case "removeguild":
+			ctx.BlacklistRemoveGuild(ctx.Args[2])
+		}
+	}
+
 }

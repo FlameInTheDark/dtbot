@@ -30,12 +30,14 @@ type Context struct {
 	Guilds     *GuildsMap
 	Twitch     *Twitch
 	Albion     *AlbionUpdater
+	BlackList  *BlackListStruct
 }
 
 // NewContext create new context
 func NewContext(botID string, discord *discordgo.Session, guild *discordgo.Guild, textChannel *discordgo.Channel,
 	user *discordgo.User, message *discordgo.MessageCreate, conf *Config, cmdHandler *CommandHandler,
-	sessions *SessionManager, youtube *Youtube, botMsg *BotMessages, dataType *DataType, dbWorker *DBWorker, guilds *GuildsMap, botCron *cron.Cron, twitch *Twitch, albion *AlbionUpdater) *Context {
+	sessions *SessionManager, youtube *Youtube, botMsg *BotMessages, dataType *DataType, dbWorker *DBWorker,
+	guilds *GuildsMap, botCron *cron.Cron, twitch *Twitch, albion *AlbionUpdater, blacklist *BlackListStruct) *Context {
 	ctx := new(Context)
 	ctx.BotID = botID
 	ctx.Discord = discord
@@ -54,6 +56,7 @@ func NewContext(botID string, discord *discordgo.Session, guild *discordgo.Guild
 	ctx.Cron = botCron
 	ctx.Twitch = twitch
 	ctx.Albion = albion
+	ctx.BlackList = blacklist
 	return ctx
 }
 

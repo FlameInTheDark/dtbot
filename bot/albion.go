@@ -196,7 +196,7 @@ func (ctx *Context) AlbionShowKills() {
 			for _, k := range kills {
 				fmt.Println("Killed " + k.Victim.Name)
 				var timeString string
-				t, err := time.Parse("2006-01-02T15:04:05.000000000Z", k.TimeStamp)
+				t, err := time.Parse(time.RFC3339Nano, k.TimeStamp)
 				if err == nil {
 					timeString = fmt.Sprintf("%v.%v.%v %v:%v", t.Day(), t.Month().String(), t.Year(), t.Hour(), t.Minute())
 				} else {
@@ -316,7 +316,7 @@ func SendPlayerKills(session *discordgo.Session, worker *DBWorker, conf *Config,
 		}
 		var newKillTime int64
 		for i, k := range kills {
-			killTime, err := time.Parse("2006-01-02T15:04:05.000000000Z", k.TimeStamp)
+			killTime, err := time.Parse(time.RFC3339Nano, k.TimeStamp)
 			if err != nil {
 				fmt.Println("Kill time parse error: ", err.Error())
 				continue
@@ -350,7 +350,7 @@ func (u *AlbionUpdater) Update(session *discordgo.Session, worker *DBWorker, con
 			}
 			var newKillTime int64
 			for i, k := range kills {
-				killTime, err := time.Parse("2006-01-02T15:04:05.000000000Z", k.TimeStamp)
+				killTime, err := time.Parse(time.RFC3339Nano, k.TimeStamp)
 				if err != nil {
 					fmt.Println("Kill time parse error: ", err.Error())
 					continue
@@ -386,7 +386,7 @@ func (ctx *Context) AlbionAddPlayer() error {
 			}
 			var lastKill int64
 			for _, k := range kills {
-				killTime, err := time.Parse("2006-01-02T15:04:05.000000000Z", k.TimeStamp)
+				killTime, err := time.Parse(time.RFC3339Nano, k.TimeStamp)
 				if err != nil {
 					continue
 				}

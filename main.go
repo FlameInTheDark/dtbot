@@ -33,6 +33,7 @@ var (
 	botCron         *cron.Cron
 	twitch          *bot.Twitch
 	albUpdater      *bot.AlbionUpdater
+	blacklist       *bot.BlackListStruct
 	messagesCounter int
 )
 
@@ -79,6 +80,7 @@ func main() {
 	defer dbWorker.DBSession.Close()
 	twitch = bot.TwitchInit(discord, conf, dbWorker)
 	albUpdater = bot.AlbionGetUpdater(dbWorker)
+	blacklist = dbWorker.GetBlacklist()
 	go BotUpdater(discord)
 	// Init command handler
 	discord.AddHandler(guildAddHandler)
@@ -109,6 +111,9 @@ func guildAddHandler(discord *discordgo.Session, e *discordgo.GuildCreate) {
 
 // Handle discord messages
 func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate) {
+	if blacklist.CheckGuild(message.GuildID) && blacklist.CheckUser(message.Author.ID) {
+		return
+	}
 	messagesCounter++
 	user := message.Author
 	if user.ID == botId || user.Bot {
@@ -165,7 +170,8 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 			guilds,
 			botCron,
 			twitch,
-			albUpdater)
+			albUpdater,
+			blacklist)
 		ctx.Args = args[1:]
 		c := *command
 		c(*ctx)
