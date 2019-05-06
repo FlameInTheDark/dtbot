@@ -115,7 +115,11 @@
     "albion_add_error": "Error adding player",
     "albion_added": "Player added",
     "albion_removed": "Player removed",
-    "albion_not_watching": "You are not watching now"
+    "albion_not_watching": "You are not watching now",
+    "blacklist_guild_add": "Guild \"%v\" added in blacklist",
+    "blacklist_user_add": "User \"%v\" added in blacklist",
+    "blacklist_user_remove": "User \"%v\" removed from blacklist",
+    "blacklist_guild_remove": "Guild \"%v\" removed from blacklist"
   },
   "ru": {
     "admin_require": "Для использования данной команды вам необходимо иметь роль \"bot.admin\". Для помощи используйте `!help bot.admin`",

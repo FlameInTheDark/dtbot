@@ -365,12 +365,16 @@ func botBlacklist(ctx *bot.Context) {
 		switch ctx.Args[1] {
 		case "addguild":
 			ctx.BlacklistAddGuild(ctx.Args[2])
+			ctx.ReplyEmbed("Bot", fmt.Sprintf(ctx.Loc("blacklist_guild_add"), ctx.Args[2]))
 		case "adduser":
 			ctx.BlacklistAddUser(ctx.Args[2])
+			ctx.ReplyEmbed("Bot", fmt.Sprintf(ctx.Loc("blacklist_user_add"), ctx.Args[2]))
 		case "removeuser":
 			ctx.BlacklistRemoveUser(ctx.Args[2])
+			ctx.ReplyEmbed("Bot", fmt.Sprintf(ctx.Loc("blacklist_user_remove"), ctx.Args[2]))
 		case "removeguild":
 			ctx.BlacklistRemoveGuild(ctx.Args[2])
+			ctx.ReplyEmbed("Bot", fmt.Sprintf(ctx.Loc("blacklist_guild_remove"), ctx.Args[2]))
 		}
 	}
 
