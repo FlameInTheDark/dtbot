@@ -272,12 +272,12 @@ func SendKill(session *discordgo.Session, conf *Config, kill *AlbionKill, userID
 	}
 	ch, err := session.UserChannelCreate(userID)
 	if err != nil {
-		fmt.Println("Error whilst creating private channel, ", err)
+		fmt.Println("Error whilst creating private channel, ", err.Error())
 		return
 	}
 	_, err = session.ChannelMessageSendEmbed(ch.ID, embed.GetEmbed())
 	if err != nil {
-		fmt.Println("Error whilst sending embed message, ", err)
+		fmt.Println("Error whilst sending embed message, ", err.Error())
 		return
 	}
 }
@@ -346,6 +346,7 @@ func (u *AlbionUpdater) Update(session *discordgo.Session, worker *DBWorker, con
 		} else {
 			kills, err := AlbionGetPlayerKills(p.PlayerID)
 			if err != nil {
+				worker.Log("albion", "", fmt.Sprintf("Getting player error: %v", err.Error()))
 				return
 			}
 			var newKillTime int64
@@ -353,6 +354,7 @@ func (u *AlbionUpdater) Update(session *discordgo.Session, worker *DBWorker, con
 				killTime, err := time.Parse(time.RFC3339Nano, k.TimeStamp)
 				if err != nil {
 					fmt.Println("Kill time parse error: ", err.Error())
+					worker.Log("albion", "", fmt.Sprintf("Parse time error: %v", err.Error()))
 					continue
 				}
 				if killTime.Unix() > lastTime.Unix() {
@@ -362,7 +364,6 @@ func (u *AlbionUpdater) Update(session *discordgo.Session, worker *DBWorker, con
 					go SendKill(session, conf, &kills[i], p.UserID, p.Language)
 				}
 			}
-			fmt.Printf("User: %v | Last: %v | New: %v\n", p.UserID, lastTime.Unix(), newKillTime)
 			if newKillTime > lastTime.Unix() {
 				worker.UpdateAlbionPlayerLast(p.UserID, newKillTime)
 				u.Players[p.UserID].LastKill = newKillTime
@@ -375,13 +376,13 @@ func (ctx *Context) AlbionAddPlayer() error {
 	if len(ctx.Args) > 1 {
 		search, err := AlbionSearchPlayers(ctx.Args[1])
 		if err != nil {
-			fmt.Println("Error searching Albion player: ", err.Error())
+			ctx.Log("albion", "", fmt.Sprintf("Searching player error: %v", err.Error()))
 			return errors.New("error searching Albion player")
 		}
 		if _, ok := ctx.Albion.Players[ctx.User.ID]; !ok {
 			kills, err := AlbionGetPlayerKills(search.Players[0].ID)
 			if err != nil {
-				fmt.Println("Error getting Albion kills: ", err.Error())
+				ctx.Log("albion", "", fmt.Sprintf("Getting kills error: %v", err.Error()))
 				return errors.New("error getting Albion kills")
 			}
 			var lastKill int64
