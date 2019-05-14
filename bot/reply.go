@@ -10,16 +10,42 @@ import (
 // NewEmbedStruct generated embed
 type NewEmbedStruct struct {
 	*discordgo.MessageSend
+	embLength int
+}
+
+func truncateText(text string, length int) string {
+	if length > 3 && len(text) > length && len(text) > 3 {
+		text = text[:length-3] + "..."
+	}
+	return text
 }
 
 // NewEmbed creates new embed
 func NewEmbed(title string) *NewEmbedStruct {
-	return &NewEmbedStruct{&discordgo.MessageSend{Embed: &discordgo.MessageEmbed{Title: title}}}
+	title = truncateText(title, 256)
+	return &NewEmbedStruct{&discordgo.MessageSend{Embed: &discordgo.MessageEmbed{Title: title}}, len(title)}
+}
+
+func (emb *NewEmbedStruct) CheckLength(newLength int) bool {
+	if emb.embLength+newLength <= 6000 {
+		return true
+	}
+	return false
 }
 
 // Field adds field to embed
 func (emb *NewEmbedStruct) Field(name, value string, inline bool) *NewEmbedStruct {
-	emb.Embed.Fields = append(emb.Embed.Fields, &discordgo.MessageEmbedField{Name: name, Value: value, Inline: inline})
+	name = truncateText(name, 256)
+	value = truncateText(value, 1024)
+	newLength := len(name + value)
+	if emb.CheckLength(newLength) {
+		emb.Embed.Fields = append(emb.Embed.Fields,
+			&discordgo.MessageEmbedField{
+				Name:   name,
+				Value:  value,
+				Inline: inline})
+		emb.embLength += newLength
+	}
 	return emb
 }
 
@@ -30,13 +56,23 @@ func (emb *NewEmbedStruct) TimeStamp(ts string) *NewEmbedStruct {
 
 // Author adds author to embed
 func (emb *NewEmbedStruct) Author(name, url, iconURL string) *NewEmbedStruct {
-	emb.Embed.Author = &discordgo.MessageEmbedAuthor{URL: url, Name: name, IconURL: iconURL}
+	name = truncateText(name, 256)
+	newLength := len(name)
+	if emb.CheckLength(newLength) {
+		emb.Embed.Author = &discordgo.MessageEmbedAuthor{URL: url, Name: name, IconURL: iconURL}
+		emb.embLength += newLength
+	}
 	return emb
 }
 
 // Desc adds description to embed
 func (emb *NewEmbedStruct) Desc(desc string) *NewEmbedStruct {
-	emb.Embed.Description = desc
+	desc = truncateText(desc, 2048)
+	newLength := len(desc)
+	if emb.CheckLength(newLength) {
+		emb.Embed.Description = desc
+		emb.embLength += newLength
+	}
 	return emb
 }
 
@@ -48,7 +84,12 @@ func (emb *NewEmbedStruct) URL(url string) *NewEmbedStruct {
 
 // Footer adds footer text
 func (emb *NewEmbedStruct) Footer(text string) *NewEmbedStruct {
-	emb.Embed.Footer = &discordgo.MessageEmbedFooter{Text: text}
+	text = truncateText(text, 2048)
+	newLength := len(text)
+	if emb.CheckLength(newLength) {
+		emb.Embed.Footer = &discordgo.MessageEmbedFooter{Text: text}
+		emb.embLength += newLength
+	}
 	return emb
 }
 
