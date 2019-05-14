@@ -233,7 +233,7 @@ func (ctx *Context) AlbionShowKill() {
 	embed.Author("Albion Killboard", "https://albiononline.com/ru/killboard", "")
 	embed.TimeStamp(kill.TimeStamp)
 	embed.Field(ctx.Loc("albion_guild"), kill.Victim.GuildName, true)
-	embed.Field(ctx.Loc("albion_fame"), fmt.Sprintf("%v", kill.Victim.DeathFame), true)
+	embed.Field(ctx.Loc("albion_fame"), fmt.Sprintf("%d", kill.Victim.DeathFame), true)
 	embed.Field(ctx.Loc("albion_item_power"), fmt.Sprintf("%.3f", kill.Victim.AverageItemPower), true)
 	embed.Field(ctx.Loc("albion_killer_item_power"), fmt.Sprintf("%.3f", kill.Killer.AverageItemPower), true)
 	if len(kill.Participants) > 0 {
@@ -256,7 +256,7 @@ func SendKill(session *discordgo.Session, conf *Config, kill *AlbionKill, userID
 	embed.TimeStamp(kill.TimeStamp)
 	embed.Field(conf.GetLocaleLang("albion_item_power", lang), fmt.Sprintf("%.2f", kill.Victim.AverageItemPower), true)
 	embed.Field(conf.GetLocaleLang("albion_killer_item_power", lang), fmt.Sprintf("%.2f", kill.Killer.AverageItemPower), true)
-	embed.Field(conf.GetLocaleLang("albion_fame", lang), fmt.Sprintf("%v", kill.Victim.DeathFame), true)
+	embed.Field(conf.GetLocaleLang("albion_fame", lang), fmt.Sprintf("%d", kill.Victim.DeathFame), true)
 	if kill.Victim.GuildName != "" {
 		embed.Field(conf.GetLocaleLang("albion_guild", lang), kill.Victim.GuildName, true)
 	}
