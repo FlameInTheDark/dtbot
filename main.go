@@ -111,7 +111,7 @@ func guildAddHandler(discord *discordgo.Session, e *discordgo.GuildCreate) {
 
 // Handle discord messages
 func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate) {
-	if blacklist.CheckGuild(message.GuildID) && blacklist.CheckUser(message.Author.ID) {
+	if blacklist.CheckGuild(message.GuildID) || blacklist.CheckUser(message.Author.ID) {
 		return
 	}
 	messagesCounter++
