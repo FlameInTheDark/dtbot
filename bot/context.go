@@ -70,6 +70,15 @@ func (ctx *Context) Loc(key string) string {
 	return ctx.Conf.Locales[ctx.GetGuild().Language][key]
 }
 
+func (ctx *Context) GetGuildUser(id string) *discordgo.User {
+	for i, m := range ctx.Guild.Members {
+		if m.User.ID == id {
+			return ctx.Guild.Members[i].User
+		}
+	}
+	return nil
+}
+
 // WeatherCode returns unicode symbol of weather font icon
 func (ctx *Context) WeatherCode(code string) string {
 	return ctx.Conf.WeatherCodes[code]
