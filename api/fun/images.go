@@ -26,6 +26,7 @@ func GetImageURL(category string) (string, error) {
 
 	err = json.NewDecoder(resp.Body).Decode(&result)
 	if err != nil {
+		fmt.Printf(err.Error())
 		return "", err
 	}
 
