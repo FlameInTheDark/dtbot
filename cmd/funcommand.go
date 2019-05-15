@@ -9,6 +9,7 @@ import (
 // SlapCommand returns slap image
 func SlapCommand(ctx bot.Context) {
 	if len(ctx.Args) > 0 {
+		ctx.MetricsCommand("fun", "slap")
 		url, err := fun.GetImageURL("slap")
 		if err == nil {
 			user := ctx.GetGuildUser(ctx.Args[0][2 : len(ctx.Args[0])-1])
