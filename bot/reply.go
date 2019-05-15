@@ -26,8 +26,9 @@ func NewEmbed(title string) *NewEmbedStruct {
 	return &NewEmbedStruct{&discordgo.MessageSend{Embed: &discordgo.MessageEmbed{Title: title}}, len(title)}
 }
 
+// CheckLength returns true if length of embed chars less then 6000
 func (emb *NewEmbedStruct) CheckLength(newLength int) bool {
-	if emb.embLength+newLength <= 6000 {
+	if emb.embLength + newLength <= 6000 {
 		return true
 	}
 	return false
@@ -35,20 +36,23 @@ func (emb *NewEmbedStruct) CheckLength(newLength int) bool {
 
 // Field adds field to embed
 func (emb *NewEmbedStruct) Field(name, value string, inline bool) *NewEmbedStruct {
-	name = truncateText(name, 256)
-	value = truncateText(value, 1024)
-	newLength := len(name + value)
-	if emb.CheckLength(newLength) {
-		emb.Embed.Fields = append(emb.Embed.Fields,
-			&discordgo.MessageEmbedField{
-				Name:   name,
-				Value:  value,
-				Inline: inline})
-		emb.embLength += newLength
+	if len(name) > 0 && len(value) > 0 {
+		name = truncateText(name, 256)
+		value = truncateText(value, 1024)
+		newLength := len(name + value)
+		if emb.CheckLength(newLength) {
+			emb.Embed.Fields = append(emb.Embed.Fields,
+				&discordgo.MessageEmbedField{
+					Name:   name,
+					Value:  value,
+					Inline: inline})
+			emb.embLength += newLength
+		}
 	}
 	return emb
 }
 
+// TimeStamp adds timestamp to footer of embed
 func (emb *NewEmbedStruct) TimeStamp(ts string) *NewEmbedStruct {
 	emb.Embed.Timestamp = ts
 	return emb

@@ -152,6 +152,7 @@ func AlbionGetPlayerKills(id string) (result []AlbionKill, err error) {
 	return kills, nil
 }
 
+// AlbionGetKillID returns kill by ID
 func AlbionGetKillID(id string) (kill *AlbionKill, err error) {
 	var result AlbionKill
 	resp, err := http.Get(fmt.Sprintf("https://gameinfo.albiononline.com/api/gameinfo/events/%v", id))
@@ -218,6 +219,7 @@ func (ctx *Context) AlbionShowKills() {
 	}
 }
 
+// AlbionShowKill sends kill embed to user
 func (ctx *Context) AlbionShowKill() {
 	kill, err := AlbionGetKillID(ctx.Args[1])
 	if err != nil {
@@ -246,6 +248,7 @@ func (ctx *Context) AlbionShowKill() {
 	embed.Send(ctx)
 }
 
+// SendKill sends kill to user
 func SendKill(session *discordgo.Session, conf *Config, kill *AlbionKill, userID, lang string) {
 	embed := NewEmbed(fmt.Sprintf("Show on killboard #%v", kill.EventID))
 	embed.Desc(fmt.Sprintf("%v :crossed_swords: %v", kill.Killer.Name, kill.Victim.Name))
@@ -282,7 +285,8 @@ func SendKill(session *discordgo.Session, conf *Config, kill *AlbionKill, userID
 	}
 }
 
-func GetPlayerByID(name string) string {
+// GetPlayerByID returns player ID by player name
+func GetPlayerByName(name string) string {
 	search, err := AlbionSearchPlayers(name)
 	if err == nil {
 		if len(search.Players) > 0 {
@@ -292,6 +296,7 @@ func GetPlayerByID(name string) string {
 	return ""
 }
 
+// AlbionGetUpdater creates and returns albion kills updater
 func AlbionGetUpdater(db *DBWorker) *AlbionUpdater {
 	var updater = &AlbionUpdater{Players: make(map[string]*AlbionPlayerUpdater)}
 	var players []AlbionPlayerUpdater
@@ -302,6 +307,7 @@ func AlbionGetUpdater(db *DBWorker) *AlbionUpdater {
 	return updater
 }
 
+// SendPlayerKills sends player kills
 func SendPlayerKills(session *discordgo.Session, worker *DBWorker, conf *Config, updater *AlbionUpdater, userID string) {
 	startTime := time.Unix(updater.Players[userID].StartAt, 0)
 	lastTime := time.Unix(updater.Players[userID].LastKill, 0)
@@ -335,6 +341,7 @@ func SendPlayerKills(session *discordgo.Session, worker *DBWorker, conf *Config,
 	}
 }
 
+// Update updates players kills and sends to users
 func (u *AlbionUpdater) Update(session *discordgo.Session, worker *DBWorker, conf *Config) {
 	for _, p := range u.Players {
 		startTime := time.Unix(p.StartAt, 0)
@@ -346,7 +353,7 @@ func (u *AlbionUpdater) Update(session *discordgo.Session, worker *DBWorker, con
 		} else {
 			kills, err := AlbionGetPlayerKills(p.PlayerID)
 			if err != nil {
-				worker.Log("albion", "", fmt.Sprintf("Getting player error: %v", err.Error()))
+				worker.Log("albion", "", fmt.Sprintf("Getting player kills error: %v", err.Error()))
 				return
 			}
 			var newKillTime int64
@@ -372,6 +379,7 @@ func (u *AlbionUpdater) Update(session *discordgo.Session, worker *DBWorker, con
 	}
 }
 
+// AlbionAddPlayer adds player to updater
 func (ctx *Context) AlbionAddPlayer() error {
 	if len(ctx.Args) > 1 {
 		search, err := AlbionSearchPlayers(ctx.Args[1])
