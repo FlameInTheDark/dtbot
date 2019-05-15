@@ -230,8 +230,9 @@ func (ctx *Context) ReplyEmbedAttachment(name, content, fileName string, file io
 }
 
 // ReplyEmbedAttachment reply on message with embed message with attachment
-func (ctx *Context) ReplyEmbedAttachmentImageURL(title, imageUrl string) *discordgo.Message {
+func (ctx *Context) ReplyEmbedAttachmentImageURL(title, desc, imageUrl string) *discordgo.Message {
 	return NewEmbed(title).
+		Desc(desc).
 		AttachImgURL(imageUrl).
 		Footer(ctx.Loc("requested_by") + ": " + ctx.User.Username).
 		Color(ctx.GetGuild().EmbedColor).
