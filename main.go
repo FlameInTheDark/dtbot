@@ -206,6 +206,7 @@ func registerCommands() {
 	CmdHandler.Register("!greetings", cmd.GreetingsCommand)
 	CmdHandler.Register("!alb", cmd.AlbionCommand)
 	CmdHandler.Register("!slap", cmd.SlapCommand)
+	CmdHandler.Register("!fu", cmd.FUCommand)
 }
 
 // MetricsSender sends metrics to InfluxDB and another services

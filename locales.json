@@ -119,7 +119,9 @@
     "blacklist_guild_add": "Guild \"%v\" added in blacklist",
     "blacklist_user_add": "User \"%v\" added in blacklist",
     "blacklist_user_remove": "User \"%v\" removed from blacklist",
-    "blacklist_guild_remove": "Guild \"%v\" removed from blacklist"
+    "blacklist_guild_remove": "Guild \"%v\" removed from blacklist",
+    "slapping": "%v slapping %v",
+    "send_fu": "%v tell %v to fuck off"
   },
   "ru": {
     "admin_require": "Для использования данной команды вам необходимо иметь роль \"bot.admin\". Для помощи используйте `!help bot.admin`",
@@ -239,6 +241,8 @@
     "blacklist_guild_add": "Гильдия \"%v\" добавлена в черный список",
     "blacklist_user_add": "Пользователь \"%v\" добавлен в черный список",
     "blacklist_user_remove": "Пользователь \"%v\" удален из черного списка",
-    "blacklist_guild_remove": "Гильдия \"%v\" удалена из черного списка"
+    "blacklist_guild_remove": "Гильдия \"%v\" удалена из черного списка",
+    "slapping": "%v шлепает %v",
+    "send_fu": "%v сказал %v пойти нахер"
   }
 }

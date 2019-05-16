@@ -71,11 +71,13 @@ func (emb *NewEmbedStruct) Author(name, url, iconURL string) *NewEmbedStruct {
 
 // Desc adds description to embed
 func (emb *NewEmbedStruct) Desc(desc string) *NewEmbedStruct {
-	desc = truncateText(desc, 2048)
-	newLength := len(desc)
-	if emb.CheckLength(newLength) {
-		emb.Embed.Description = desc
-		emb.embLength += newLength
+	if len(desc) > 0 {
+		desc = truncateText(desc, 2048)
+		newLength := len(desc)
+		if emb.CheckLength(newLength) {
+			emb.Embed.Description = desc
+			emb.embLength += newLength
+		}
 	}
 	return emb
 }
