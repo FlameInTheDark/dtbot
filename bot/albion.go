@@ -283,6 +283,7 @@ func SendKill(session *discordgo.Session, conf *Config, kill *AlbionKill, userID
 		fmt.Println("Error whilst sending embed message, ", err.Error())
 		return
 	}
+	fmt.Printf("Sended to %v kill of %v\n", kill.Killer.Name, kill.Victim.Name)
 }
 
 // GetPlayerByID returns player ID by player name
