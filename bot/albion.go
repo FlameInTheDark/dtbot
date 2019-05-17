@@ -302,8 +302,8 @@ func AlbionGetUpdater(db *DBWorker) *AlbionUpdater {
 	var updater = &AlbionUpdater{Players: make(map[string]*AlbionPlayerUpdater)}
 	var players []AlbionPlayerUpdater
 	players = db.GetAlbionPlayers()
-	for _, p := range players {
-		updater.Players[p.UserID] = &p
+	for i, p := range players {
+		updater.Players[p.UserID] = &players[i]
 	}
 	return updater
 }
