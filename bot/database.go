@@ -211,9 +211,10 @@ func (db *DBWorker) AddRadioStation(name, url, key, category string) error {
 
 // GetAlbionPlayers gets players from database
 func (db *DBWorker) GetAlbionPlayers() []AlbionPlayerUpdater {
-	var kills []AlbionPlayerUpdater
-	_ = db.DBSession.DB(db.DBName).C("albion").Find(nil).All(&kills)
-	return kills
+	var players []AlbionPlayerUpdater
+	_ = db.DBSession.DB(db.DBName).C("albion").Find(nil).All(&players)
+	fmt.Println(len(players))
+	return players
 }
 
 // AddAlbionPlayer adds new player in database
