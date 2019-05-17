@@ -333,6 +333,7 @@ func SendPlayerKills(session *discordgo.Session, worker *DBWorker, conf *Config,
 					newKillTime = killTime.Unix()
 				}
 				SendKill(session, conf, &kills[i], userID, updater.Players[userID].Language)
+				fmt.Printf("Send kill to %v", userID)
 			}
 		}
 		if newKillTime > lastTime.Unix() {
