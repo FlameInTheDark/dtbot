@@ -333,7 +333,6 @@ func SendPlayerKills(session *discordgo.Session, worker *DBWorker, conf *Config,
 					newKillTime = killTime.Unix()
 				}
 				SendKill(session, conf, &kills[i], userID, updater.Players[userID].Language)
-				fmt.Printf("Send kill to %v", userID)
 			}
 		}
 		if newKillTime > lastTime.Unix() {
@@ -371,6 +370,7 @@ func (u *AlbionUpdater) Update(session *discordgo.Session, worker *DBWorker, con
 						newKillTime = killTime.Unix()
 					}
 					go SendKill(session, conf, &kills[i], p.UserID, p.Language)
+					fmt.Printf("Send kill to %v", p.UserID)
 				}
 			}
 			if newKillTime > lastTime.Unix() {
