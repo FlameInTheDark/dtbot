@@ -344,6 +344,7 @@ func SendPlayerKills(session *discordgo.Session, worker *DBWorker, conf *Config,
 
 // Update updates players kills and sends to users
 func (u *AlbionUpdater) Update(session *discordgo.Session, worker *DBWorker, conf *Config) {
+	fmt.Println("Updating albion...")
 	for _, p := range u.Players {
 		startTime := time.Unix(p.StartAt, 0)
 		lastTime := time.Unix(p.LastKill, 0)
