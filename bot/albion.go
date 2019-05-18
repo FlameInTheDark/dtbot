@@ -354,7 +354,7 @@ func (u *AlbionUpdater) Update(session *discordgo.Session, worker *DBWorker, con
 			kills, err := AlbionGetPlayerKills(p.PlayerID)
 			if err != nil {
 				worker.Log("albion", "", fmt.Sprintf("Getting player kills error: %v", err.Error()))
-				fmt.Println("Getting player kills error: %v", err.Error())
+				fmt.Println("Getting player kills error: ", err.Error())
 				return
 			}
 			var newKillTime int64
