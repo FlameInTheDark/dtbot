@@ -212,11 +212,13 @@ func registerCommands() {
 // MetricsSender sends metrics to InfluxDB and another services
 func BotUpdater(d *discordgo.Session) {
 	for {
+		var vregions = make(map[string]int)
 		go twitch.Update()
 		go albUpdater.Update(d, dbWorker, conf)
 		// Calculating users count
 		usersCount := 0
 		for _, g := range d.State.Guilds {
+			vregions[g.Region] += 1
 			if !blacklist.CheckGuild(g.ID) {
 				usersCount += g.MemberCount
 			}
@@ -227,6 +229,15 @@ func BotUpdater(d *discordgo.Session) {
 			conf.Metrics.Address, conf.Metrics.Database, conf.Metrics.User, conf.Metrics.Password)
 		rCounters := bytes.NewReader(queryCounters)
 		_, _ = http.Post(addrCounters, "", rCounters)
+
+		// Voice region metrics
+		for r, c := range vregions {
+			queryCounters := []byte(fmt.Sprintf("region_%v count=%d", r, c))
+			addrCounters := fmt.Sprintf("%v/write?db=%v&u=%v&p=%v",
+				conf.Metrics.Address, conf.Metrics.Database, conf.Metrics.User, conf.Metrics.Password)
+			rCounters := bytes.NewReader(queryCounters)
+			_, _ = http.Post(addrCounters, "", rCounters)
+		}
 
 		// Bot lists
 		if conf.DBL.Token != "" {

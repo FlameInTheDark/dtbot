@@ -9,12 +9,14 @@ import (
 	"net/http"
 )
 
+// ImageResponse contains image API response data
 type ImageResponse struct {
 	Error    string `json:"error"`
 	Success  bool   `json:"success"`
 	ImageURL string `json:"image"`
 }
 
+// GetImageURL returns image url
 func GetImageURL(category string) (string, error) {
 	resp, err := http.Get(fmt.Sprintf("https://botimages.realpha.ru/?category=%v", category))
 	if err != nil && resp.StatusCode == http.StatusOK {
@@ -36,6 +38,7 @@ func GetImageURL(category string) (string, error) {
 	return "", errors.New("wrong data")
 }
 
+// GetImage return image bytes buffer
 func GetImage(category string) (*bytes.Buffer, error) {
 	resp, err := http.Get(fmt.Sprintf("https://botimages.realpha.ru/?category=%v", category))
 	if err != nil {

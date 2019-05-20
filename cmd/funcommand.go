@@ -24,6 +24,7 @@ func SlapCommand(ctx bot.Context) {
 	}
 }
 
+// FUCommand returns FU image
 func FUCommand(ctx bot.Context) {
 	if len(ctx.Args) > 0 {
 		ctx.MetricsCommand("fun", "fu")
