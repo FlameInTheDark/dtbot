@@ -10,8 +10,8 @@ import (
 
 // DebugCommand special bot commands handler
 func DebugCommand(ctx bot.Context) {
-	ctx.MetricsCommand("debug", "admin")
 	if ctx.IsServerAdmin() {
+		ctx.MetricsCommand("debug", "admin")
 		if len(ctx.Args) == 0 {
 			return
 		}

@@ -13,7 +13,11 @@ func SlapCommand(ctx bot.Context) {
 		url, err := fun.GetImageURL("slap")
 		if err == nil {
 			if len(ctx.Args) > 0 {
-				user := ctx.GetGuildUser(ctx.Args[0][2 : len(ctx.Args[0])-1])
+				var userID string
+				if len(ctx.Args[0]) > 3 {
+					userID = ctx.Args[0][2 : len(ctx.Args[0])-1]
+				}
+				user := ctx.GetGuildUser(userID)
 				var mention= ctx.Args[0]
 				if user != nil {
 					mention = user.Username
@@ -33,7 +37,11 @@ func FUCommand(ctx bot.Context) {
 		url, err := fun.GetImageURL("fu")
 		if err == nil {
 			if len(ctx.Args) > 0 {
-				user := ctx.GetGuildUser(ctx.Args[0][2 : len(ctx.Args[0])-1])
+				var userID string
+				if len(ctx.Args[0]) > 3 {
+					userID = ctx.Args[0][2 : len(ctx.Args[0])-1]
+				}
+				user := ctx.GetGuildUser(userID)
 				var mention = ctx.Args[0]
 				if user != nil {
 					mention = user.Username
