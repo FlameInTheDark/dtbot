@@ -20,7 +20,7 @@ import (
 
 var (
 	conf *bot.Config
-	// CmdHandler bot command handler
+	// CmdHandler bot command handler.
 	CmdHandler *bot.CommandHandler
 	// Sessions bot session manager
 	Sessions        *bot.SessionManager
