@@ -19,9 +19,11 @@ type ImageResponse struct {
 // GetImageURL returns image url
 func GetImageURL(category string) (string, error) {
 	resp, err := http.Get(fmt.Sprintf("https://botimages.realpha.ru/?category=%v", category))
-	if err != nil && resp.StatusCode == http.StatusOK {
-		fmt.Printf("Getting image url error: %v", err)
-		return "", errors.New("getting image url error")
+	if err != nil {
+		if resp.StatusCode == http.StatusOK {
+			fmt.Printf("Getting image url error: %v", err)
+			return "", errors.New("getting image url error")
+		}
 	}
 
 	var result ImageResponse
