@@ -39,15 +39,17 @@ func pollNew(ctx *bot.Context) {
 
 func pollVote(ctx *bot.Context) {
 	ctx.MetricsCommand("poll", "vote")
-	val, err := strconv.Atoi(ctx.Args[1])
-	if err != nil {
-		ctx.ReplyEmbed(ctx.Loc("polls"), ctx.Loc("polls_wrong_field"))
-		return
-	}
-	verr := ctx.Data.AddPollVote(ctx, val)
-	if verr != nil {
-		ctx.ReplyEmbed(ctx.Loc("polls"), verr.Error())
-		return
+	if len(ctx.Args) > 1 {
+		val, err := strconv.Atoi(ctx.Args[1])
+		if err != nil {
+			ctx.ReplyEmbed(ctx.Loc("polls"), ctx.Loc("polls_wrong_field"))
+			return
+		}
+		verr := ctx.Data.AddPollVote(ctx, val)
+		if verr != nil {
+			ctx.ReplyEmbed(ctx.Loc("polls"), verr.Error())
+			return
+		}
 	}
 }
 
