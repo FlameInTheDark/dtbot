@@ -72,7 +72,7 @@ func (db *DBWorker) InitGuilds(sess *discordgo.Session, conf *Config) *GuildsMap
 	for _, guild := range sess.State.Guilds {
 		count, err := db.DBSession.DB(db.DBName).C("guilds").Find(bson.M{"id": guild.ID}).Count()
 		if err != nil {
-			fmt.Println("Mongo: ", err)
+			fmt.Printf("Mongo: guilds, DB: %s, Guild: %s, Error: %v\n", db.DBName, guild.ID, err)
 		}
 		if count == 0 {
 			newData := &GuildData{
@@ -92,7 +92,7 @@ func (db *DBWorker) InitGuilds(sess *discordgo.Session, conf *Config) *GuildsMap
 			var newData = &GuildData{}
 			_ = db.DBSession.DB(db.DBName).C("guilds").Find(bson.M{"id": guild.ID}).One(newData)
 			if err != nil {
-				fmt.Println("Mongo: ", err)
+				fmt.Printf("Mongo: guilds, DB: %s, Guild: %s, Error: %v\n", db.DBName, guild.ID, err)
 				continue
 			}
 			data.Guilds[guild.ID] = newData
@@ -141,7 +141,7 @@ func (db *DBWorker) GetTwitchStreams(guildID string) map[string]*TwitchStream {
 	streams := []TwitchStream{}
 	err := db.DBSession.DB(db.DBName).C("streams").Find(bson.M{"guild": guildID}).All(&streams)
 	if err != nil {
-		fmt.Println("Mongo: ", err)
+		fmt.Printf("Mongo: streams, streams DB: %s, Guild: %s, Error: %v\n", db.DBName, guildID, err)
 	}
 	var newMap = make(map[string]*TwitchStream)
 	for i, s := range streams {
@@ -180,7 +180,8 @@ func (db *DBWorker) GetRadioStations(category string) []RadioStation {
 	}
 	err := db.DBSession.DB(db.DBName).C("stations").Find(request).All(&stations)
 	if err != nil {
-		fmt.Println("Mongo: ", err)
+		fmt.Printf("Mongo: stations, DB: %s, Error: %v\n", db.DBName, err)
+
 	}
 	return stations
 }
@@ -190,7 +191,7 @@ func (db *DBWorker) GetRadioStationByKey(key string) (*RadioStation, error) {
 	station := RadioStation{}
 	err := db.DBSession.DB(db.DBName).C("stations").Find(bson.M{"key": key}).One(&station)
 	if err != nil {
-		fmt.Println("Mongo: ", err)
+		fmt.Printf("Mongo: stations, DB: %s, Key: %s, Error: %v\n", db.DBName, key, err)
 		return nil, fmt.Errorf("station not found")
 	}
 	return &station, nil

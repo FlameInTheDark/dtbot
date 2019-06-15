@@ -157,6 +157,10 @@ func (t *Twitch) Update() {
 		for _, s := range g.Streams {
 			if stream, ok := streams[s.UserID]; ok {
 				if !s.IsOnline {
+					gameName := "Unknown"
+					if _,ok := games[stream.GameID]; ok {
+						gameName = games[stream.GameID].Name
+					}
 					t.Guilds[s.Guild].Streams[s.Login].IsOnline = true
 					t.DB.UpdateStream(s)
 					imgURL := strings.Replace(stream.ThumbnailURL, "{width}", "320", -1)
@@ -165,7 +169,7 @@ func (t *Twitch) Update() {
 						URL(fmt.Sprintf("http://www.twitch.tv/%v", s.Login)).
 						Author(s.Name, "", s.ProfileImageURL).
 						Field("Viewers", fmt.Sprintf("%v", stream.Viewers), true).
-						Field("Game", games[stream.GameID].Name, true).
+						Field("Game", gameName, true).
 						AttachImgURL(imgURL).
 						Color(t.Conf.General.EmbedColor)
 					if s.CustomMessage != "" {
