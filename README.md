@@ -32,7 +32,7 @@
 * Shows news
 * Shows currency
 * Makes polls
-* Plays music from Youtube and Soundcloud
+* Plays music from Youtube
 * Plays music from online radio stations
 * Announcing if Twitch stream is started
 * Greetings new users

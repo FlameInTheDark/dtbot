@@ -159,6 +159,7 @@ func GetWeatherImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 		return
 	}
 
+	// Drawing weather widget
 	gc := gg.NewContext(400, 650)
 	gc.SetRGBA(0, 0, 0, 0)
 	gc.Clear()
