@@ -3,7 +3,6 @@ package bot
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/url"
 	"os/exec"
@@ -100,7 +99,7 @@ func (youtube Youtube) Playlist(input string) (*[]PlaylistVideo, error) {
 			continue
 		}
 		var video PlaylistVideo
-		fmt.Println("line,", line)
+		//fmt.Println("line,", line)
 		err := json.Unmarshal([]byte(line), &video)
 		if err != nil {
 			return nil, err
