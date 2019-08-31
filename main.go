@@ -188,6 +188,7 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 func registerCommands() {
 	CmdHandler.Register("!r", cmd.RadioCommand)
 	CmdHandler.Register("!w", cmd.WeatherCommand)
+	CmdHandler.Register("!ww", cmd.WeatherWeekCommand)
 	CmdHandler.Register("!t", cmd.TranslateCommand)
 	CmdHandler.Register("!n", cmd.NewsCommand)
 	CmdHandler.Register("!c", cmd.CurrencyCommand)

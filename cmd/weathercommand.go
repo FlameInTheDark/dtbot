@@ -19,7 +19,7 @@ func WeatherCommand(ctx bot.Context) {
 // WeatherCommand weather handler
 func WeatherWeekCommand(ctx bot.Context) {
 	ctx.MetricsCommand("weather", "week")
-	buf, err := darksky.GetWeatherImage(&ctx)
+	buf, err := darksky.GetWeatherWeekImage(&ctx)
 	if err != nil {
 		ctx.Log("Weather", ctx.Guild.ID, err.Error())
 		return
