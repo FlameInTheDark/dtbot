@@ -360,7 +360,7 @@ func GetWeatherWeekImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 		panic(err)
 	}
 
-	gc.DrawStringAnchored(fmt.Sprintf("%.2v:00", forecast.Daily.Data[0].GetTime(forecast.Timezone, ctx.Conf.General.Timezone).Weekday()), 60, 200, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%s", forecast.Daily.Data[0].GetTime(forecast.Timezone, ctx.Conf.General.Timezone).Weekday()), 60, 200, 0.5, 0.5)
 	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", int(forecast.Daily.Data[0].Humidity*100)), 200, 200, 0.5, 0.5)
 	gc.DrawStringAnchored(fmt.Sprintf("C:%v%%", int(forecast.Daily.Data[0].CloudCover*100)), 350, 200, 0.5, 0.5)
 
