@@ -224,7 +224,7 @@ func BotUpdater(d *discordgo.Session) {
 			}
 		}
 		// Metrics counters
-		queryCounters := []byte(fmt.Sprintf("counters guilds=%v,messages=%v,users=%v", len(d.State.Guilds), messagesCounter, usersCount))
+		queryCounters := []byte(fmt.Sprintf("counters guilds=%d,messages=%d,users=%d,voices=%d", len(d.State.Guilds), messagesCounter, usersCount, Sessions.Count()))
 		addrCounters := fmt.Sprintf("%v/write?db=%v&u=%v&p=%v",
 			conf.Metrics.Address, conf.Metrics.Database, conf.Metrics.User, conf.Metrics.Password)
 		rCounters := bytes.NewReader(queryCounters)
@@ -232,7 +232,7 @@ func BotUpdater(d *discordgo.Session) {
 
 		// Voice region metrics
 		for r, c := range vregions {
-			queryCounters := []byte(fmt.Sprintf("region_%v count=%d", r, c))
+			queryCounters := []byte(fmt.Sprintf("region_%s count=%d", r, c))
 			addrCounters := fmt.Sprintf("%v/write?db=%v&u=%v&p=%v",
 				conf.Metrics.Address, conf.Metrics.Database, conf.Metrics.User, conf.Metrics.Password)
 			rCounters := bytes.NewReader(queryCounters)

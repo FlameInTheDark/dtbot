@@ -250,7 +250,7 @@ func YoutubeShortCommand(ctx bot.Context) {
 
 		switch t {
 		case bot.ERROR_TYPE:
-			ctx.Log("Youtube", ctx.Guild.ID, fmt.Sprintf("error type: %v", err.Error()))
+			ctx.Log("Youtube", ctx.Guild.ID, fmt.Sprintf("error type: %v", t))
 			fmt.Println("error type", t)
 			return
 		case bot.VIDEO_TYPE:
