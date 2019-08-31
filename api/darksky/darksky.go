@@ -408,16 +408,16 @@ func GetWeatherWeekImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	}
 
 	// Temperature max
-	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[1].TemperatureMax)), 300, 300, 0.5, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[2].TemperatureMax)), 300, 400, 0.5, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[3].TemperatureMax)), 300, 500, 0.5, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[4].TemperatureMax)), 300, 600, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[1].TemperatureMax)), 295, 300, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[2].TemperatureMax)), 295, 400, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[3].TemperatureMax)), 295, 500, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[4].TemperatureMax)), 295, 600, 0.5, 0.5)
 
-	gc.DrawStringAnchored("-", 335, 300, 0.5, 0.5)
-	gc.DrawStringAnchored("-", 335, 400, 0.5, 0.5)
-	gc.DrawStringAnchored("-", 335, 500, 0.5, 0.5)
-	gc.DrawStringAnchored("-", 335, 600, 0.5, 0.5)
-
+	// Temperature separator
+	gc.DrawStringAnchored("-", 330, 300, 0.5, 0.5)
+	gc.DrawStringAnchored("-", 330, 400, 0.5, 0.5)
+	gc.DrawStringAnchored("-", 330, 500, 0.5, 0.5)
+	gc.DrawStringAnchored("-", 330, 600, 0.5, 0.5)
 
 	// Temperature min
 	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[1].TemperatureMin)), 360, 300, 0.5, 0.5)
