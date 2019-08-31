@@ -359,7 +359,7 @@ func GetWeatherWeekImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	if err := gc.LoadFontFace("lato.ttf", 30); err != nil {
 		panic(err)
 	}
-	gc.DrawStringAnchored(fmt.Sprintf("%s", forecast.Currently.GetTime(forecast.Timezone, ctx.Conf.General.Timezone).Weekday()), 50, 200, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%.2v:00", forecast.Currently.GetTime(forecast.Timezone, ctx.Conf.General.Timezone).Hour()), 50, 200, 0.5, 0.5)
 	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", int(forecast.Currently.Humidity*100)), 200, 200, 0.5, 0.5)
 	gc.DrawStringAnchored(fmt.Sprintf("C:%v%%", int(forecast.Currently.CloudCover*100)), 350, 200, 0.5, 0.5)
 
@@ -408,16 +408,22 @@ func GetWeatherWeekImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	}
 
 	// Temperature max
-	gc.DrawStringAnchored(fmt.Sprintf("%v°-", int(forecast.Daily.Data[2].TemperatureMax)), 310, 300, 0.5, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("%v°-", int(forecast.Daily.Data[3].TemperatureMax)), 310, 400, 0.5, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("%v°-", int(forecast.Daily.Data[4].TemperatureMax)), 310, 500, 0.5, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("%v°-", int(forecast.Daily.Data[5].TemperatureMax)), 310, 600, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[2].TemperatureMax)), 300, 300, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[3].TemperatureMax)), 300, 400, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[4].TemperatureMax)), 300, 500, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[5].TemperatureMax)), 300, 600, 0.5, 0.5)
+
+	gc.DrawStringAnchored("-", 320, 300, 0.5, 0.5)
+	gc.DrawStringAnchored("-", 320, 400, 0.5, 0.5)
+	gc.DrawStringAnchored("-", 320, 500, 0.5, 0.5)
+	gc.DrawStringAnchored("-", 320, 600, 0.5, 0.5)
+
 
 	// Temperature min
-	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[2].TemperatureMin)), 330, 300, 0.5, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[3].TemperatureMin)), 330, 400, 0.5, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[4].TemperatureMin)), 330, 500, 0.5, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[5].TemperatureMin)), 330, 600, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[2].TemperatureMin)), 340, 300, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[3].TemperatureMin)), 340, 400, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[4].TemperatureMin)), 340, 500, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[5].TemperatureMin)), 340, 600, 0.5, 0.5)
 
 	if err := gc.LoadFontFace("weathericons.ttf", 40); err != nil {
 		panic(err)
