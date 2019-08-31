@@ -403,7 +403,7 @@ func GetWeatherWeekImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	gc.DrawStringAnchored(fmt.Sprintf("C:%v%%", int(forecast.Daily.Data[5].CloudCover*100)), 170, 615, 0, 0.5)
 
 	gc.SetRGBA(1, 1, 1, 1)
-	if err := gc.LoadFontFace("lato.ttf", 30); err != nil {
+	if err := gc.LoadFontFace("lato.ttf", 35); err != nil {
 		panic(err)
 	}
 
@@ -413,10 +413,10 @@ func GetWeatherWeekImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[4].TemperatureMax)), 300, 500, 0.5, 0.5)
 	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[5].TemperatureMax)), 300, 600, 0.5, 0.5)
 
-	gc.DrawStringAnchored("-", 330, 300, 0.5, 0.5)
-	gc.DrawStringAnchored("-", 330, 400, 0.5, 0.5)
-	gc.DrawStringAnchored("-", 330, 500, 0.5, 0.5)
-	gc.DrawStringAnchored("-", 330, 600, 0.5, 0.5)
+	gc.DrawStringAnchored("-", 335, 300, 0.5, 0.5)
+	gc.DrawStringAnchored("-", 335, 400, 0.5, 0.5)
+	gc.DrawStringAnchored("-", 335, 500, 0.5, 0.5)
+	gc.DrawStringAnchored("-", 335, 600, 0.5, 0.5)
 
 
 	// Temperature min
