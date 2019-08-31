@@ -359,9 +359,10 @@ func GetWeatherWeekImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	if err := gc.LoadFontFace("lato.ttf", 30); err != nil {
 		panic(err)
 	}
-	gc.DrawStringAnchored(fmt.Sprintf("%.2v:00", forecast.Currently.GetTime(forecast.Timezone, ctx.Conf.General.Timezone).Hour()), 50, 200, 0.5, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", int(forecast.Currently.Humidity*100)), 200, 200, 0.5, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("C:%v%%", int(forecast.Currently.CloudCover*100)), 350, 200, 0.5, 0.5)
+
+	gc.DrawStringAnchored(fmt.Sprintf("%.2v:00", forecast.Daily.Data[0].GetTime(forecast.Timezone, ctx.Conf.General.Timezone).Weekday()), 60, 200, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("H:%v%%", int(forecast.Daily.Data[0].Humidity*100)), 200, 200, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("C:%v%%", int(forecast.Daily.Data[0].CloudCover*100)), 350, 200, 0.5, 0.5)
 
 	gc.SetRGBA(1, 1, 1, 1)
 	if err := gc.LoadFontFace("lato.ttf", 90); err != nil {
@@ -420,10 +421,10 @@ func GetWeatherWeekImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	gc.DrawStringAnchored("-", 330, 600, 0.5, 0.5)
 
 	// Temperature min
-	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[1].TemperatureMin)), 360, 300, 0.5, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[2].TemperatureMin)), 360, 400, 0.5, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[3].TemperatureMin)), 360, 500, 0.5, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[4].TemperatureMin)), 360, 600, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[1].TemperatureMin)), 365, 300, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[2].TemperatureMin)), 365, 400, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[3].TemperatureMin)), 365, 500, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°", int(forecast.Daily.Data[4].TemperatureMin)), 365, 600, 0.5, 0.5)
 
 	if err := gc.LoadFontFace("weathericons.ttf", 40); err != nil {
 		panic(err)
