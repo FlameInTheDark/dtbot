@@ -274,21 +274,21 @@ func onStart() {
 }
 
 func clearSessions(d *discordgo.Session, s *bot.SessionManager) {
-	ids := s.GetChannels()
-	for _, id := range ids {
-		c, err := d.Channel(id)
-		if err != nil {
+	gids := s.GetGuilds()
+	for _, gid := range gids {
+		cs := s.GetByGuild(gid)
+		g, gerr := d.Guild(gid)
+		if gerr != nil {
 			continue
 		}
 		var ok bool
-		for _,u := range c.Recipients {
-			if !u.Bot {
+		for _, vs := range g.VoiceStates {
+			if vs.UserID != botId {
 				ok = true
 			}
 		}
 		if !ok {
-			sc,_ := s.GetByChannel(id)
-			s.Leave(d, *sc)
+			s.Leave(d, *cs)
 		}
 	}
 }

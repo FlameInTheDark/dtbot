@@ -110,3 +110,11 @@ func (manager *SessionManager) GetChannels() []string {
 	}
 	return ids
 }
+
+func (manager *SessionManager) GetGuilds() []string {
+	var ids []string
+	for _,s := range manager.sessions {
+		ids = append(ids, s.guildID)
+	}
+	return ids
+}
