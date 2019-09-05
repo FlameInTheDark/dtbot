@@ -10,4 +10,3 @@ install:
     - go get github.com/FlameInTheDark/gopus
     - go get github.com/globalsign/mgo
     - go get gopkg.in/robfig/cron.v2
-    - go get github.com/DiscordBotList/dblgo
