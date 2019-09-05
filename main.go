@@ -216,6 +216,7 @@ func BotUpdater(d *discordgo.Session) {
 		var vregions = make(map[string]int)
 		go twitch.Update()
 		go albUpdater.Update(d, dbWorker, conf)
+		go clearSessions(d, Sessions)
 		// Calculating users count
 		usersCount := 0
 		for _, g := range d.State.Guilds {
@@ -270,4 +271,24 @@ func onStart() {
 		conf.Metrics.Address, conf.Metrics.Database, conf.Metrics.User, conf.Metrics.Password)
 	rCounters := bytes.NewReader(queryCounters)
 	_, _ = http.Post(addrCounters, "", rCounters)
+}
+
+func clearSessions(d *discordgo.Session, s *bot.SessionManager) {
+	ids := s.GetChannels()
+	for _, id := range ids {
+		c, err := d.Channel(id)
+		if err != nil {
+			continue
+		}
+		var ok bool
+		for _,u := range c.Recipients {
+			if !u.Bot {
+				ok = true
+			}
+		}
+		if !ok {
+			sc,_ := s.GetByChannel(id)
+			s.Leave(d, *sc)
+		}
+	}
 }

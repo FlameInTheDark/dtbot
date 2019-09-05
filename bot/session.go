@@ -102,3 +102,11 @@ func (manager *SessionManager) Leave(discord *discordgo.Session, session Session
 func (manager *SessionManager) Count() int {
 	return len(manager.sessions)
 }
+
+func (manager *SessionManager) GetChannels() []string {
+	var ids []string
+	for _,s := range manager.sessions {
+		ids = append(ids, s.ChannelID)
+	}
+	return ids
+}
