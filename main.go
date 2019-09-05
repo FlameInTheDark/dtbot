@@ -283,8 +283,10 @@ func clearSessions(d *discordgo.Session, s *bot.SessionManager) {
 		}
 		var ok bool
 		for _, vs := range g.VoiceStates {
-			if vs.UserID != botId {
-				ok = true
+			if vs.ChannelID == cs.ChannelID {
+				if vs.UserID != botId {
+					ok = true
+				}
 			}
 		}
 		if !ok {
