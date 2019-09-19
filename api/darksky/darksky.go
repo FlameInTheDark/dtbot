@@ -409,10 +409,10 @@ func GetWeatherWeekImage(ctx *bot.Context) (buf *bytes.Buffer, err error) {
 	}
 
 	// Temperature max
-	gc.DrawStringAnchored(fmt.Sprintf("%v°-%v°", int(forecast.Daily.Data[1].TemperatureMax), int(forecast.Daily.Data[1].TemperatureMin)), 330, 300, 0.5, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("%v°-%v°", int(forecast.Daily.Data[2].TemperatureMax), int(forecast.Daily.Data[2].TemperatureMin)), 330, 400, 0.5, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("%v°-%v°", int(forecast.Daily.Data[3].TemperatureMax), int(forecast.Daily.Data[3].TemperatureMin)), 330, 500, 0.5, 0.5)
-	gc.DrawStringAnchored(fmt.Sprintf("%v°-%v°", int(forecast.Daily.Data[4].TemperatureMax), int(forecast.Daily.Data[4].TemperatureMin)), 330, 600, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°/%v°", int(forecast.Daily.Data[1].TemperatureMax), int(forecast.Daily.Data[1].TemperatureMin)), 330, 300, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°/%v°", int(forecast.Daily.Data[2].TemperatureMax), int(forecast.Daily.Data[2].TemperatureMin)), 330, 400, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°/%v°", int(forecast.Daily.Data[3].TemperatureMax), int(forecast.Daily.Data[3].TemperatureMin)), 330, 500, 0.5, 0.5)
+	gc.DrawStringAnchored(fmt.Sprintf("%v°/%v°", int(forecast.Daily.Data[4].TemperatureMax), int(forecast.Daily.Data[4].TemperatureMin)), 330, 600, 0.5, 0.5)
 
 	if err := gc.LoadFontFace("weathericons.ttf", 40); err != nil {
 		panic(err)
