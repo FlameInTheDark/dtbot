@@ -109,11 +109,17 @@ func (manager *SessionManager) Join(discord *discordgo.Session, guildID, channel
 
 		return nil, err
 	}
+	log.Println("Voice joined")
 	if vc == nil {
 		return nil, errors.New("no voice connection")
 	}
+	if vc.Ready != true {
+		return nil, errors.New("voice connection not ready")
+	}
+	log.Println("Voice connection OK and Ready")
 	sess := newSession(guildID, channelID, NewConnection(vc), volume)
 	manager.sessions[channelID] = sess
+	log.Println("Voice session created and saved")
 	return sess, nil
 }
 
