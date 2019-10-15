@@ -2,6 +2,8 @@ package bot
 
 import (
 	"github.com/bwmarrin/discordgo"
+	"github.com/pkg/errors"
+	"log"
 )
 
 type (
@@ -84,7 +86,18 @@ func (manager *SessionManager) Join(discord *discordgo.Session, guildID, channel
 	properties JoinProperties, volume float32) (*Session, error) {
 	vc, err := discord.ChannelVoiceJoin(guildID, channelID, properties.Muted, properties.Deafened)
 	if err != nil {
+		if vc != nil {
+			err := vc.Disconnect()
+			if err != nil {
+				log.Println(err)
+			}
+			vc.Close()
+		}
+
 		return nil, err
+	}
+	if vc == nil {
+		return nil, errors.New("no voice connection")
 	}
 	sess := newSession(guildID, channelID, NewConnection(vc), volume)
 	manager.sessions[channelID] = sess

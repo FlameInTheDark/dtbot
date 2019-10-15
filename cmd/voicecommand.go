@@ -40,6 +40,9 @@ func voiceJoin(sess *bot.Session, ctx *bot.Context) {
 	}, ctx.Guilds.Guilds[ctx.Guild.ID].VoiceVolume)
 	if err != nil {
 		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_error"))
+		if sess != nil {
+			ctx.Sessions.Leave(ctx.Discord, *sess)
+		}
 		return
 	}
 	ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), fmt.Sprintf("%v <#%v>!", ctx.Loc("player_joined"), sess.ChannelID))
