@@ -2,7 +2,7 @@ package bot
 
 import (
 	"github.com/bwmarrin/discordgo"
-	"github.com/pkg/errors"
+	"errors"
 	"log"
 )
 
