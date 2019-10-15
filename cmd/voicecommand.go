@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/FlameInTheDark/dtbot/bot"
 	"github.com/globalsign/mgo/bson"
+	"log"
 	"strconv"
 )
 
@@ -25,15 +26,18 @@ func VoiceCommand(ctx bot.Context) {
 
 func voiceJoin(sess *bot.Session, ctx *bot.Context) {
 	ctx.MetricsCommand("voice", "join")
+	log.Println("used")
 	if ctx.Sessions.GetByGuild(ctx.Guild.ID) != nil {
 		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_connected"))
 		return
 	}
+	log.Println("guild founded")
 	vc := ctx.GetVoiceChannel()
 	if vc == nil {
 		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_must_be_in_voice"))
 		return
 	}
+	log.Println("get voice channel")
 	sess, err := ctx.Sessions.Join(ctx.Discord, ctx.Guild.ID, vc.ID, bot.JoinProperties{
 		Muted:    false,
 		Deafened: true,
@@ -45,6 +49,7 @@ func voiceJoin(sess *bot.Session, ctx *bot.Context) {
 		}
 		return
 	}
+	log.Println("join session")
 	ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), fmt.Sprintf("%v <#%v>!", ctx.Loc("player_joined"), sess.ChannelID))
 }
 
