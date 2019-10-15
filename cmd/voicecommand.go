@@ -43,6 +43,7 @@ func voiceJoin(sess *bot.Session, ctx *bot.Context) {
 		Deafened: true,
 	}, ctx.Guilds.Guilds[ctx.Guild.ID].VoiceVolume)
 	if err != nil {
+		log.Println("Voice join error: ", err)
 		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("player")), ctx.Loc("player_error"))
 		if sess != nil {
 			ctx.Sessions.Leave(ctx.Discord, *sess)

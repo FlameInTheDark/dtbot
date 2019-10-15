@@ -99,6 +99,7 @@ func (manager *SessionManager) Join(discord *discordgo.Session, guildID, channel
 	properties JoinProperties, volume float32) (*Session, error) {
 	vc, err := discord.ChannelVoiceJoin(guildID, channelID, properties.Muted, properties.Deafened)
 	if err != nil {
+		log.Println("Voice connection error: ", err)
 		if vc != nil {
 			err := vc.Disconnect()
 			if err != nil {
@@ -106,7 +107,6 @@ func (manager *SessionManager) Join(discord *discordgo.Session, guildID, channel
 			}
 			vc.Close()
 		}
-
 		return nil, err
 	}
 	log.Println("Voice joined")
