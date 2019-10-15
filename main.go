@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 	"os"
@@ -291,6 +292,15 @@ func clearSessions(d *discordgo.Session, s *bot.SessionManager) {
 		}
 		if !ok {
 			s.Leave(d, *cs)
+		}
+	}
+	for _,vc := range d.VoiceConnections {
+		if _,b := s.GetByChannel(vc.ChannelID); b == false {
+			err := vc.Disconnect()
+			if err != nil {
+				log.Println(err)
+			}
+			vc.Close()
 		}
 	}
 }
