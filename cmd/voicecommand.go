@@ -38,6 +38,14 @@ func voiceJoin(sess *bot.Session, ctx *bot.Context) {
 		return
 	}
 	log.Println("get voice channel")
+	s := ctx.Sessions.GetByGuild(ctx.Guild.ID)
+	if s != nil {
+		if !s.IsOk() {
+			log.Println("removed failed session")
+			ctx.Sessions.Leave(ctx.Discord, *sess)
+		}
+	}
+
 	sess, err := ctx.Sessions.Join(ctx.Discord, ctx.Guild.ID, vc.ID, bot.JoinProperties{
 		Muted:    false,
 		Deafened: true,
