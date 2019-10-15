@@ -81,6 +81,19 @@ func (manager *SessionManager) GetByChannel(channelID string) (*Session, bool) {
 	return sess, found
 }
 
+func (manager *SessionManager) GetAll() map[string]*Session {
+	return manager.sessions
+}
+
+func (s *Session) IsOk() bool {
+	if s.connection.voiceConnection != nil {
+		if s.connection.voiceConnection.Ready == true {
+			return true
+		}
+	}
+	return false
+}
+
 // Join add bot to voice channel
 func (manager *SessionManager) Join(discord *discordgo.Session, guildID, channelID string,
 	properties JoinProperties, volume float32) (*Session, error) {

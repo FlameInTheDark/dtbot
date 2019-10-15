@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/bwmarrin/discordgo"
 	"gopkg.in/robfig/cron.v2"
+	"log"
 )
 
 // Context : Bot context structure
@@ -111,7 +112,11 @@ func (ctx *Context) GetVoiceChannel() *discordgo.Channel {
 				return nil
 			}
 
-			channel, _ := ctx.Discord.State.Channel(state.ChannelID)
+			channel, err := ctx.Discord.State.Channel(state.ChannelID)
+			if err != nil {
+				log.Println(err)
+				return nil
+			}
 			ctx.VoiceChannel = channel
 			return channel
 		}

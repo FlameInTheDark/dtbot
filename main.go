@@ -294,6 +294,13 @@ func clearSessions(d *discordgo.Session, s *bot.SessionManager) {
 			s.Leave(d, *cs)
 		}
 	}
+
+	for _, sess := range s.GetAll() {
+		if !sess.IsOk() {
+			s.Leave(d, *sess)
+		}
+	}
+
 	for _,vc := range d.VoiceConnections {
 		if _,b := s.GetByChannel(vc.ChannelID); b == false {
 			err := vc.Disconnect()
