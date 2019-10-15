@@ -301,13 +301,14 @@ func clearSessions(d *discordgo.Session, s *bot.SessionManager) {
 		}
 	}
 
-	for _,vc := range d.VoiceConnections {
+	for i,vc := range d.VoiceConnections {
 		if _,b := s.GetByChannel(vc.ChannelID); b == false {
 			err := vc.Disconnect()
 			if err != nil {
 				log.Println(err)
 			}
 			vc.Close()
+			delete(d.VoiceConnections, i)
 		}
 	}
 }
