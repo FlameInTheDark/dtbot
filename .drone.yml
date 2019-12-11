@@ -1,6 +1,11 @@
 name: build test
 kind: pipeline
 type: docker
+
+workspace:
+  base: /go
+  path: src/github.com/FlameInTheDark/dtbot
+
 steps:
   - name: build
     image: golang:1.13
