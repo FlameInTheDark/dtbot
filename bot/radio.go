@@ -30,6 +30,12 @@ func (connection *Connection) Play(source string, volume float32) error {
 		return errors.New("song already playing")
 	}
 	ffmpeg := exec.Command("ffmpeg", "-i", source, "-f", "s16le", "-reconnect", "1", "-reconnect_at_eof", "1", "-reconnect_streamed", "1", "-reconnect_delay_max", "2", "-filter:a", fmt.Sprintf("volume=%.3f", volume), "-ar", strconv.Itoa(FRAME_RATE), "-ac", strconv.Itoa(CHANNELS), "pipe:1")
+	defer func() {
+		fferr := ffmpeg.Process.Kill()
+		if fferr != nil {
+			fmt.Println("FFMPEG close err: ", fferr)
+		}
+	}()
 	connection.stopRunning = false
 	out, err := ffmpeg.StdoutPipe()
 	if err != nil {
@@ -131,6 +137,7 @@ func (connection *Connection) PlayYoutube(ffmpeg *exec.Cmd) error {
 	go connection.sendPCM(connection.voiceConnection, connection.send)
 	for {
 		if connection.stopRunning {
+			fmt.Println("Closing ffmpeg...")
 			_ = ffmpeg.Process.Kill()
 			break
 		}
