@@ -12,10 +12,17 @@ steps:
       - go get github.com/globalsign/mgo
       - go get gopkg.in/robfig/cron.v2
       - go build
+
   - name: discrod notification
-      image: appleboy/drone-discord
-      settings:
-        webhook_id:
-          from_secret: discord_wh_id
-        webhook_token:
-          from_secret: discord_wh_token
+    image: appleboy/drone-discord
+    settings:
+      webhook_id:
+        from_secret: discord_wh_id
+      webhook_token:
+        from_secret: discord_wh_token
+
+trigger:
+  branch:
+    - master
+  event:
+    - push
