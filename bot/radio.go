@@ -36,7 +36,6 @@ func (connection *Connection) Play(source string, volume float32) error {
 			fmt.Println("FFMPEG close err: ", fferr)
 		}
 	}()
-	connection.stopRunning = false
 	out, err := ffmpeg.StdoutPipe()
 	if err != nil {
 		return err
@@ -47,30 +46,34 @@ func (connection *Connection) Play(source string, volume float32) error {
 		return err
 	}
 	connection.playing = true
-	defer func() {
-		connection.playing = false
-	}()
 	_ = connection.voiceConnection.Speaking(true)
 	defer func() { _ = connection.voiceConnection.Speaking(false) }()
-	if connection.send == nil {
-		connection.send = make(chan []int16, 2)
+
+	encoder, err := gopus.NewEncoder(FRAME_RATE, CHANNELS, gopus.Audio)
+	if err != nil {
+		fmt.Println("Can's create a gopus encoder", err)
+		return
 	}
-	go connection.sendPCM(connection.voiceConnection, connection.send)
+
+loop:
 	for {
-		if connection.stopRunning {
-			_ = ffmpeg.Process.Kill()
-			break
+		select {
+		case _ = <-connection.quitChan:
+			break loop
+		default:
+			opus, err := encoder.Encode(receive, FRAME_SIZE, MAX_BYTES)
+			if err != nil {
+				fmt.Println("Gopus encoding error,", err)
+				return
+			}
+			if !voice.Ready || voice.OpusSend == nil {
+				fmt.Printf("Discordgo not ready for opus packets. %+v : %+v", voice.Ready, voice.OpusSend)
+				return
+			}
+			voice.OpusSend <- opus
 		}
-		audioBuffer := make([]int16, FRAME_SIZE*CHANNELS)
-		err = binary.Read(buffer, binary.LittleEndian, &audioBuffer)
-		if err == io.EOF || err == io.ErrUnexpectedEOF {
-			return nil
-		}
-		if err != nil {
-			return err
-		}
-		connection.send <- audioBuffer
 	}
+
 	return nil
 }
 
@@ -158,4 +161,5 @@ func (connection *Connection) PlayYoutube(ffmpeg *exec.Cmd) error {
 func (connection *Connection) Stop() {
 	connection.stopRunning = true
 	connection.playing = false
+	connection.quitChan <- struct{}{}
 }

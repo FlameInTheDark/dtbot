@@ -14,6 +14,8 @@ type Connection struct {
 	sendpcm         bool
 	stopRunning     bool
 	playing         bool
+
+	quitChan chan struct{}{}
 }
 
 // NewConnection creates and returns new voice connection
@@ -21,6 +23,8 @@ func NewConnection(voiceConnection *discordgo.VoiceConnection) *Connection {
 	connection := new(Connection)
 	connection.voiceConnection = voiceConnection
 	connection.playing = false
+	connection.send = make(chan []int16, 2)
+	quitChan = new(chan struct{}, 1)
 	return connection
 }
 
