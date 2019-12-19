@@ -207,7 +207,6 @@ func shortPlay(ctx *bot.Context, sess *bot.Session, msg *discordgo.Message) {
 			ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("youtube_finished"), true)
 		default:
 			ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), fmt.Sprintf("%v: %v", ctx.Loc("youtube_now_playing"), relp), true)
-			isPlaying = true
 		}
 	})
 }

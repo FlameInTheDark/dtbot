@@ -1,8 +1,6 @@
 package bot
 
 import (
-	"sync"
-
 	"github.com/bwmarrin/discordgo"
 )
 
@@ -10,7 +8,7 @@ import (
 type Connection struct {
 	voiceConnection *discordgo.VoiceConnection
 	playing         bool
-	quitChan chan struct{}{}
+	quitChan        chan struct{}
 }
 
 // NewConnection creates and returns new voice connection
@@ -18,8 +16,7 @@ func NewConnection(voiceConnection *discordgo.VoiceConnection) *Connection {
 	connection := new(Connection)
 	connection.voiceConnection = voiceConnection
 	connection.playing = false
-	connection.send = make(chan []int16, 2)
-	quitChan = new(chan struct{}, 1)
+	connection.quitChan = make(chan struct{}, 1)
 	return connection
 }
 
