@@ -1,9 +1,13 @@
 package bot
 
 import (
-	"github.com/bwmarrin/discordgo"
 	"errors"
+	"fmt"
 	"log"
+	"os/exec"
+	"strconv"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 type (
@@ -45,14 +49,25 @@ func (sess *Session) GetConnection() *Connection {
 	return sess.connection
 }
 
-// Play starts to play radio
+// Play starts to play the thing in source
 func (sess *Session) Play(source string, volume float32) error {
-	return sess.connection.Play(source, volume)
-}
-
-// PlayYoutube starts to play song from youtube
-func (sess Session) PlayYoutube(song Song) error {
-	return sess.connection.PlayYoutube(song.Ffmpeg(sess.Volume))
+	ffmpeg := exec.Command("ffmpeg", "-i", source, "-f", "s16le", "-reconnect", "1", "-reconnect_at_eof", "1", "-reconnect_streamed", "1", "-reconnect_delay_max", "2", "-filter:a", fmt.Sprintf("volume=%.3f", volume), "-ar", strconv.Itoa(FRAME_RATE), "-ac", strconv.Itoa(CHANNELS), "pipe:1")
+	reader, err := ffmpeg.StdoutPipe()
+	if err != nil {
+		return err
+	}
+	err = ffmpeg.Start()
+	if err != nil {
+		return err
+	}
+	defer func() {
+		reader.Close()
+		fferr := ffmpeg.Process.Kill()
+		if fferr != nil {
+			fmt.Println("FFMPEG close err: ", fferr)
+		}
+	}()
+	return sess.connection.EncodeOpusAndSend(reader)
 }
 
 // Stop stops radio
@@ -137,7 +152,7 @@ func (manager *SessionManager) Count() int {
 
 func (manager *SessionManager) GetChannels() []string {
 	var ids []string
-	for _,s := range manager.sessions {
+	for _, s := range manager.sessions {
 		ids = append(ids, s.ChannelID)
 	}
 	return ids
@@ -145,7 +160,7 @@ func (manager *SessionManager) GetChannels() []string {
 
 func (manager *SessionManager) GetGuilds() []string {
 	var ids []string
-	for _,s := range manager.sessions {
+	for _, s := range manager.sessions {
 		ids = append(ids, s.guildID)
 	}
 	return ids
