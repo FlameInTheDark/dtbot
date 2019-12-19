@@ -2,9 +2,10 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/FlameInTheDark/dtbot/bot"
 	"github.com/bwmarrin/discordgo"
-	"strings"
 )
 
 // YoutubeCommand youtube handler
@@ -192,13 +193,13 @@ func youtubeClear(sess *bot.Session, ctx *bot.Context) {
 	ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("youtube_queue_cleared"))
 }
 
-func shortPlay(ctx *bot.Context, sess *bot.Session, msg *discordgo.Message) (isPlaying bool) {
+func shortPlay(ctx *bot.Context, sess *bot.Session, msg *discordgo.Message) {
 	queue := sess.Queue
 	if !queue.HasNext() {
 		ctx.ReplyEmbed(fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("youtube_queue_is_empty"))
 		return
 	}
-	go queue.Start(sess, func(relp string) {
+	queue.Start(sess, func(relp string) {
 		switch relp {
 		case "stop":
 			ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("youtube_stopped"), true)
@@ -206,10 +207,8 @@ func shortPlay(ctx *bot.Context, sess *bot.Session, msg *discordgo.Message) (isP
 			ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), ctx.Loc("youtube_finished"), true)
 		default:
 			ctx.EditEmbed(msg.ID, fmt.Sprintf("%v:", ctx.Loc("youtube")), fmt.Sprintf("%v: %v", ctx.Loc("youtube_now_playing"), relp), true)
-			isPlaying = true
 		}
 	})
-	return false
 }
 
 // YoutubeShortCommand handle short command for playing song from youtube
