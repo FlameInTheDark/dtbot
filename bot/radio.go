@@ -51,7 +51,7 @@ loop:
 			} else if err != nil {
 				return err
 			}
-			opus, err := encoder.Encode(buffer, FRAME_SIZE, MAX_BYTES)
+			opus, err := encoder.Encode(buffer[:], FRAME_SIZE, MAX_BYTES)
 			if err != nil {
 				fmt.Println("Gopus encoding error,", err)
 				return err
