@@ -31,7 +31,7 @@ func (connection *Connection) EncodeOpusAndSend(reader io.Reader) error {
 	defer func() { _ = connection.voiceConnection.Speaking(false) }()
 
 	breader := bufio.NewReaderSize(reader, 16384)
-	buffer := make([]int16, FRAME_SIZE*CHANNELS)
+	var buffer [FRAME_SIZE*CHANNELS]int16
 	encoder, err := gopus.NewEncoder(FRAME_RATE, CHANNELS, gopus.Audio)
 	if err != nil {
 		fmt.Println("Can's create a gopus encoder", err)
