@@ -9,12 +9,7 @@ import (
 // Connection : Voice connection struct
 type Connection struct {
 	voiceConnection *discordgo.VoiceConnection
-	send            chan []int16
-	lock            sync.Mutex
-	sendpcm         bool
-	stopRunning     bool
 	playing         bool
-
 	quitChan chan struct{}{}
 }
 
