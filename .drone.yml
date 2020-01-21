@@ -18,7 +18,7 @@ steps:
       - go get gopkg.in/robfig/cron.v2
       - go build
 
-  - name: discrod notification
+  - name: discord notification
     image: appleboy/drone-discord
     settings:
       webhook_id:

@@ -290,7 +290,7 @@ func clearSessions(d *discordgo.Session, s *bot.SessionManager) {
 				}
 			}
 		}
-		if !ok {
+		if !ok && cs != nil {
 			s.Leave(d, *cs)
 		}
 	}
