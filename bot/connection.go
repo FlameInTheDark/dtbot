@@ -1,19 +1,14 @@
 package bot
 
 import (
-	"sync"
-
 	"github.com/bwmarrin/discordgo"
 )
 
 // Connection : Voice connection struct
 type Connection struct {
 	voiceConnection *discordgo.VoiceConnection
-	send            chan []int16
-	lock            sync.Mutex
-	sendpcm         bool
-	stopRunning     bool
 	playing         bool
+	quitChan        chan struct{}
 }
 
 // NewConnection creates and returns new voice connection
@@ -21,6 +16,7 @@ func NewConnection(voiceConnection *discordgo.VoiceConnection) *Connection {
 	connection := new(Connection)
 	connection.voiceConnection = voiceConnection
 	connection.playing = false
+	connection.quitChan = make(chan struct{}, 1)
 	return connection
 }
 

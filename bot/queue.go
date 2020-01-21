@@ -48,7 +48,8 @@ func (queue SongQueue) Start(sess *Session, callback func(string)) {
 	for queue.HasNext() && queue.Running {
 		song := queue.Next()
 		callback(song.Title)
-		_ = sess.PlayYoutube(song)
+		// TODO: sess already has volume, dont pass it here
+		_ = sess.Play(song.Media, sess.Volume)
 	}
 	if !queue.Running {
 		callback("stop")
