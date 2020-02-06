@@ -252,9 +252,8 @@ func BotUpdater(d *discordgo.Session) {
 }
 
 func sendDBL(botID, token string, guilds int) {
-	timeout := time.Duration(time.Duration(1) * time.Second)
 	client := &http.Client{
-		Timeout: time.Duration(timeout),
+		Timeout: time.Duration(1) * time.Second,
 	}
 	query := url.Values{}
 	query.Add("server_count", fmt.Sprintf("%v", guilds))

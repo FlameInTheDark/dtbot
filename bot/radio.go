@@ -14,7 +14,7 @@ const (
 	// CHANNELS count of audio channels
 	CHANNELS int = 2
 	// FRAME_RATE ...
-	FRAME_RATE int = 48000
+	FRAME_RATE int = 64000
 	// FRAME_SIZE ...
 	FRAME_SIZE int = 960
 	// MAX_BYTES max bytes per sample
