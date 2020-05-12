@@ -153,9 +153,17 @@ func (db *DBWorker) GetTwitchToken() *TwitchDBConfig {
 }
 
 func (db *DBWorker) UpdateTwitchToken(token string, expire time.Time) {
-	err := db.DBSession.DB(db.DBName).C("config").Update(bson.M{"type": "twitch"}, bson.M{"&set": bson.M{"token": token, "expire": expire}})
+	err := db.DBSession.DB(db.DBName).C("config").Update(bson.M{"type": "twitch"}, bson.M{"$set": bson.M{"token": token, "expire": expire}})
 	if err != nil {
 		log.Println("[Mongo] Update twitch token error: ", err)
+		err = db.DBSession.DB(db.DBName).C("config").Insert(TwitchDBConfig{
+			Type:   "twitch",
+			Token:  token,
+			Expire: expire,
+		})
+		if err != nil {
+			log.Println("[Mongo] Update twitch token error: ", err)
+		}
 	}
 }
 
