@@ -1,14 +1,19 @@
 package bot
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
+	"log"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
+
+	"golang.org/x/oauth2/clientcredentials"
+	"golang.org/x/oauth2/twitch"
 )
 
 // Twitch contains streams
@@ -100,12 +105,33 @@ func TwitchInit(session *discordgo.Session, conf *Config, db *DBWorker) *Twitch 
 	return &Twitch{guilds, db, conf, session}
 }
 
+func (t *Twitch) OAuthToken() string {
+	dbt := t.DB.GetTwitchToken()
+	if dbt.Expire.Unix() < time.Now().Unix() {
+		var oauth2Config *clientcredentials.Config
+		oauth2Config = &clientcredentials.Config{
+			ClientID:     t.Conf.Twitch.ClientID,
+			ClientSecret: t.Conf.Twitch.ClientSecret,
+			TokenURL:     twitch.Endpoint.TokenURL,
+		}
+
+		token, err := oauth2Config.Token(context.Background())
+		if err != nil {
+			log.Println("[Twitch] Getting token error: ", err)
+		}
+		t.DB.UpdateTwitchToken(token.AccessToken, token.Expiry)
+		return token.AccessToken
+	}
+	return dbt.Token
+}
+
 // Update updates status of streamers and notify
 func (t *Twitch) Update() {
 	var gameResult TwitchGameResult
 	var streamResult TwitchStreamResult
 	var streams = make(map[string]*TwitchStreamData)
 	var games = make(map[string]*TwitchGameData)
+	var oauthToken = t.OAuthToken()
 	timeout := time.Duration(time.Duration(1) * time.Second)
 	client := &http.Client{
 		Timeout: time.Duration(timeout),
@@ -120,6 +146,7 @@ func (t *Twitch) Update() {
 	// Streams
 	tsreq, _ := http.NewRequest("GET", fmt.Sprintf("https://api.twitch.tv/helix/streams?%v", streamQuery.Encode()), nil)
 	tsreq.Header.Add("Client-ID", t.Conf.Twitch.ClientID)
+	tsreq.Header.Add("Authorization", "Bearer "+oauthToken)
 	tsresp, tserr := client.Do(tsreq)
 	if tserr == nil {
 		jerr := json.NewDecoder(tsresp.Body).Decode(&streamResult)
@@ -138,6 +165,7 @@ func (t *Twitch) Update() {
 	// Games
 	tgreq, _ := http.NewRequest("GET", fmt.Sprintf("https://api.twitch.tv/helix/games?%v", gameQuery.Encode()), nil)
 	tgreq.Header.Add("Client-ID", t.Conf.Twitch.ClientID)
+	tgreq.Header.Add("Authorization", "Bearer "+oauthToken)
 	tgresp, tgerr := client.Do(tgreq)
 	if tgerr == nil {
 		jerr := json.NewDecoder(tgresp.Body).Decode(&gameResult)
@@ -158,7 +186,7 @@ func (t *Twitch) Update() {
 			if stream, ok := streams[s.UserID]; ok {
 				if !s.IsOnline {
 					gameName := "Unknown"
-					if _,ok := games[stream.GameID]; ok {
+					if _, ok := games[stream.GameID]; ok {
 						gameName = games[stream.GameID].Name
 					}
 					t.Guilds[s.Guild].Streams[s.Login].IsOnline = true
@@ -200,12 +228,14 @@ func (t *Twitch) AddStreamer(guild, channel, login, message string) (string, err
 				return "", errors.New("streamer already exists")
 			}
 		}
+		var oauthToken = t.OAuthToken()
 		timeout := time.Duration(time.Duration(1) * time.Second)
 		client := &http.Client{
 			Timeout: time.Duration(timeout),
 		}
 		req, _ := http.NewRequest("GET", fmt.Sprintf("https://api.twitch.tv/helix/users?login=%v", login), nil)
 		req.Header.Add("Client-ID", t.Conf.Twitch.ClientID)
+		req.Header.Add("Authorization", "Bearer "+oauthToken)
 		resp, err := client.Do(req)
 		var result TwitchUserResult
 		if err == nil {

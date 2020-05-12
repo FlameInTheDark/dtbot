@@ -5,6 +5,7 @@ import (
 	"github.com/bwmarrin/discordgo"
 	"github.com/globalsign/mgo"
 	"github.com/globalsign/mgo/bson"
+	"log"
 	"os"
 	"time"
 )
@@ -47,6 +48,12 @@ type RadioStation struct {
 	Category string
 }
 
+type TwitchDBConfig struct {
+	Type   string
+	Token  string
+	Expire time.Time
+}
+
 type BlackListElement struct {
 	ID string
 }
@@ -55,13 +62,13 @@ type BlackListElement struct {
 func NewDBSession(dbname string) *DBWorker {
 	session, err := mgo.Dial(os.Getenv("MONGO_CONN"))
 	if err != nil {
-		fmt.Printf("Mongo connection error: %v", err)
+		log.Printf("[Mongo] Mongo connection error: %v", err)
 	}
 	count, err := session.DB("dtbot").C("logs").Count()
 	if err != nil {
-		fmt.Println("DB_ERR: ", err)
+		log.Printf("[Mongo] DB_ERR: ", err)
 	}
-	fmt.Printf("Mongo connected\nLogs in base: %v\n", count)
+	log.Printf("[Mongo] connected\nLogs in base: %v\n", count)
 	return &DBWorker{DBSession: session, DBName: dbname}
 }
 
@@ -72,7 +79,7 @@ func (db *DBWorker) InitGuilds(sess *discordgo.Session, conf *Config) *GuildsMap
 	for _, guild := range sess.State.Guilds {
 		count, err := db.DBSession.DB(db.DBName).C("guilds").Find(bson.M{"id": guild.ID}).Count()
 		if err != nil {
-			fmt.Printf("Mongo: guilds, DB: %s, Guild: %s, Error: %v\n", db.DBName, guild.ID, err)
+			log.Printf("[Mongo] guilds, DB: %s, Guild: %s, Error: %v\n", db.DBName, guild.ID, err)
 		}
 		if count == 0 {
 			newData := &GuildData{
@@ -92,14 +99,14 @@ func (db *DBWorker) InitGuilds(sess *discordgo.Session, conf *Config) *GuildsMap
 			var newData = &GuildData{}
 			_ = db.DBSession.DB(db.DBName).C("guilds").Find(bson.M{"id": guild.ID}).One(newData)
 			if err != nil {
-				fmt.Printf("Mongo: guilds, DB: %s, Guild: %s, Error: %v\n", db.DBName, guild.ID, err)
+				log.Printf("[Mongo] guilds, DB: %s, Guild: %s, Error: %v\n", db.DBName, guild.ID, err)
 				continue
 			}
 			data.Guilds[guild.ID] = newData
 			loaded++
 		}
 	}
-	fmt.Printf("Guilds loaded [%v], initialized [%v]\n", loaded, initialized)
+	log.Printf("[Mongo] Guilds loaded [%v], initialized [%v]\n", loaded, initialized)
 	return data
 }
 
@@ -136,12 +143,28 @@ func (db *DBWorker) Guilds() *mgo.Collection {
 	return db.DBSession.DB(db.DBName).C("guilds")
 }
 
+func (db *DBWorker) GetTwitchToken() *TwitchDBConfig {
+	var token TwitchDBConfig
+	err := db.DBSession.DB(db.DBName).C("config").Find(bson.M{"type": "twitch"}).One(&token)
+	if err != nil {
+		return &token
+	}
+	return &token
+}
+
+func (db *DBWorker) UpdateTwitchToken(token string, expire time.Time) {
+	err := db.DBSession.DB(db.DBName).C("config").Update(bson.M{"type": "twitch"}, bson.M{"&set": bson.M{"token": token, "expire": expire}})
+	if err != nil {
+		log.Println("[Mongo] Update twitch token error: ", err)
+	}
+}
+
 // GetTwitchStreams returns twitch streams from mongodb
 func (db *DBWorker) GetTwitchStreams(guildID string) map[string]*TwitchStream {
 	streams := []TwitchStream{}
 	err := db.DBSession.DB(db.DBName).C("streams").Find(bson.M{"guild": guildID}).All(&streams)
 	if err != nil {
-		fmt.Printf("Mongo: streams, streams DB: %s, Guild: %s, Error: %v\n", db.DBName, guildID, err)
+		log.Printf("[Mongo] streams, streams DB: %s, Guild: %s, Error: %v\n", db.DBName, guildID, err)
 	}
 	var newMap = make(map[string]*TwitchStream)
 	for i, s := range streams {
@@ -157,7 +180,7 @@ func (db *DBWorker) UpdateStream(stream *TwitchStream) {
 			bson.M{"guild": stream.Guild, "login": stream.Login},
 			bson.M{"$set": bson.M{"isonline": stream.IsOnline}})
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Println("[Mongo] ", err)
 	}
 }
 
@@ -180,7 +203,7 @@ func (db *DBWorker) GetRadioStations(category string) []RadioStation {
 	}
 	err := db.DBSession.DB(db.DBName).C("stations").Find(request).All(&stations)
 	if err != nil {
-		fmt.Printf("Mongo: stations, DB: %s, Error: %v\n", db.DBName, err)
+		log.Printf("[Mongo] stations, DB: %s, Error: %v\n", db.DBName, err)
 
 	}
 	return stations
@@ -191,7 +214,7 @@ func (db *DBWorker) GetRadioStationByKey(key string) (*RadioStation, error) {
 	station := RadioStation{}
 	err := db.DBSession.DB(db.DBName).C("stations").Find(bson.M{"key": key}).One(&station)
 	if err != nil {
-		fmt.Printf("Mongo: stations, DB: %s, Key: %s, Error: %v\n", db.DBName, key, err)
+		log.Printf("[Mongo] stations, DB: %s, Key: %s, Error: %v\n", db.DBName, key, err)
 		return nil, fmt.Errorf("station not found")
 	}
 	return &station, nil
@@ -222,7 +245,7 @@ func (db *DBWorker) GetAlbionPlayers() []AlbionPlayerUpdater {
 func (db *DBWorker) AddAlbionPlayer(player *AlbionPlayerUpdater) {
 	err := db.DBSession.DB(db.DBName).C("albion").Insert(player)
 	if err != nil {
-		fmt.Println("Error adding Albion player: ", err.Error())
+		log.Printf("[Mongo] Error adding Albion player: ", err.Error())
 	}
 }
 
@@ -230,7 +253,7 @@ func (db *DBWorker) AddAlbionPlayer(player *AlbionPlayerUpdater) {
 func (db *DBWorker) RemoveAlbionPlayer(id string) {
 	err := db.DBSession.DB(db.DBName).C("albion").Remove(bson.M{"userid": id})
 	if err != nil {
-		fmt.Println("Error removing Albion player: ", err.Error())
+		log.Printf("[Mongo] Error removing Albion player: ", err.Error())
 	}
 }
 
@@ -241,7 +264,7 @@ func (db *DBWorker) UpdateAlbionPlayerLast(userID string, lastKill int64) {
 			bson.M{"userid": userID},
 			bson.M{"$set": bson.M{"lastkill": lastKill}})
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Printf("[Mongo] ", err)
 	}
 }
 
@@ -249,8 +272,8 @@ func (db *DBWorker) UpdateAlbionPlayerLast(userID string, lastKill int64) {
 func (db *DBWorker) GetBlacklist() *BlackListStruct {
 	var (
 		blacklist BlackListStruct
-		Guilds []BlackListElement
-		Users  []BlackListElement
+		Guilds    []BlackListElement
+		Users     []BlackListElement
 	)
 	_ = db.DBSession.DB(db.DBName).C("blusers").Find(nil).All(&Users)
 	_ = db.DBSession.DB(db.DBName).C("blguilds").Find(nil).All(&Guilds)
@@ -269,7 +292,7 @@ func (db *DBWorker) GetBlacklist() *BlackListStruct {
 func (db *DBWorker) AddBlacklistGuild(id string) {
 	err := db.DBSession.DB(db.DBName).C("blguilds").Insert(BlackListElement{ID: id})
 	if err != nil {
-		fmt.Println("Error adding guild in blacklist: ", err.Error())
+		log.Printf("[Mongo] Error adding guild in blacklist: ", err.Error())
 	}
 }
 
@@ -277,7 +300,7 @@ func (db *DBWorker) AddBlacklistGuild(id string) {
 func (db *DBWorker) AddBlacklistUser(id string) {
 	err := db.DBSession.DB(db.DBName).C("blusers").Insert(BlackListElement{ID: id})
 	if err != nil {
-		fmt.Println("Error adding user in blacklist: ", err.Error())
+		log.Printf("[Mongo] Error adding user in blacklist: ", err.Error())
 	}
 }
 
@@ -285,7 +308,7 @@ func (db *DBWorker) AddBlacklistUser(id string) {
 func (db *DBWorker) RemoveBlacklistGuild(id string) {
 	err := db.DBSession.DB(db.DBName).C("blguilds").Remove(bson.M{"id": id})
 	if err != nil {
-		fmt.Println("Error removing guild from blacklist: ", err.Error())
+		log.Printf("[Mongo] Error removing guild from blacklist: ", err.Error())
 	}
 }
 
@@ -293,6 +316,6 @@ func (db *DBWorker) RemoveBlacklistGuild(id string) {
 func (db *DBWorker) RemoveBlacklistUser(id string) {
 	err := db.DBSession.DB(db.DBName).C("blusers").Remove(bson.M{"id": id})
 	if err != nil {
-		fmt.Println("Error removing user from blacklist: ", err.Error())
+		log.Printf("[Mongo] Error removing user from blacklist: ", err.Error())
 	}
 }

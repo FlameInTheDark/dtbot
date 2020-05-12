@@ -57,7 +57,8 @@ type DBLConfig struct {
 
 // TwitchConfig contains twitch api configs
 type TwitchConfig struct {
-	ClientID string
+	ClientID     string
+	ClientSecret string
 }
 
 // TranslateConfig Yandex translate config struct
