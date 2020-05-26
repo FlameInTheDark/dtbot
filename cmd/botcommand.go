@@ -142,7 +142,7 @@ func botSetConf(ctx *bot.Context) {
 			switch target[1] {
 			case "country":
 				ctx.Guilds.Guilds[ctx.Guild.ID].NewsCounty = ctx.Args[2]
-				_ = ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"weathercountry": ctx.Args[2]}})
+				_ = ctx.DB.Guilds().Update(bson.M{"id": ctx.Guild.ID}, bson.M{"$set": bson.M{"newscounty": ctx.Args[2]}})
 				ctx.ReplyEmbedPM("Config", fmt.Sprintf("News country set to: %v", ctx.Args[2]))
 			}
 		case "embed":
