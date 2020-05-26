@@ -40,7 +40,7 @@ func GetNews(ctx *bot.Context) error {
 	if len(ctx.Args) > 0 {
 		category = ctx.Args[0]
 	}
-	resp, err := http.Get(fmt.Sprintf("https://newsapi.org/v2/top-headlines?country=%v&category=%v&apiKey=%v", ctx.Conf.News.Country, category, ctx.Conf.News.APIKey))
+	resp, err := http.Get(fmt.Sprintf("https://newsapi.org/v2/top-headlines?country=%v&category=%v&apiKey=%v", ctx.DB.GetNewsCountry(ctx.Guild.ID), category, ctx.Conf.News.APIKey))
 	if err != nil {
 		ctx.Log("news", ctx.Guild.ID, fmt.Sprintf("Get news error: %v", err))
 		return fmt.Errorf("get news error: %v", err)

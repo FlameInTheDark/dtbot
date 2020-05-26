@@ -327,3 +327,13 @@ func (db *DBWorker) RemoveBlacklistUser(id string) {
 		log.Printf("[Mongo] Error removing user from blacklist: ", err.Error())
 	}
 }
+
+// GetNewsCountry returns news country string
+func (db *DBWorker) GetNewsCountry(guild string) string {
+	var dbGuild GuildData
+	err := db.DBSession.DB(db.DBName).C("guilds").Find(bson.M{"id": guild}).One(&dbGuild)
+	if err != nil {
+		log.Printf("[Mongo] Error getting news country: ", err)
+	}
+	return dbGuild.NewsCounty
+}
