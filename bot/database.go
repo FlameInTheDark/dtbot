@@ -147,6 +147,7 @@ func (db *DBWorker) GetTwitchToken() *TwitchDBConfig {
 	var token TwitchDBConfig
 	err := db.DBSession.DB(db.DBName).C("config").Find(bson.M{"type": "twitch"}).One(&token)
 	if err != nil {
+		log.Println("[Mongo] Get twitch token error: ", err)
 		return &token
 	}
 	return &token
@@ -253,7 +254,7 @@ func (db *DBWorker) GetAlbionPlayers() []AlbionPlayerUpdater {
 func (db *DBWorker) AddAlbionPlayer(player *AlbionPlayerUpdater) {
 	err := db.DBSession.DB(db.DBName).C("albion").Insert(player)
 	if err != nil {
-		log.Printf("[Mongo] Error adding Albion player: ", err.Error())
+		log.Println("[Mongo] Error adding Albion player: ", err.Error())
 	}
 }
 
@@ -261,7 +262,7 @@ func (db *DBWorker) AddAlbionPlayer(player *AlbionPlayerUpdater) {
 func (db *DBWorker) RemoveAlbionPlayer(id string) {
 	err := db.DBSession.DB(db.DBName).C("albion").Remove(bson.M{"userid": id})
 	if err != nil {
-		log.Printf("[Mongo] Error removing Albion player: ", err.Error())
+		log.Println("[Mongo] Error removing Albion player: ", err.Error())
 	}
 }
 
@@ -272,7 +273,7 @@ func (db *DBWorker) UpdateAlbionPlayerLast(userID string, lastKill int64) {
 			bson.M{"userid": userID},
 			bson.M{"$set": bson.M{"lastkill": lastKill}})
 	if err != nil {
-		log.Printf("[Mongo] ", err)
+		log.Println("[Mongo] ", err)
 	}
 }
 
@@ -300,7 +301,7 @@ func (db *DBWorker) GetBlacklist() *BlackListStruct {
 func (db *DBWorker) AddBlacklistGuild(id string) {
 	err := db.DBSession.DB(db.DBName).C("blguilds").Insert(BlackListElement{ID: id})
 	if err != nil {
-		log.Printf("[Mongo] Error adding guild in blacklist: ", err.Error())
+		log.Println("[Mongo] Error adding guild in blacklist: ", err.Error())
 	}
 }
 
@@ -308,7 +309,7 @@ func (db *DBWorker) AddBlacklistGuild(id string) {
 func (db *DBWorker) AddBlacklistUser(id string) {
 	err := db.DBSession.DB(db.DBName).C("blusers").Insert(BlackListElement{ID: id})
 	if err != nil {
-		log.Printf("[Mongo] Error adding user in blacklist: ", err.Error())
+		log.Println("[Mongo] Error adding user in blacklist: ", err.Error())
 	}
 }
 
@@ -316,7 +317,7 @@ func (db *DBWorker) AddBlacklistUser(id string) {
 func (db *DBWorker) RemoveBlacklistGuild(id string) {
 	err := db.DBSession.DB(db.DBName).C("blguilds").Remove(bson.M{"id": id})
 	if err != nil {
-		log.Printf("[Mongo] Error removing guild from blacklist: ", err.Error())
+		log.Println("[Mongo] Error removing guild from blacklist: ", err.Error())
 	}
 }
 
@@ -324,7 +325,7 @@ func (db *DBWorker) RemoveBlacklistGuild(id string) {
 func (db *DBWorker) RemoveBlacklistUser(id string) {
 	err := db.DBSession.DB(db.DBName).C("blusers").Remove(bson.M{"id": id})
 	if err != nil {
-		log.Printf("[Mongo] Error removing user from blacklist: ", err.Error())
+		log.Println("[Mongo] Error removing user from blacklist: ", err.Error())
 	}
 }
 
@@ -333,7 +334,7 @@ func (db *DBWorker) GetNewsCountry(guild string) string {
 	var dbGuild GuildData
 	err := db.DBSession.DB(db.DBName).C("guilds").Find(bson.M{"id": guild}).One(&dbGuild)
 	if err != nil {
-		log.Printf("[Mongo] Error getting news country: ", err)
+		log.Println("[Mongo] Error getting news country: ", err)
 	}
 	return dbGuild.NewsCounty
 }

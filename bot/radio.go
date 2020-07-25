@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"time"
 
 	"github.com/FlameInTheDark/gopus"
 )
@@ -31,7 +32,7 @@ func (connection *Connection) EncodeOpusAndSend(reader io.Reader) error {
 	defer func() { _ = connection.voiceConnection.Speaking(false) }()
 
 	breader := bufio.NewReaderSize(reader, 16384)
-	var buffer [FRAME_SIZE*CHANNELS]int16
+	var buffer [FRAME_SIZE * CHANNELS]int16
 	encoder, err := gopus.NewEncoder(FRAME_RATE, CHANNELS, gopus.Audio)
 	if err != nil {
 		fmt.Println("Can's create a gopus encoder", err)
@@ -60,7 +61,11 @@ loop:
 				fmt.Printf("Discordgo not ready for opus packets. %+v : %+v", voice.Ready, voice.OpusSend)
 				return err
 			}
-			voice.OpusSend <- opus
+			select {
+			case voice.OpusSend <- opus:
+			case <-time.After(time.Second * 5):
+				break
+			}
 		}
 	}
 
