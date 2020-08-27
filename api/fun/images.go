@@ -18,7 +18,7 @@ type ImageResponse struct {
 
 // GetImageURL returns image url
 func GetImageURL(category string) (string, error) {
-	resp, err := http.Get(fmt.Sprintf("https://botimages.realpha.ru/?category=%v", category))
+	resp, err := http.Get(fmt.Sprintf("https://botimages.realpha.org/?category=%v", category))
 	if err != nil {
 		return "", err
 	}
