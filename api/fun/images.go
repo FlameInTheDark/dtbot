@@ -23,8 +23,8 @@ func GetImageURL(category string) (string, error) {
 		return "", err
 	}
 
-	if resp.StatusCode == http.StatusOK {
-		fmt.Printf("Getting image url error: %v", err)
+	if resp.StatusCode != http.StatusOK {
+		fmt.Println("Getting image url error:", err)
 		return "", errors.New("getting image url error")
 	}
 
@@ -32,19 +32,19 @@ func GetImageURL(category string) (string, error) {
 
 	err = json.NewDecoder(resp.Body).Decode(&result)
 	if err != nil {
-		fmt.Printf(err.Error())
+		fmt.Println("Image json encode error:", err)
 		return "", err
 	}
 
 	if result.Success {
-		return fmt.Sprintf("https://botimages.realpha.ru/%v", result.ImageURL), nil
+		return fmt.Sprintf("https://botimages.realpha.org/%v", result.ImageURL), nil
 	}
 	return "", errors.New("wrong data")
 }
 
 // GetImage return image bytes buffer
 func GetImage(category string) (*bytes.Buffer, error) {
-	resp, err := http.Get(fmt.Sprintf("https://botimages.realpha.ru/?category=%v", category))
+	resp, err := http.Get(fmt.Sprintf("https://botimages.realpha.org/?category=%v", category))
 	if err != nil {
 		fmt.Printf("Getting image url error: %v", err)
 		return nil, errors.New("getting image url error")
