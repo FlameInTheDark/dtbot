@@ -10,12 +10,7 @@ steps:
   - name: build
     image: golang:1.13
     commands:
-      - go get github.com/fogleman/gg
-      - go get github.com/bwmarrin/discordgo
-      - go get github.com/BurntSushi/toml
-      - go get github.com/FlameInTheDark/gopus
-      - go get github.com/globalsign/mgo
-      - go get gopkg.in/robfig/cron.v2
+      - go get ./...
       - go build
 
   - name: discord notification
