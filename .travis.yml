@@ -1,13 +1,5 @@
 language: go
 go:
-    - 1.9
-    - "1.10"
-    - 1.11
-    - 1.12
+    - "1.15"
 install:
-    - go get github.com/fogleman/gg
-    - go get github.com/bwmarrin/discordgo
-    - go get github.com/BurntSushi/toml
-    - go get github.com/FlameInTheDark/gopus
-    - go get github.com/globalsign/mgo
-    - go get gopkg.in/robfig/cron.v2
+    - go get ./...
