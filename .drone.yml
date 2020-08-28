@@ -8,7 +8,7 @@ workspace:
 
 steps:
   - name: build
-    image: golang:1.13
+    image: golang:latest
     commands:
       - go get ./...
       - go build
@@ -20,9 +20,3 @@ steps:
         from_secret: discord_wh_id
       webhook_token:
         from_secret: discord_wh_token
-
-trigger:
-  branch:
-    - master
-  event:
-    - push
